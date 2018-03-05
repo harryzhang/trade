@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0">
+	<meta name="apple-touch-fullscreen" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<title>市场</title>
+	<link rel="stylesheet" href="./css/reset.css">
+	<style type="text/css">
+		#container{
+			width: 100%;
+			height: 100%;
+		    background: #191c23;
+    		overflow: hidden;
+    		display: flex;
+    		flex-direction: column;
+		}
+		/*.head{
+			height: 4rem;
+			background: #20222e;
+		}
+		.title{
+			color: #fff;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			font-size: 2rem;
+			line-height: 4rem;
+		}
+		.title span{
+			position: absolute;
+    		right: 2rem;
+		}
+		.title img{
+			width: 1.5rem;
+    		height: 1.5rem;
+			position: relative;
+    		right: .5rem;
+		}*/
+		.price{
+			height: 4.5rem;
+			background: #20222e;
+		}
+		.price table{
+			width: 100%;
+			height: 2rem;
+		}
+		.price td{
+			font-size: 1.6rem;
+			color: #fff;
+			line-height: 2rem;
+			text-align: center;
+		}
+		.price .rowspan{
+			vertical-align:middle;
+		    border-right: 1px solid #e1e4eb;
+		}
+		.price .label{
+		    float: left;
+		    position: relative;
+		    left: 3rem;
+		}
+		.price .money{
+		    float: right;
+		    position: relative;
+		    right: 3rem;
+		}
+		#tab{
+			height: 4rem;
+			background: #20222e;
+			margin-top: .2rem;
+    		overflow: hidden;
+		}
+		#tab ul{
+			display: flex;
+			height: 100%;
+		}
+		#tab ul li{
+			flex: 1;
+			font-size: 1.6rem;
+    		color: #fff; 
+    		text-align: center;
+		    line-height: 3.5rem;
+		}
+		#tab .tab-select{
+			width: 50%;
+		    height: 95%;
+	    	margin: 0 auto;
+	    	color: #84888b;
+		}
+		.tab-active .tab-select{
+			color: #fbcb11 !important;
+			border-bottom: 3px solid #fbcb11;
+		}
+		.tab-container{
+			flex: 1;
+			overflow-y: auto;
+		}
+		.tab-container-active{
+			display: block !important;
+		}
+		.tab-container .tab-container-content{
+			font-size: 1.4rem;
+			color: #fff;
+			color: #84888b;
+			display: none;
+			text-align: center;
+		}
+		.tab-container-content p{
+			margin-top: 1rem;
+		}
+		.order{
+		    width: 100%;
+		    height: 11rem;
+		    background: #20222e;
+		    margin-top: 1.5rem;
+		    overflow: hidden;
+		}
+		.order table{
+			width: 100%;
+		}
+		.order td {
+			font-size: 2rem;
+    		line-height: 3.5rem;
+		}
+		.order .number{
+			color: #fff;			
+		}
+		.order .number td{
+			font-size: 3rem;
+			font-family: 600;
+		}
+		.order ul{
+			margin-top: .5rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 3rem
+		}
+		.order li{
+			float: left;
+		    font-size: 1.8rem;
+
+		}
+		.order li:first-child{	
+			padding-left: 2rem;	
+			padding-right: 1rem;
+    		border-right: 1px solid #fff;
+    		line-height: 2rem;
+		}
+		.order li:nth-child(2){	
+			flex: 1;
+		    text-align: left;
+		    padding: 0 1rem;
+		}
+		.order li a{	
+			color: #fbcb11;
+			border: 1px solid #fbcb11;
+			border-radius: 3px;
+			padding: .5rem 1rem;
+			margin-right: 2rem;
+			line-height: 2rem;
+		}	   
+	</style>
+</head>
+<body>
+	<div id="container">
+		<!-- <div class="head">
+			<div class="title">市场<span><img src="xiaolian.png" alt="">挂单</span></div>
+		</div> -->
+		<div class="price">
+			<table>
+				<tbody>				
+					<tr>
+						<td rowspan="2" class="rowspan"><span class="label">指导价</span><span class="money">$1.00</span></td>
+						<td><span class="label">最高价</span><span class="money">$1.05</span></td>
+					</tr>
+					<tr>					
+						<td><span class="label">最低价</span><span class="money">$1.00</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="tab">
+			<ul class="tab">
+				<li class="tab-active" data='0'>
+					<div class="tab-select">买单市场</div>
+				</li>
+				<li data='1'>
+					<div class="tab-select">卖单市场</div>
+				</li>
+			</ul>
+		</div>
+		<div class="tab-container">
+			<div class="tab-container-content tab-container-active" data='0'>
+				<div class="order">
+					<table>
+						<tr>
+							<td>数量(个)</td>
+							<td>价格($)</td>
+							<td>总计($)</td>
+						</tr>
+						<tr class="number">
+							<td>100</td>
+							<td>1.00</td>
+							<td>100.00</td>
+						</tr>
+					</table>
+					<div>
+						<ul>
+							<li>mc0021</li>
+							<li>2018-02-19 23:24</li>
+							<li><a href="javascript:void(0);">可匹配</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="order">
+					<table>
+						<tr>
+							<td>数量(个)</td>
+							<td>价格($)</td>
+							<td>总计($)</td>
+						</tr>
+						<tr class="number">
+							<td>100</td>
+							<td>1.00</td>
+							<td>100.00</td>
+						</tr>
+					</table>
+					<div>
+						<ul>
+							<li>maidain</li>
+							<li>2018-02-19 23:24</li>
+							<li><a href="javascript:void(0);">可匹配</a></li>
+						</ul>
+					</div>
+				</div>
+				<p>没有更多数据了</p>
+			</div>
+			<div class="tab-container-content" data='1'>
+				<p>没有更多数据了</p>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<!-- <script type="text/javascript" src="js/ajax.js"></script> -->
+<script type="text/javascript">
+	$(".tab").find('li').on('click', function(){
+		$(".tab").find('li').removeClass('tab-active')
+		$(this).addClass('tab-active')
+		var index = $(this).attr('data')
+
+		$(".tab-container").find('div').removeClass('tab-container-active')
+		$.each($(".tab-container").find('div'), function(idx, data){
+			if(index == $(data).attr('data')){
+				$(data).addClass('tab-container-active')
+			}
+		})
+	})
+</script>

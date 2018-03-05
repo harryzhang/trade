@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.huilv.dao.IHuilvDao">
+	<resultMap type="huilvDo" id="huilvResultMap">
+		<result property="id" column="id" />
+		<result property="getDate" column="getDate" />
+		<result property="fromCurrency" column="fromCurrency" />
+		<result property="toCurrency" column="toCurrency" />
+		<result property="currency" column="currency" />
+		<result property="getTime" column="getTime" />
+		<result property="huilvType" column="huilvType" />
+		<result property="remark" column="remark" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="huilvResultMap">
+		SELECT * 
+		  FROM t_huilv WHERE id = #{id}
+	</select>
+
+	<select id="selectHuilv" parameterType="Map" resultMap="huilvResultMap">
+		SELECT * 
+		  FROM t_huilv
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="getDate != null">  
+				AND getDate = #{getDate}
+			</if>
+			<if test="fromCurrency != null">  
+				AND fromCurrency = #{fromCurrency}
+			</if>
+			<if test="toCurrency != null">  
+				AND toCurrency = #{toCurrency}
+			</if>
+			<if test="currency != null">  
+				AND currency = #{currency}
+			</if>
+			<if test="getTime != null">  
+				AND getTime = #{getTime}
+			</if>
+			<if test="huilvType != null">  
+				AND huilvType = #{huilvType}
+			</if>
+			<if test="remark != null">  
+				AND remark = #{remark}
+			</if>
+			
+			<if test="fromDate != null"> 
+			    <![CDATA[
+				AND getDate >= #{fromDate}
+				]]> 
+			</if>
+			<if test="toDate != null"> 
+			    <![CDATA[ 
+				AND getDate <= now()
+				]]>
+			</if>
+			
+         </trim> 
+
+	</select>
+	<select id="selectMaxMin" parameterType="Map" resultType="Map">
+		SELECT max(currency) as maxCurr , min(currency) as minCurr
+		  FROM t_huilv
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="getDate != null">  
+				AND getDate = #{getDate}
+			</if>
+			<if test="fromCurrency != null">  
+				AND fromCurrency = #{fromCurrency}
+			</if>
+			<if test="toCurrency != null">  
+				AND toCurrency = #{toCurrency}
+			</if>
+			<if test="currency != null">  
+				AND currency = #{currency}
+			</if>
+			<if test="getTime != null">  
+				AND getTime = #{getTime}
+			</if>
+			<if test="huilvType != null">  
+				AND huilvType = #{huilvType}
+			</if>
+			<if test="remark != null">  
+				AND remark = #{remark}
+			</if>
+			
+			<if test="fromDate != null"> 
+			    <![CDATA[
+				AND getDate >= #{fromDate}
+				]]> 
+			</if>
+			<if test="toDate != null"> 
+			    <![CDATA[ 
+				AND getDate <= #{toDate}
+				]]>
+			</if>
+			
+         </trim> 
+
+	</select>
+	
+	
+	<update id="updateHuilvById" parameterType="huilvDo">
+		UPDATE t_huilv 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="getDate != null">  
+				getDate = #{getDate},
+		</if>				
+		<if test="fromCurrency != null">  
+				fromCurrency = #{fromCurrency},
+		</if>				
+		<if test="toCurrency != null">  
+				toCurrency = #{toCurrency},
+		</if>				
+		<if test="currency != null">  
+				currency = #{currency},
+		</if>				
+		<if test="getTime != null">  
+				getTime = #{getTime},
+		</if>				
+		<if test="huilvType != null">  
+				huilvType = #{huilvType},
+		</if>				
+		<if test="remark != null">  
+				remark = #{remark},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addHuilv" parameterType="huilvDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_huilv(		getDate
+		,fromCurrency
+		,toCurrency
+		,currency
+		,getTime
+		,huilvType
+		,remark
+)
+		     VALUES (		#{getDate}
+		,#{fromCurrency}
+		,#{toCurrency}
+		,#{currency}
+		,#{getTime}
+		,#{huilvType}
+		,#{remark}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_huilv WHERE id = #{id}
+	</delete>
+	
+</mapper>
+

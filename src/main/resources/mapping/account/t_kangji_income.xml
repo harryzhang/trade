@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.account.dao.IKangjiIncomeDao">
+	<resultMap type="kangjiIncomeDo" id="kangjiIncomeResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="userId" />
+		<result property="kangjiQty" column="kangjiQty" />
+		<result property="income" column="income" />
+		<result property="oneCommission" column="oneCommission" />
+		<result property="twoCommission" column="twoCommission" />
+		<result property="threeCommission" column="threeCommission" />
+		<result property="incomeDay" column="incomeDay" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="kangjiIncomeResultMap">
+		SELECT * 
+		  FROM t_kangji_income WHERE id = #{id}
+	</select>
+
+	<select id="selectKangjiIncome" parameterType="Map" resultMap="kangjiIncomeResultMap">
+		SELECT * 
+		  FROM t_kangji_income
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="kangjiQty != null">  
+				AND kangjiQty = #{kangjiQty}
+			</if>
+			<if test="income != null">  
+				AND income = #{income}
+			</if>
+			<if test="oneCommission != null">  
+				AND oneCommission = #{oneCommission}
+			</if>
+			<if test="twoCommission != null">  
+				AND twoCommission = #{twoCommission}
+			</if>
+			<if test="threeCommission != null">  
+				AND threeCommission = #{threeCommission}
+			</if>
+			<if test="incomeDay != null">  
+				AND incomeDay = #{incomeDay}
+			</if>
+         </trim> 
+
+	</select>
+	
+	
+	<select id="getUserIncome" parameterType="Map" resultMap="kangjiIncomeResultMap">
+		select sum(oneCommission) oneCommission,sum(twoCommission) twoCommission ,sum(threeCommission) threeCommission,
+		        (select  sum(income + oneCommission + twoCommission + threeCommission ) 
+		        from t_kangji_income
+		        where userId=#{userId} and date_format(incomeDay,'%Y-%m-%d') = date_format(#{incomeDay},'%Y-%m-%d')  ) as income
+		from t_kangji_income
+		where userId =#{userId}
+
+	</select>
+	
+	<update id="updateKangjiIncomeById" parameterType="kangjiIncomeDo">
+		UPDATE t_kangji_income 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="userId != null">  
+				userId = #{userId},
+		</if>				
+		<if test="kangjiQty != null">  
+				kangjiQty = #{kangjiQty},
+		</if>				
+		<if test="income != null">  
+				income = #{income},
+		</if>				
+		<if test="oneCommission != null">  
+				oneCommission = #{oneCommission},
+		</if>				
+		<if test="twoCommission != null">  
+				twoCommission = #{twoCommission},
+		</if>				
+		<if test="threeCommission != null">  
+				threeCommission = #{threeCommission},
+		</if>				
+		<if test="incomeDay != null">  
+				incomeDay = #{incomeDay},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addKangjiIncome" parameterType="kangjiIncomeDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_kangji_income(		userId
+		,kangjiQty
+		,income
+		,oneCommission
+		,twoCommission
+		,threeCommission
+		,incomeDay
+)
+		     VALUES (		#{userId}
+		,#{kangjiQty}
+		,#{income}
+		,#{oneCommission}
+		,#{twoCommission}
+		,#{threeCommission}
+		,#{incomeDay}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_kangji_income WHERE id = #{id}
+	</delete>
+	
+</mapper>
+

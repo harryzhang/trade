@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.account.dao.IUserAccountIncomeDao">
+	<resultMap type="userAccountIncomeDo" id="userAccountResultMap">
+		<result property="userId" column="userId" />
+		<result property="amount" column="amount" />
+		<result property="guquanQty" column="guquanQty" />
+		<result property="point" column="point" />
+		<result property="incomeTotalAmount" column="incomeTotalAmount" />
+		<result property="ququanTotalAmount" column="ququanTotalAmount" />
+		<result property="recommendTotalAmount" column="recommendTotalAmount" />
+		<result property="poingTotalAmount" column="poingTotalAmount" />
+		<result property="consumeTotalAmount" column="consumeTotalAmount" />
+		<result property="withdrawTotalDeposit" column="withdrawTotalDeposit" />
+		<result property="freezeAmount" column="freezeAmount" />
+		<result property="updateTime" column="updateTime" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="userAccountResultMap">
+		SELECT * 
+		  FROM t_user_account WHERE userId = #{userId}
+	</select>
+
+	<select id="selectUserAccount" parameterType="Map" resultMap="userAccountResultMap">
+		SELECT * 
+		  FROM t_user_account
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="amount != null">  
+				AND amount = #{amount}
+			</if>
+			<if test="guquanQty != null">  
+				AND guquanQty = #{guquanQty}
+			</if>
+			<if test="point != null">  
+				AND point = #{point}
+			</if>
+			<if test="incomeTotalAmount != null">  
+				AND incomeTotalAmount = #{incomeTotalAmount}
+			</if>
+			<if test="ququanTotalAmount != null">  
+				AND ququanTotalAmount = #{ququanTotalAmount}
+			</if>
+			<if test="recommendTotalAmount != null">  
+				AND recommendTotalAmount = #{recommendTotalAmount}
+			</if>
+			<if test="poingTotalAmount != null">  
+				AND poingTotalAmount = #{poingTotalAmount}
+			</if>
+			<if test="consumeTotalAmount != null">  
+				AND consumeTotalAmount = #{consumeTotalAmount}
+			</if>
+			<if test="withdrawTotalDeposit != null">  
+				AND withdrawTotalDeposit = #{withdrawTotalDeposit}
+			</if>
+			<if test="freezeAmount != null">  
+				AND freezeAmount = #{freezeAmount}
+			</if>
+			<if test="updateTime != null">  
+				AND updateTime = #{updateTime}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateUserAccountById" parameterType="userAccountDo">
+		UPDATE t_user_account 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="amount != null">  
+				amount = #{amount},
+		</if>				
+		<if test="guquanQty != null">  
+				guquanQty = #{guquanQty},
+		</if>				
+		<if test="point != null">  
+				point = #{point},
+		</if>				
+		<if test="incomeTotalAmount != null">  
+				incomeTotalAmount = #{incomeTotalAmount},
+		</if>				
+		<if test="ququanTotalAmount != null">  
+				ququanTotalAmount = #{ququanTotalAmount},
+		</if>				
+		<if test="recommendTotalAmount != null">  
+				recommendTotalAmount = #{recommendTotalAmount},
+		</if>				
+		<if test="poingTotalAmount != null">  
+				poingTotalAmount = #{poingTotalAmount},
+		</if>				
+		<if test="consumeTotalAmount != null">  
+				consumeTotalAmount = #{consumeTotalAmount},
+		</if>				
+		<if test="withdrawTotalDeposit != null">  
+				withdrawTotalDeposit = #{withdrawTotalDeposit},
+		</if>				
+		<if test="freezeAmount != null">  
+				freezeAmount = #{freezeAmount},
+		</if>				
+		<if test="updateTime != null">  
+				updateTime = #{updateTime},
+		</if>				
+		</trim>
+		WHERE userId = #{userId} 
+	</update>	
+	
+	
+	<update id="updateUserPointById" parameterType="userAccountDo">
+		UPDATE t_user_account 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="point != null">  
+				point = point + #{point},
+		</if>				
+		<if test="amount != null">  
+				amount = amount + #{amount},
+		</if>				
+					
+		<if test="poingTotalAmount != null">  
+				poingTotalAmount = poingTotalAmount + #{point},
+		</if>				
+		<if test="updateTime != null">  
+				updateTime = #{updateTime},
+		</if>				
+		</trim>
+		WHERE userId = #{userId} 
+	</update>	
+	
+	
+	<insert id="addUserAccount" parameterType="userAccountDo" >
+		INSERT INTO t_user_account(	
+		userId
+			,amount
+		,guquanQty
+		,point
+		,incomeTotalAmount
+		,ququanTotalAmount
+		,recommendTotalAmount
+		,poingTotalAmount
+		,consumeTotalAmount
+		,withdrawTotalDeposit
+		,freezeAmount
+		,updateTime
+)
+		     VALUES (		
+		     #{userId}
+		     ,#{amount}
+		,#{guquanQty}
+		,#{point}
+		,#{incomeTotalAmount}
+		,#{ququanTotalAmount}
+		,#{recommendTotalAmount}
+		,#{poingTotalAmount}
+		,#{consumeTotalAmount}
+		,#{withdrawTotalDeposit}
+		,#{freezeAmount}
+		,#{updateTime}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_user_account WHERE userId = #{userId}
+	</delete>
+	
+</mapper>
+

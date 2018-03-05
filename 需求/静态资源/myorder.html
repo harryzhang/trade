@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0">
+	<meta name="apple-touch-fullscreen" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<title>我的订单</title>
+	<link rel="stylesheet" href="./css/reset.css">
+	<style type="text/css">
+		#container{
+			width: 100%;
+			height: 100%;
+		    background: #191c23;
+    		overflow: hidden;
+    		display: flex;
+    		flex-direction: column;
+		}
+		#tab{
+			height: 4rem;
+			background: #20222e;
+			margin-top: .2rem;
+    		overflow: hidden;
+		}
+		#tab ul{
+			display: flex;
+			height: 100%;
+		}
+		#tab ul li{
+			flex: 1;
+			font-size: 1.6rem;
+    		color: #fff; 
+    		text-align: center;
+		    line-height: 3.5rem;
+		}
+		#tab .tab-select{
+			width: 50%;
+		    height: 95%;
+	    	margin: 0 auto;
+	    	color: #84888b;
+		}
+		.tab-active .tab-select{
+			color: #fbcb11 !important;
+			border-bottom: 3px solid #fbcb11;
+		}
+		.tab-container{
+			flex: 1;
+			overflow-y: auto;
+		}
+		.tab-container-active{
+			display: block !important;
+		}
+		.tab-container .tab-container-content{
+			font-size: 1.4rem;
+			color: #fff;
+			color: #84888b;
+			display: none;
+			text-align: center;
+		}
+		.tab-container-content p{
+			margin-top: 1rem;
+		}
+		.order{
+		    width: 100%;
+		    height: auto;
+		    background: #20222e;
+		    margin-bottom: 1.5rem;
+		    padding: 1rem 0;
+		    overflow: hidden;
+		}
+		.order .time{
+		    height: 3rem;
+		    text-align: right;
+		    margin-right: 2rem;
+		    font-size: 2.5rem;
+		}
+		.order table{
+			width: 100%;
+		}
+		.order td {
+			font-size: 2rem;
+    		line-height: 3.5rem;
+		}
+		.order .number{
+			color: #fff;			
+		}
+		.order .number td{
+			font-size: 3rem;
+			font-family: 600;
+		}
+		.order ul{
+			margin-top: .5rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 3rem
+		}
+		.order li{
+			float: left;
+		    font-size: 1.6rem;
+
+		}
+		.order .orderType{
+			color: #000;
+			padding: .5rem 1.2rem;
+			border-radius: 3rem;
+			background: 
+		}
+		.order li:first-child{	
+			padding-left: 2rem;	
+			padding-right: 1rem;
+    		line-height: 2rem;
+		}
+		.order li:nth-child(2){	
+			flex: 1;
+		    text-align: left;
+		    padding: 0 1rem;
+		}
+		.order li a{				
+			border-radius: 3px;
+			padding: .5rem 1rem;
+			margin-right: 2rem;
+			line-height: 2rem;
+		}
+		.order li .orderState{
+			color: #000;
+			background: #fbcb11;
+			border: 1px solid #fbcb11;
+		}
+		.order li .contactBuyer{
+			color: #fbcb11;
+			background: #fff;
+			border: 1px solid #fbcb11;
+		}
+		.bgYellow{
+			background: #f7cc01;
+		}
+		.bgOrange{
+			background: #fb8106;
+		}
+		   
+	</style>
+</head>
+<body>
+	<div id="container">
+		<div id="tab">
+			<ul class="tab">
+				<li class="tab-active" data='0'>
+					<div class="tab-select">全部</div>
+				</li>
+				<li data='1'>
+					<div class="tab-select">待交易</div>
+				</li>
+				<li data='2'>
+					<div class="tab-select">交易中</div>
+				</li>
+				<li data='3'>
+					<div class="tab-select">已完成</div>
+				</li>
+			</ul>
+		</div>
+		<div class="tab-container">
+			<div class="tab-container-content tab-container-active" data='0'>
+				<div class="order">
+					<table>
+						<tr>
+							<td>数量(个)</td>
+							<td>价格($)</td>
+							<td>总计($)</td>
+						</tr>
+						<tr class="number">
+							<td>100</td>
+							<td>1.00</td>
+							<td>100.00</td>
+						</tr>
+					</table>
+					<div>
+						<ul>
+							<li><span class="orderType bgYellow">买单</span></li>
+							<li></li>
+							<li><a href="javascript:void(0);" class="contactBuyer">联系买家</a><a href="javascript:void(0);" class='orderState'>确认收款</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="order">
+					<div class="time">
+						2018-02-19 23:33:56
+					</div>
+					<table>
+						<tr>
+							<td>数量(个)</td>
+							<td>价格($)</td>
+							<td>总计($)</td>
+						</tr>
+						<tr class="number">
+							<td>100</td>
+							<td>1.00</td>
+							<td>100.00</td>
+						</tr>
+					</table>
+					<div>
+						<ul>
+							<li><span class="orderType bgOrange">卖单</span></li>
+							<li></li>
+							<li><a href="javascript:void(0);" class='orderState'>撤销</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="order">
+					<div class="time">
+						2018-02-19 23:33:56
+					</div>
+					<table>
+						<tr>
+							<td>数量(个)</td>
+							<td>价格($)</td>
+							<td>总计($)</td>
+						</tr>
+						<tr class="number">
+							<td>100</td>
+							<td>1.00</td>
+							<td>100.00</td>
+						</tr>
+					</table>
+					<div>
+						<ul>
+							<li><span class="orderType bgYellow">买单</span></li>
+							<li></li>
+							<li><a href="javascript:void(0);" class='orderState'>撤销</a></li>
+						</ul>
+					</div>
+				</div>
+				<p>没有更多数据了</p>
+			</div>
+			<div class="tab-container-content" data='1'>
+				<p>没有更多数据了</p>
+			</div>
+			<div class="tab-container-content" data='2'>
+				<p>没有更多数据了</p>
+			</div>
+			<div class="tab-container-content" data='3'>
+				<p>没有更多数据了</p>
+			</div>
+		</div>
+		
+	</div>
+	
+</body>
+</html>
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<!-- <script type="text/javascript" src="js/ajax.js"></script> -->
+<script type="text/javascript">
+	$(".tab").find('li').on('click', function(){
+		$(".tab").find('li').removeClass('tab-active')
+		$(this).addClass('tab-active')
+		var index = $(this).attr('data')
+
+		$(".tab-container").find('div').removeClass('tab-container-active')
+		$.each($(".tab-container").find('div'), function(idx, data){
+			if(index == $(data).attr('data')){
+				$(data).addClass('tab-container-active')
+			}
+		})
+	})
+</script>

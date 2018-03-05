@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.group.dao.IGroupUserDao">
+	<resultMap type="groupUserDo" id="groupUserResultMap">
+		<result property="id" column="id" />
+		<result property="groupName" column="groupName" />
+		<result property="userId" column="userId" />
+		<result property="status" column="status" />
+		<result property="createtime" column="createtime" />
+		<result property="updatetime" column="updatetime" />
+		<result property="groupuserIdx" column="groupuserIdx" />
+		<result property="sort" column="sort" />
+		<result property="level" column="level" />
+		<result property="parentId" column="parentId" />
+		
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="groupUserResultMap">
+		SELECT * 
+		  FROM t_group_user WHERE id = #{id}
+	</select>
+
+	<select id="selectGroupNullUser" parameterType="Map" resultMap="groupUserResultMap">
+		SELECT * 
+		FROM t_group_user
+		where groupName = #{groupName} and userId is null
+		order by level,sort asc limit 1 
+
+	</select>
+	
+	<select id="listGroup" parameterType="Map" resultType="Map">
+	select u.id, u.name,u.username,gp.status,gp.refcnt ,gp.networkgroup from (
+		select g.groupRootuser, g.status, count(g.groupRootuser) as refcnt ,g.groupName,g.networkgroup
+		from t_group_user  gu ,t_group g 
+		where gu.groupName = g.groupName 
+		    and gu.userId is not null  
+		 group by g.groupRootuser, g.status,g.groupName,g.networkgroup) gp, t_user u
+		 where gp.groupRootUser = u.id
+		      and (u.userName=#{userName} or gp.refcnt>=convert(#{userName},unsigned))
+		 order by gp.refcnt
+ 	</select>
+
+	
+	
+	
+	<select id="selectGroupUser" parameterType="Map" resultMap="groupUserResultMap">
+		SELECT * 
+		  FROM t_group_user
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="groupName != null">  
+				AND groupName = #{groupName}
+			</if>
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+			<if test="sort != null">  
+				AND sort = #{sort}
+			</if>
+			<if test="level != null">  
+				AND level = #{level}
+			</if>
+			<if test="createtime != null">  
+				AND createtime = #{createtime}
+			</if>
+			<if test="updatetime != null">  
+				AND updatetime = #{updatetime}
+			</if>
+			<if test="groupuserIdx != null">  
+				AND groupuserIdx = #{groupuserIdx}
+			</if>
+         </trim> 
+         
+         order by id desc
+
+	</select>
+	
+	<select id="getUserGroupByNetwork" parameterType="Map" resultType="Map">
+		SELECT p.*
+	    FROM t_group_user b 
+		LEFT JOIN t_group p on b.groupName = p.groupName
+		WHERE  b.status = 'T'
+			and p.status = 2
+			and b.userId = #{userId}
+	 	    <if test=" groupName != null">
+		    	and b.groupName = #{groupName} 
+	 		</if>
+		 	<if test=" networkGroup != null">  
+					and p.networkGroup = #{networkGroup}
+			</if>
+		limit 1
+	 	
+	</select>
+	
+	
+	<update id="updateGroupUserById" parameterType="groupUserDo">
+		UPDATE t_group_user 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="groupName != null">  
+				groupName = #{groupName},
+		</if>				
+		<if test="userId != null">  
+				userId = #{userId},
+		</if>				
+		<if test="status != null">  
+				status = #{status},
+		</if>				
+		<if test="createtime != null">  
+				createtime = #{createtime},
+		</if>				
+		<if test="updatetime != null">  
+				updatetime = #{updatetime},
+		</if>				
+		<if test="groupuserIdx != null">  
+				groupuserIdx = #{groupuserIdx},
+		</if>	
+		<if test="sort != null">  
+				sort = #{sort},
+		</if>
+		<if test="level != null">  
+				level = #{level},
+		</if>
+		<if test="parentId != null">  
+				parentId = #{parentId},
+		</if>			
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<update id="updateGroupUserByUserId" parameterType="Map">
+		UPDATE t_group_user 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="changeUserId != null">  
+				userId = #{changeUserId},
+		</if>				
+		<if test="updatetime != null">  
+				updatetime = now(),
+		</if>				
+		</trim>
+		WHERE userId = #{userId}  and 	status = #{status}
+	</update>
+	
+	<update id="updateGroupUserByParentId" parameterType="Map">
+		UPDATE t_group_user 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="changeUserId != null">  
+				parentId = #{changeUserId},
+		</if>				
+		<if test="updatetime != null">  
+				updatetime = now(),
+		</if>				
+		</trim>
+		WHERE parentId = #{parentId} and status = #{status}
+	</update>
+	
+	<update id="delGroupUserByUserId" parameterType="Map">
+		UPDATE t_group_user set userId = null,updatetime = now()
+		where status = 'T' and  userId = #{userId}
+	</update>
+	
+
+	<update id="unvalidGroupUserByGroupName" parameterType="Map">
+		UPDATE t_group_user  set status = 'F', updatetime = now()
+		WHERE groupName = #{groupName}
+	</update>
+	
+
+	<insert id="addGroupUser" parameterType="groupUserDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_group_user(
+		groupName
+		,userId
+		,status
+		,createtime
+		,updatetime
+		,groupuserIdx
+		,sort
+		,level
+		,parentId
+)
+		     VALUES (#{groupName}
+		,#{userId}
+		,#{status}
+		,now()
+		,now()
+		,#{groupuserIdx}
+		,#{sort}
+		,#{level}
+		,#{parentId}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_group_user WHERE id = #{id}
+	</delete>
+	
+</mapper>
+

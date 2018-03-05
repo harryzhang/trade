@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.redpack.account.dao.IUserDao">
+	<resultMap type="userDo" id="userResultMap">
+		<result property="id" column="id" />
+		<result property="userName" column="userName" />
+		<result property="name" column="name" />
+		<result property="password" column="password" />
+		<result property="twoLevelPwd" column="passwordTwo" />
+		<result property="grade" column="grade" />
+		<result property="organ" column="organ" />
+		<result property="remark" column="remark" />
+		<result property="enabled" column="enabled" />
+		<result property="referrerId" column="referrerId" />
+		<result property="parentId" column="parentId" />		
+		<result property="treeNode" column="treeNode" />
+		<result property="createTime" column="creatorTime" />
+		<result property="updateTime" column="updateTime" />
+		<result property="bonus" column="bonus" />
+		<result property="status" column="status" />
+		<result property="weixin" column="weixin" />
+		<result property="zhifubao" column="zhifubao" />
+		<result property="userCode" column="userCode" />
+		<result property="openId" column="openId" />
+	</resultMap>
+
+	
+	<select id="listRef" parameterType="Map" resultType="Map">
+		select *  from t_user where referrerId =#{userId}
+ 	</select>
+ 	
+	<select id="getRaceUser" parameterType="map" resultMap="userResultMap">
+	    <![CDATA[ 
+		SELECT * FROM t_user  us, (
+				SELECT g2.userid , COUNT(u.id) AS refuser FROM    
+							       t_user u  , 
+							       t_group_user  g2
+				        WHERE u.referrerId = g2.userid 
+				          AND g2.groupName =#{groupName}
+				          GROUP BY g2.userId
+				          ) gg
+				WHERE us.id = gg.userid  AND  gg.refuser>=6 AND us.id <> #{userId}
+				ORDER BY us.creatorTime ASC         
+          ]]>
+	</select>
+	
+	<!-- 团队临时会员数 -->
+	<select id="getTempMemberCount" parameterType="long" resultType="int">
+		SELECT COUNT(*) FROM   t_group_user gu1, 
+		                       t_user u  , 
+		                       (SELECT gu.groupName 
+		                        FROM   t_user b, t_group_user gu   
+		                        WHERE b.id = gu.userId 
+		                          AND gu.status='T' 
+		                          AND b.id = #{userId}  ) g2
+
+        WHERE gu1.status='T' 
+          AND u.id = gu1.userId 
+          AND u.status = 0 
+          AND gu1.groupName = g2.groupName
+	</select>
+	
+	<!-- 用户推荐数 -->
+	<select id="getRefUserCount" parameterType="long" resultType="int">
+		select count(b.id) from t_user b where b.referrerId = #{userId} 
+	</select>
+	
+	<select id="getById" parameterType="long" resultMap="userResultMap">
+		SELECT a.* FROM
+		t_user a 
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="selectChildByParentId" parameterType="long" resultMap="userResultMap">
+		SELECT * FROM
+		t_user WHERE referrerid = #{referrerid}
+	</select>
+	
+	
+	<select id="getByUserDo" parameterType="Map" resultMap="userResultMap">
+		SELECT * FROM t_user 
+	 	<trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userName != null">  
+				AND userName = #{userName}
+			</if>
+			<if test="password != null">  
+				AND password = #{password}
+			</if>
+			<if test="twoLevelPwd != null">  
+				AND passwordTwo = #{twoLevelPwd}
+			</if>
+			<if test="grade != null">  
+				AND grade = #{grade}
+			</if>
+			<if test="organ != null">  
+				AND organ = #{organ}
+			</if>
+			<if test="remark != null">  
+				AND remark = #{remark}
+			</if>
+			<if test="enabled != null">  
+				AND enabled = #{enabled}
+			</if>
+			<if test="referrerId != null">  
+				AND referrerId = #{referrerId}
+			</if>
+			<if test="parentId != null">  
+				AND parentId = #{parentId}
+			</if>
+			<if test="treeNode != null">  
+				AND treeNode = #{treeNode}
+			</if>
+			<if test="creatorTime != null">  
+				AND creatorTime = #{creatorTime}
+			</if>
+			<if test="updateTime != null">  
+				AND updateTime = #{updateTime}
+			</if>
+			<if test="userCode != null">  
+				AND userCode = #{userCode}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+			<if test="openId != null">  
+				AND openId = #{openId}
+			</if>
+	 	</trim>
+	</select>
+	
+	<select id="getAllUser" parameterType="Map" resultMap="userResultMap">
+		SELECT * FROM t_user 
+	 	<trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			
+			<if test="userName != null">  
+				AND userName like  CONCAT('%','${userName}','%' ) 
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+			
+	 	</trim>
+	 	
+	 	order by id desc
+	</select>
+	
+	<select id="getAllGroupUser" parameterType="Map" resultMap="userResultMap">
+		SELECT a.id,a.name,a.userName,
+	   		   b.parentId as referrerId ,b.level as grade,
+	   		   a.status,
+	   		   a.userCode
+	    FROM t_group_user b 
+		LEFT JOIN t_user a on b.userId =a.id
+		LEFT JOIN t_group p on b.groupName = p.groupName
+		<trim prefix="WHERE" prefixOverrides="AND |OR "> 
+	 	    <if test=" groupName != null">
+		    	b.groupName = #{groupName} 
+	 		</if>
+		 	<if test=" networkGroup != null">  
+					and p.networkGroup = #{networkGroup}
+			</if>
+		 	<if test="groupUserStatus != null">  
+					and b.status = #{groupUserStatus}
+			</if>
+		 	<if test="userId != null">  
+					and b.userId = #{userId}
+			</if>
+		 	<if test="groupStatus != null">  
+					and p.status = #{groupStatus}
+			</if>
+		</trim>
+	 	<if test="order != null">  
+				order by b.level asc
+		</if>
+		<if test="order == null">  
+				order by b.sort asc
+		</if>
+	 	
+	</select>
+
+	<insert id="saveUser" parameterType="userDo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO 
+        t_user ( 
+        userName , password , passwordTwo ,
+        grade , organ , remark , enabled ,
+        referrerId , parentId , treeNode ,
+        creatorTime , updateTime,name,bonus ,status,weixin,zhifubao
+        ,userCode,openId)
+        VALUES ( 
+        #{userName},#{password},#{twoLevelPwd},
+        #{grade},#{organ},#{remark},#{enabled},
+        #{referrerId},#{parentId},#{treeNode},
+        NOW(),NOW(),#{name},#{bonus},#{status},#{weixin},#{zhifubao},
+        #{userCode} ,#{openId}) 
+    </insert>
+    
+    <update id="addUserBonusById" parameterType="userDo">
+    	update t_user set bonus= ifnull(bonus,0)+#{bonus},updateTime = NOW() where id = #{id}
+    </update>
+    
+    
+    <update id="updateUserStatusById" parameterType="userDo">
+    	update t_user set status=#{status},updateTime = NOW() where id = #{userId}
+    </update>
+    
+    <update id="updateUserGradeById" parameterType="userDo">
+    	update t_user set grade=#{grade},updateTime = NOW() where id = #{userId}
+    </update>
+    
+    <update id="updateUserParentNullById" parameterType="Long">
+    	update t_user set parentId=null,updateTime = NOW() where id = #{id}
+    </update>
+    
+	<update id="updateUser" parameterType="userDo">
+		UPDATE t_user
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="userName != null">
+				userName = #{userName},
+			</if>
+			<if test="password != null">
+				password = #{password},
+			</if>
+			<if test="twoLevelPwd != null">
+				passwordTwo = #{twoLevelPwd},
+			</if>
+			<if test="grade != null">
+				grade = #{grade},
+			</if>
+			<if test="organ != null">
+				organ = #{organ},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="enabled != null">
+				enabled = #{enabled},
+			</if>
+			<if test="referrerId != null">
+				referrerId = #{referrerId},
+			</if>
+			<if test="parentId != null">
+				parentId = #{parentId},
+			</if>
+			<if test="treeNode != null">
+				treeNode = #{treeNode},
+			</if>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="bonus != null">  
+				bonus = #{bonus},
+			</if>
+			<if test="status != null">  
+				status = #{status},
+			</if>
+			<if test="status != null">  
+				userCode = #{userCode},
+			</if>
+			<if test="zhifubao != null">  
+				zhifubao = #{zhifubao},
+			</if>
+			<if test="weixin != null">  
+				weixin = #{weixin},
+			</if>
+			<if test="openId != null">  
+				openId = #{openId},
+			</if>
+			updateTime = NOW(),
+		</trim>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateUserId" parameterType="Map">
+    	update t_user set id =#{newId}, remark='交换用户对象',updateTime = NOW() where id = #{oldId}
+    </update>
+    
+	
+	<insert id="saveApplyAgent" parameterType="applyAgentDo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO 
+        t_user_agent_apply ( userId , province ,
+        city , agentType , createTime , status 
+        )
+        VALUES ( 
+        #{userId},#{province},#{city},
+        #{agentType},#{createTime},#{status}) 
+    </insert>
+	
+	<select id="getAreaAgentUser" parameterType="Map" resultType="applyAgentDo">
+		SELECT * FROM t_user_agent_apply  
+	 	<trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			
+			<if test="province != null">  
+				AND province  = '${province}' 
+			</if>
+			<if test="agentType != null">  
+				AND agentType  = '${agentType}' 
+			</if>
+			
+			<if test="city != null">  
+				AND city = '${city}'
+			</if>
+		
+			<if test="status != null">  
+				AND status = '${status}'
+			</if>
+	 	</trim>
+	</select>
+	
+	<select id="getApplyAgentUser" parameterType="Map" resultType="Map">
+		SELECT           case  when  agentType='province' then '省代理'
+                                           when  agentType='city' then '市代理'
+                         end as agentType,
+                         case   when  status='T' then '通过'
+                                           when  status='F' then '拒绝'
+                                           else '未审批'
+                         end as status,
+                        a.userId,
+                        u.realName, 
+                        p.province,
+                        c.city,
+                        a.createTime,
+                        a.id
+		 FROM t_user_agent_apply a  left  join  t_user_info  u  on a.userId = u.userId 
+		    left join t_s_city c  on  a.city = c.cityId
+		    left join  t_s_province p on p.provinceId = a.province
+		    
+			<if test="province != null">  
+				AND a.province  = ${province} 
+			</if>
+			
+			<if test="city != null">  
+				AND a.city = ${city}
+			</if>
+		
+			<if test="status != null">  
+				AND a.status = ${status}
+			</if>
+	</select>
+	
+	
+	
+	
+	<update id="updateApplyAgent" parameterType="applyAgentDo">
+    	update t_user_agent_apply  set status =#{status},approvTime = NOW() where id = #{id}
+    </update>
+    
+	<update id="saveLoginlog" parameterType="long" >
+	    update t_user set loginDate = now() where id = #{userId}
+	</update>
+	
+</mapper>

@@ -1,0 +1,66 @@
+@charset "utf-8";
+/* CSS Document */
+html{font-size:62.5%;}
+body{ font-size:1.4rem; color:#333; background-color:#eee;}
+.top{ width:100%; height:50px; float:left; background-color:#333;color:#fff}
+.top b{ width:12%; height:50px; display:block; float:left; background:url(../images/fanhui.png) center center no-repeat; background-size:11px 25px; color:#333;}
+.top dd{ width:76%; height:50px; display:block; float:left; font-size:17px; line-height:50px; text-align:center;}
+.top span{ width:12%; height:50px; display:block; float:right; background:url(../images/caidan.png) center center no-repeat; background-size:14px 30px;}
+.top ul{ width:100px; height:auto; position:absolute; top:50px; right:5px; z-index:9; background-color:#333; border:1px solid #e5e5e5; display:none;}
+.top ul li{ width:100px; height:40px; line-height:40px; text-align:center; padding:0 20px;font-size:1.4rem;}
+.index{ letter-spacing:8px; border-bottom:1px solid #e5e5e5;}
+.member{ border-bottom:1px solid #e5e5e5;}
+.shoppingCart{ letter-spacing:4px; border-bottom:1px solid #e5e5e5;}
+
+.topmoney{ width:100%; float:left;background:-moz-linear-gradient(top,#4325B9,#08D6D6); background:-o-linear-gradient(top,#4325B9,#08D6D6); background:-webkit-linear-gradient(top,#4325B9,#08D6D6); color:#fff;}
+.topmoney div{ width:81%; float:left; margin-left:9%;}
+.topmoney div.balance{ height:50px; line-height:50px; font-size:1.2rem; background-image:url(../images/mycaifu.png), url(../images/balance.png);background-repeat: no-repeat, no-repeat;  background-position:100% center,0 center;background-size:5px 10px,17px 17px; padding-left:20px; font-weight:bold;}
+.topmoney div.balance dd{ width:auto; height:50px; float:right; line-height:50px; font-weight:normal; padding-right:15px;}
+.topmoney div.money{ height:40px; font-size:2.7rem; font-weight:bold;}
+.topmoney div.fenlei{ width:100%; height:69px; overflow:hidden; margin-left:0;}
+.topmoney div.fenlei dl{ width:20%; height:69px; float:left;}
+.topmoney div.fenlei dl:nth-child(1) dt{ width:100%; height:50px; float:left; background:url(../images/chongzhi.png) center center no-repeat; background-size:20px 20px;}
+.topmoney div.fenlei dl:nth-child(2) dt{ width:100%; height:50px; float:left; background:url(../images/zhuanzhang.png) center center no-repeat; background-size:20px 20px;}
+.topmoney div.fenlei dl:nth-child(3) dt{ width:100%; height:50px; float:left; background:url(../images/tixian.png) center center no-repeat; background-size:20px 20px;}
+.topmoney div.fenlei dl:nth-child(4) dt{ width:100%; height:50px; float:left; background:url(../images/hongbao.png) center center no-repeat; background-size:20px 20px;}
+.topmoney div.fenlei dl:nth-child(5) dt {
+    background: rgba(0, 0, 0, 0) url("../images/mfukuan.png") no-repeat scroll center center / 20px 20px;
+    float: left;
+    height: 50px;
+    width: 100%;
+}
+.topmoney div.fenlei dl dd{ width:100%; height:18px; float:left; font-size:1.3rem; text-align:center;}
+div.centent{ width:100%; height:auto; float:left; padding:18px 5%; border-bottom:10px solid #eee; background-color:#fff;}
+div.centent dl.cenleft{ width:60%; height:auto; float:left;}
+
+div.centent dl.cenleft dt{ width:100%; height:27px; font-weight:bold; font-size:1.3rem;}
+/*div.centent dl.cenleft dt font{ width:auto; height:auto; color:#F94A50; font-size:1.7rem; background:url(../images/lmoney.png) 100% 35% no-repeat; background-size:15px 15px; padding:1px 25px 1px 5px;
+vertical-align:text-bottom;}*/
+div.centent dl.cenleft dd{ width:100%; height:15px; color:#a0a0a0; font-size:1.2rem;}
+div.centent dl.cenleft dd font{ width:auto; height:30px; color:#F39800;}
+
+div.centent dl.cententAll{ width:100%; height:auto; float:left;}
+
+div.centent dl.cententAll dt{ width:100%; height:27px; font-weight:bold; font-size:1.3rem;}
+/*div.centent dl.cenleft dt font{ width:auto; height:auto; color:#F94A50; font-size:1.7rem; background:url(../images/lmoney.png) 100% 35% no-repeat; background-size:15px 15px; padding:1px 25px 1px 5px;
+vertical-align:text-bottom;}*/
+div.centent dl.cententAll dd{ width:100%; height:15px; color:#a0a0a0; font-size:1.2rem;}
+div.centent dl.cententAll dd font{ width:auto; height:30px; color:#F39800;}
+
+
+
+div.centent dl.cenright{ width:17%; height:auto; float:left;}
+div.centent dl.zhuanzhang dt{ width:100%; height:27px; background:url(../images/rzhuanzhang.png) center 0 no-repeat; background-size:20px 20px;}
+div.centent dl.cenright dd{ width:100%; height:15px; color:#fd6e5b; text-align:center; font-size:1.2rem;}
+div.centent dl.hongbao dt{ width:100%; height:27px; background:url(../images/dhhongbao.png) center 0 no-repeat; background-size:20px 20px;}
+div.centent dl.xinzeng,div.centent dl.fuli,div.centent dl.hongbao{ float:right;}
+dl.xinzeng dt{width:100%; height:27px; background:url(../images/xinzeng.png) center 0 no-repeat; background-size:20px 20px;}
+dl.fuli dt{width:100%; height:27px; background:url(../images/fuli.png) center 0 no-repeat; background-size:20px 20px;}
+dl.zhanwei dt{width:100%; height:27px; background:url(../images/dhzhanwei.png) center 0 no-repeat; background-size:20px 20px;}
+dl.hongbao dt{width:100%; height:27px; background:url(../images/dhhongbao.png) center 0 no-repeat; background-size:20px 20px;}
+div.centent:last-child{ border-bottom:none; margin-bottom:50px;}
+.mengban{ width:100%; height:auto; display:none; position:fixed; top:0; left:0; background-color:#000; opacity:0.6; z-index:200;}
+.recordsInfo{ width:80%; height:auto; display:none; position:fixed; left:10%; z-index:999; background-color:#fff; border-radius:2px; padding:30px 10%;}
+.recordsInfo p{ width:100%; height:auto; float:left; line-height:18px; color:#a0a0a0; font-size:1.2rem; word-break:break-all;}
+.recordsInfo center{ width:100%; height:30px; float:left; font-size:1.3rem; text-align:center;}
+.over{ width:100%; height:auto; position:fixed; overflow:hidden;}

@@ -1,0 +1,59 @@
+@charset "utf-8";
+.top{ width:100%; height:50px; float:left; border-bottom:1px solid #d2d2d2; background-color:#FCFAF7;
+}
+.top b{ width:12%; height:50px; display:block; float:left; background:url(../images/fanhui.png) center center no-repeat; background-size:11px 25px;}
+.top dd{ width:76%; height:50px; display:block; float:left; font-size:1.7rem; line-height:50px; text-align:center;}
+.top span{ width:12%; height:50px; display:block; float:right; background:url(../images/caidan.png) center center no-repeat; background-size:14px 30px;}
+.top ul{ width:100px;/* height:80px;*/ position:absolute; top:50px; right:5px; z-index:9; background-color:#FFF; border:1px solid #CCC; display:none;}
+.top ul li{ width:100px; height:40px; line-height:40px; text-align:center; padding:0 20px;}
+.index{ letter-spacing:8px; border-bottom:1px solid #e5e5e5;}
+.member{ border-bottom:1px solid #e5e5e5;}
+.main{ width:100%; height:auto; float:left;}
+.order{ width:100%; height:auto; float:left;}
+.odtop{ width:90%; height:40px; float:left; margin:0px 5%;}
+.odtop li{ width:auto; max-width:75%; height:20px; margin:10px 0; float:left; line-height:20px; padding-left:6%; padding-right:4%; background:url(../images/merchantlogod.png) no-repeat 0 30% / 14px 14px,url(../images/xiaojiantou.png) no-repeat right center / 5px 10px; font-size:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+dd.cur{ width:42%; height:30px; float:left; line-height:30px; font-size:1.4rem; text-align:right; color:#E50011; margin:5px 0;}
+.odtop input{ width:20%; height:30px; margin:5px 0; float:right; text-align:right; border:none; background-color:#FFF; line-height:20px; color:#E50011; font-size:1.4rem;}
+.goods{ width:100%; height:auto; float:left; margin-bottom:10px; position:relative;}
+.goodsPic{ width:32%; height:auto; float:left; padding-left:5%;}
+.goodsPic img{ width:100%; height:100%; max-width:150px;}
+.goodsInfo{ width:68%; height:87px; float:left; padding-left:4%; padding-right:5%; display:block;}
+.goodsInfo .gname{ width:100%; height:32px; line-height:15px; overflow:hidden; font-size:1.2rem; margin-top:3px;}
+.goodsInfo .gstyle{ width:100%; height:32px; line-height:15px; overflow:hidden; font-size:1.2rem; margin-top:3px; color:#959595;}
+.goodsInfo .gprice{ width:59%; height:15px; line-height:15px; margin-top:3px; font-size:1.2rem; position:absolute; bottom:0;}
+.gprice span{ width:70%; height:15px; display:block; float:left; color:#ed4868;}
+.gprice font{ width:20%; height:15px; display:block; float:right; text-align:right;}
+.total{ width:100%; height:auto; float:left; border-top:1px solid #e5e5e5;}
+.total p{ width:91%; height:30px; display:block; float:left; margin:0 5%; line-height:30px; font-size:1.3rem; margin-top:5px;}
+.total font{ margin-right:10px;}
+.total dl{ width:90%; height:30px; float:left; margin:0 5%; text-align:right;  margin-bottom:10px;}
+.total dl dd.dleft{ width:70%; height:30px; float:left; color:#ed4868; line-height:30px;}
+.total dl dd.dright{ width:23%; height:30px; float:right; text-align:right; color:#959595; line-height:30px; font-size:1.5rem;}
+.total li{ width:90%; height:30px; float:left; margin:0 5%; text-align:right;  margin-bottom:10px;}
+.total li .qrbtn,.total li .ycbtn{ width:80px; height:30px; float:right; margin-left:5%; text-align:center; color:#FFF; border:1px solid #E50011; background-color:#E50011; border-radius:2px; font-size:1.5rem;}
+.total li .ckbtn{ width:80px; height:30px; float:right; text-align:center; color:#599700; border:1px solid #599700; background-color:#FFF; border-radius:2px; font-size:1.5rem;}
+.blank{ width:100%; height:10px; float:left; background-color:#e5e5e5;}
+
+.wuliu_yifahuo .odtop input.edit{ color:#599700;}
+.wuliu_yifahuo .odtop input.dit{ color:#599700;}
+.wuliu_daifahuo .odtop input.dit{ color:#599700;}
+.wuliu_daifahuo .total dd.dright{ color:#E50011;}
+.wuliu_nopay .odtop input.edit{ color:#ed4868;} 
+.wuliu_success .odtop input.edit{ color:#ed4868;}
+
+.ziti_nopay .odtop input.edit{ color:#ed4868;}
+.ziti_nopay .total dd.dleft{ display:none;}
+.ziti_unused .odtop input.edit{ display:none;}
+.ziti_unused .total dd.dright{ color:#E50011;}
+.ziti_used .odtop input.edit{ color:#ed4868;}
+.mengban{ width:100%; height:auto; position:fixed; bottom:0; left:0; z-index:66; background-color:#000; opacity:0.7; display:none;}
+.tanceng{ width:70%; height:147px; display:none; position:fixed; left:15%; z-index:999; background-color:#fff; border-radius:2px; padding-top:15px; }
+.tanceng ul{ width:100%; height:auto; float:left;}
+.tanceng ul li:nth-child(1){ width:100%; height:auto; display:block; float:left; text-align:center; line-height:20px; font-size:1.4rem; margin-top:20px;}
+.tanceng ul li.gbbut{ width:50%; height:40px; float:left; line-height:40px; color:#fff; text-align:center; margin-bottom:0px; font-size:1.5rem; background-color:#e5e5e5; position:absolute; bottom:0px;}
+.tanceng ul li.xgcolor{  background-color:#E50011; right:0px;}
+.success{ width:30%; height:45px; float:left; display:none;line-height:45px; background:rgba(6,6,6,0.5); text-align:center; color:#fff; margin-left:35%; border-radius:50px; position:fixed; z-index:22;}
+.recordsInfo{ width:70%; height:100px; display:none; position:fixed; left:15%; z-index:999; background-color:#fff; border-radius:2px; }
+.recordsInfo li{ width:100%; height:50px; float:left; line-height:50px; text-align:center; font-size:1.4rem; border-bottom:1px solid #eee; border-radius:2px;}
+.backtop{ width:50px; height:50px; border-radius:50%; position:fixed; bottom:85px; right:5px; display:none;}
+.backtop a{width:50px; height:50px; display:block; border-radius:50%; background:url(../images/bttop.png) center center no-repeat; background-size:contain;}

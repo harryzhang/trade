@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.group.dao.IGroupDao">
+	<resultMap type="groupDo" id="groupResultMap">
+		<result property="id" column="id" />
+		<result property="groupName" column="groupName" />
+		<result property="nextIdex" column="nextIdex" />
+		<result property="status" column="status" />
+		<result property="networkGroup" column="networkGroup" />
+		<result property="groupRootUser" column="groupRootUser" />
+		<result property="groupPersons" column="groupPersons" />
+		<result property="groupNextReciever" column="groupNextReciever" />
+		
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="groupResultMap">
+		SELECT * 
+		  FROM t_group WHERE id = #{id}
+	</select>
+	
+	<select id="selectGroupByUserId" parameterType="Long" resultMap="groupResultMap">
+		SELECT g.* FROM t_group_user gu , t_group g 
+		 WHERE  gu.status = 'T' AND gu.userid = #{userId}
+		  AND  gu.groupName = g.groupName
+		  AND  g.status = 2
+		
+	</select>
+	
+	
+	<select id="selectGroup" parameterType="Map" resultMap="groupResultMap">
+		SELECT * 
+		  FROM t_group
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="groupName != null">  
+				AND groupName = #{groupName}
+			</if>
+			<if test="nextIdex != null">  
+				AND nextIdex = #{nextIdex}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+			<if test="networkGroup != null">  
+				AND networkGroup = #{networkGroup}
+			</if>
+			<if test="groupRootUser != null">  
+				AND groupRootUser = #{groupRootUser}
+			</if>
+			<if test="groupPersons != null">  
+				AND groupPersons = #{groupPersons}
+			</if>
+			<if test="groupNextReciever != null">  
+				AND groupNextReciever = #{groupNextReciever}
+			</if>
+         </trim> 
+		order by id desc
+	</select>
+	
+	<update id="updateGroupById" parameterType="groupDo">
+		UPDATE t_group 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="groupName != null">  
+				groupName = #{groupName},
+		</if>				
+		<if test="nextIdex != null">  
+				nextIdex = #{nextIdex},
+		</if>				
+		<if test="status != null">  
+				status = #{status},
+		</if>				
+		<if test="networkGroup != null">  
+				networkGroup = #{networkGroup},
+		</if>				
+		<if test="groupRootUser != null">  
+				groupRootUser = #{groupRootUser},
+		</if>				
+		<if test="groupPersons != null">  
+				groupPersons = #{groupPersons},
+		</if>				
+		<if test="groupNextReciever != null">  
+				groupNextReciever = #{groupNextReciever},
+		</if>
+						
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addGroup" parameterType="groupDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_group(groupName
+		,nextIdex
+		,status
+		,networkGroup
+		,groupRootUser
+		,groupPersons
+		,groupNextReciever
+		
+)
+		     VALUES (#{groupName}
+		,#{nextIdex}
+		,#{status}
+		,#{networkGroup}
+		,#{groupRootUser}
+		,#{groupPersons}
+		,#{groupNextReciever}
+		
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_group WHERE id = #{id}
+	</delete>
+	
+</mapper>
+

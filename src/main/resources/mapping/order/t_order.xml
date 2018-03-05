@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.order.dao.IOrderDao">
+	<resultMap type="orderDo" id="orderResultMap">
+		<result property="orderId" column="orderId" />
+		<result property="orderCode" column="orderCode" />
+		<result property="userId" column="userId" />
+		<result property="goodsId" column="goodsId" />
+		<result property="qty" column="qty" />
+		<result property="price" column="price" />
+		<result property="totalPrice" column="totalPrice" />
+		<result property="recAddress" column="recAddress" />
+		<result property="createTime" column="createTime" />
+		<result property="orderStatus" column="orderStatus" />
+		<result property="payStatus" column="payStatus" />
+		<result property="payTime" column="payTime" />
+		<result property="orderType" column="orderType" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="orderResultMap">
+		SELECT * 
+		  FROM t_order WHERE orderId = #{orderId}
+	</select>
+
+	<select id="selectOrder" parameterType="Map" resultMap="orderResultMap">
+		SELECT * 
+		  FROM t_order
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="orderId != null">  
+				AND orderId = #{orderId}
+			</if>
+			<if test="orderCode != null">  
+				AND orderCode = #{orderCode}
+			</if>
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="goodsId != null">  
+				AND goodsId = #{goodsId}
+			</if>
+			<if test="orderType != null">  
+				AND orderType = #{orderType}
+			</if>
+			<if test="qty != null">  
+				AND qty = #{qty}
+			</if>
+			<if test="price != null">  
+				AND price = #{price}
+			</if>
+			<if test="totalPrice != null">  
+				AND totalPrice = #{totalPrice}
+			</if>
+			<if test="recAddress != null">  
+				AND recAddress = #{recAddress}
+			</if>
+			<if test="createTime != null">  
+				AND createTime = #{createTime}
+			</if>
+			<if test="orderStatus != null">  
+				AND orderStatus = #{orderStatus}
+			</if>
+			<if test="payStatus != null">  
+				AND payStatus = #{payStatus}
+			</if>
+			<if test="payTime != null">  
+				AND payTime = #{payTime}
+			</if>
+         </trim> 
+
+	</select>
+	<select id="selectPointOrder" parameterType="Map" resultType="Map">
+		select g.gName,o.qty, o.totalPrice,o.orderStatus,o.createTime  
+		from t_order  o,t_goods g
+	
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="orderType != null">  
+				AND orderType = #{orderType}
+			</if>
+         </trim> 
+ 		and o.goodsId = g.id   order by o.createTime desc
+	</select>
+	
+	<update id="updateOrderById" parameterType="orderDo">
+		UPDATE t_order 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="orderCode != null">  
+				orderCode = #{orderCode},
+		</if>				
+		<if test="userId != null">  
+				userId = #{userId},
+		</if>				
+		<if test="goodsId != null">  
+				goodsId = #{goodsId},
+		</if>				
+		<if test="qty != null">  
+				qty = #{qty},
+		</if>				
+		<if test="price != null">  
+				price = #{price},
+		</if>				
+		<if test="totalPrice != null">  
+				totalPrice = #{totalPrice},
+		</if>				
+		<if test="recAddress != null">  
+				recAddress = #{recAddress},
+		</if>				
+		<if test="createTime != null">  
+				createTime = #{createTime},
+		</if>				
+		<if test="orderStatus != null">  
+				orderStatus = #{orderStatus},
+		</if>				
+		<if test="payStatus != null">  
+				payStatus = #{payStatus},
+		</if>				
+		<if test="payTime != null">  
+				payTime = #{payTime},
+		</if>				
+		</trim>
+		WHERE orderId = #{orderId} 
+	</update>	
+	
+	<insert id="addOrder" parameterType="orderDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_order(		orderCode
+		,userId
+		,goodsId
+		,qty
+		,price
+		,totalPrice
+		,recAddress
+		,createTime
+		,orderStatus
+		,payStatus
+		,payTime
+		,orderType
+)
+		     VALUES (		#{orderCode}
+		,#{userId}
+		,#{goodsId}
+		,#{qty}
+		,#{price}
+		,#{totalPrice}
+		,#{recAddress}
+		,#{createTime}
+		,#{orderStatus}
+		,#{payStatus}
+		,#{payTime}
+		,#{orderType}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_order WHERE orderId = #{orderId}
+	</delete>
+	
+	<select id="queryNotice" parameterType="Map" resultType="java.util.HashMap">
+	    select * from t_s_notice order by create_time desc
+	</select>
+	<select id="queryNoticeById" parameterType="String" resultType="HashMap">
+	    select * from  t_s_notice  where id = #{id}
+	</select>
+</mapper>
+

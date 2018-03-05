@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.redpack.userWaiting.dao.IUserWaitingDao">
+	<resultMap type="userWaitingDo" id="userWaitingResultMap">
+		<result property="id" column="id" />
+		<result property="groupName" column="groupName" />
+		<result property="userId" column="userId" />
+		<result property="status" column="status" />
+		<result property="createTime" column="createTime" />
+	</resultMap>
+
+	
+	
+	
+	<select id="selectUserWaitingByGroupName" parameterType="String" resultMap="userWaitingResultMap">
+	<![CDATA[
+		SELECT *
+		FROM t_user_waiting
+		where groupName=#{groupName} and  status<> 0 
+		order by createTime asc
+		limit 1;
+		]]>
+	</select>
+	<select id="selectUserWaiting" parameterType="String" resultMap="userWaitingResultMap">
+	<![CDATA[
+		SELECT *
+		FROM t_user_waiting
+		where groupName=#{groupName} and  status<> 0 
+		order by createTime asc
+		;
+		]]>
+	</select>
+	
+	<select id="getByUserId" parameterType="Long" resultMap="userWaitingResultMap">
+	<![CDATA[
+		SELECT *
+		FROM t_user_waiting
+		where userId = #{userId} and status<> 0 
+		]]>
+	</select>
+	
+	<insert id="addUserWaiting" parameterType="userWaitingDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_user_waiting(
+			groupName
+			,userId
+			,status
+			,createTime
+		)
+		 VALUES (
+		    #{groupName}
+			,#{userId}
+			,#{status}
+			,now()
+		)
+	</insert>
+	
+	<update id="updateUserWaitingById" parameterType="userWaitingDo">
+		UPDATE t_group 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="groupName != null">  
+				groupName = #{groupName},
+		</if>				
+		<if test="status != null">  
+				status = #{status},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<delete id="deleteByUserId" parameterType="Long" >
+		DELETE FROM t_user_waiting WHERE userId = #{userId}
+	</delete>
+</mapper>

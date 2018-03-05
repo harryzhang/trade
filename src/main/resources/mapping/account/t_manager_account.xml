@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.account.dao.IManagerAccountDao">
+	<resultMap type="managerAccountDo" id="managerAccountResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="userId" />
+		<result property="totalAmount" column="totalAmount" />
+		<result property="totalIncomeAmount" column="totalIncomeAmount" />
+		<result property="totalPayAmount" column="totalPayAmount" />
+		<result property="totalPayKangjiAmount" column="totalPayKangjiAmount" />
+		<result property="totalWithdrawAmount" column="totalWithdrawAmount" />
+		<result property="totalChargeAmount" column="totalChargeAmount" />
+		<result property="totalIncomeBuyKangji" column="totalIncomeBuyKangji" />
+		<result property="amount" column="amount" />
+		<result property="incomeAmount" column="incomeAmount" />
+		<result property="payAmount" column="payAmount" />
+		<result property="payKangjiAmount" column="payKangjiAmount" />
+		<result property="withdrawAmount" column="withdrawAmount" />
+		<result property="chargeAmount" column="chargeAmount" />
+		<result property="incomeBuyKangji" column="incomeBuyKangji" />
+		<result property="incomeDay" column="incomeDay" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="managerAccountResultMap">
+		SELECT * 
+		  FROM t_manager_account WHERE id = #{id}
+	</select>
+
+	<select id="selectManagerAccount" parameterType="Map" resultMap="managerAccountResultMap">
+		SELECT * 
+		  FROM t_manager_account
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="totalAmount != null">  
+				AND totalAmount = #{totalAmount}
+			</if>
+			<if test="totalIncomeAmount != null">  
+				AND totalIncomeAmount = #{totalIncomeAmount}
+			</if>
+			<if test="totalPayAmount != null">  
+				AND totalPayAmount = #{totalPayAmount}
+			</if>
+			<if test="totalPayKangjiAmount != null">  
+				AND totalPayKangjiAmount = #{totalPayKangjiAmount}
+			</if>
+			<if test="totalWithdrawAmount != null">  
+				AND totalWithdrawAmount = #{totalWithdrawAmount}
+			</if>
+			<if test="totalChargeAmount != null">  
+				AND totalChargeAmount = #{totalChargeAmount}
+			</if>
+			<if test="totalIncomeBuyKangji != null">  
+				AND totalIncomeBuyKangji = #{totalIncomeBuyKangji}
+			</if>
+			<if test="amount != null">  
+				AND amount = #{amount}
+			</if>
+			<if test="incomeAmount != null">  
+				AND incomeAmount = #{incomeAmount}
+			</if>
+			<if test="payAmount != null">  
+				AND payAmount = #{payAmount}
+			</if>
+			<if test="payKangjiAmount != null">  
+				AND payKangjiAmount = #{payKangjiAmount}
+			</if>
+			<if test="withdrawAmount != null">  
+				AND withdrawAmount = #{withdrawAmount}
+			</if>
+			<if test="chargeAmount != null">  
+				AND chargeAmount = #{chargeAmount}
+			</if>
+			<if test="incomeBuyKangji != null">  
+				AND incomeBuyKangji = #{incomeBuyKangji}
+			</if>
+			<if test="incomeDay != null">  
+				AND incomeDay = #{incomeDay}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateManagerAccountById" parameterType="managerAccountDo">
+		UPDATE t_manager_account 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="userId != null">  
+				userId = #{userId},
+		</if>				
+		<if test="totalAmount != null">  
+				totalAmount = #{totalAmount},
+		</if>				
+		<if test="totalIncomeAmount != null">  
+				totalIncomeAmount = #{totalIncomeAmount},
+		</if>				
+		<if test="totalPayAmount != null">  
+				totalPayAmount = #{totalPayAmount},
+		</if>				
+		<if test="totalPayKangjiAmount != null">  
+				totalPayKangjiAmount = #{totalPayKangjiAmount},
+		</if>				
+		<if test="totalWithdrawAmount != null">  
+				totalWithdrawAmount = #{totalWithdrawAmount},
+		</if>				
+		<if test="totalChargeAmount != null">  
+				totalChargeAmount = #{totalChargeAmount},
+		</if>				
+		<if test="totalIncomeBuyKangji != null">  
+				totalIncomeBuyKangji = #{totalIncomeBuyKangji},
+		</if>				
+		<if test="amount != null">  
+				amount = #{amount},
+		</if>				
+		<if test="incomeAmount != null">  
+				incomeAmount = #{incomeAmount},
+		</if>				
+		<if test="payAmount != null">  
+				payAmount = #{payAmount},
+		</if>				
+		<if test="payKangjiAmount != null">  
+				payKangjiAmount = #{payKangjiAmount},
+		</if>				
+		<if test="withdrawAmount != null">  
+				withdrawAmount = #{withdrawAmount},
+		</if>				
+		<if test="chargeAmount != null">  
+				chargeAmount = #{chargeAmount},
+		</if>				
+		<if test="incomeBuyKangji != null">  
+				incomeBuyKangji = #{incomeBuyKangji},
+		</if>				
+		<if test="incomeDay != null">  
+				incomeDay = #{incomeDay},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addManagerAccount" parameterType="managerAccountDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_manager_account(		userId
+		,totalAmount
+		,totalIncomeAmount
+		,totalPayAmount
+		,totalPayKangjiAmount
+		,totalWithdrawAmount
+		,totalChargeAmount
+		,totalIncomeBuyKangji
+		,amount
+		,incomeAmount
+		,payAmount
+		,payKangjiAmount
+		,withdrawAmount
+		,chargeAmount
+		,incomeBuyKangji
+		,incomeDay
+)
+		     VALUES (		#{userId}
+		,#{totalAmount}
+		,#{totalIncomeAmount}
+		,#{totalPayAmount}
+		,#{totalPayKangjiAmount}
+		,#{totalWithdrawAmount}
+		,#{totalChargeAmount}
+		,#{totalIncomeBuyKangji}
+		,#{amount}
+		,#{incomeAmount}
+		,#{payAmount}
+		,#{payKangjiAmount}
+		,#{withdrawAmount}
+		,#{chargeAmount}
+		,#{incomeBuyKangji}
+		,#{incomeDay}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_manager_account WHERE id = #{id}
+	</delete>
+	
+</mapper>
+

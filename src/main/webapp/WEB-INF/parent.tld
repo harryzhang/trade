@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
+ <tlib-version>1.1</tlib-version>
+ <short-name>p</short-name>
+ <uri> /parent</uri>
+ <!-- Invoke 'Generate' action to add tags or functions -->
+ <tag>
+  <name>parent</name>
+  <tag-class>com.redpack.common.tags.LevelTag</tag-class>
+  <body-content>JSP</body-content>
+  <attribute>
+   <name>userInfo</name>
+   <required>true</required>
+   <fragment>true</fragment>
+  </attribute>
+  <attribute>
+   <name>item</name>
+   <required>true</required>
+   <fragment>true</fragment>
+  </attribute>
+  <attribute>
+   <name>index</name>
+   <fragment>true</fragment>
+  </attribute>
+ </tag>
+</taglib>

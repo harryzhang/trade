@@ -1,0 +1,122 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, 
+
+minimal-ui">
+    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="csrf-param" content="_csrf">
+    <meta name="csrf-token" content="U0pkLWF1VEMQLRd8NgwlEwEnKmcoNxktBAJJdyMyLCgwfTYcAhs3KA==">
+    <title>微交易</title>
+    <link href='<c:url value="/res-qiquan/css/af.ui.css"/>' rel="stylesheet">
+<link href='<c:url value="/res-qiquan/css/mobiscroll.min.css"/>' rel="stylesheet">
+<link href='<c:url value="/res-qiquan/css/common.css"/>' rel="stylesheet">
+<link href='<c:url value="/res-qiquan/css/style.css"/>' rel="stylesheet"></head>
+<body>
+<div id="splashscreen" class='ui-loader heavy'>
+    <h1>加载中...</h1>
+</div>
+
+
+<div class="pages" style=" z-index: 999;" id="login_page">
+    <div  id="login"  class="panel" >
+        <div class="logo"></div>
+        <div class="box">
+            <div class="account-inp">
+                                <div class="loginTap hide">
+                    <input type="button" id="btnWxLogin" class="btn auClick" value="微信一键登录"/>
+                </div>
+                <div class="registerTap hide">
+                    <input name="serial_code" type="text" id="serial_code" class="input icon-serial-code auClick bg1f" value=""   
+
+placeholder="请输入邀请码">
+                    <input type="button" id="btnWxRegister" class="btn auClick" value="确定邀请码"/>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="website">wechat.luhongsuo.com</div>
+    </div>
+</div>
+<div class="view" id="mainview">
+    <div class="pages">
+        <div class="panel" id="trade" style="padding-left: 0px; padding-right: 0px; margin-left: 0px; margin-right: 0px;" data-
+
+selected="true"></div>
+        <div class="panel" id="order" style="padding-left: 0px; padding-right: 0px; margin-left: 0px; margin-right: 0px;"></div>
+        <div class="panel" id="account" style="padding-left: 0px; padding-right: 0px; margin-left: 0px; margin-right: 0px;"></div>
+        <div class="panel" id="system" style="padding-left: 0px; padding-right: 0px; margin-left: 0px; margin-right: 0px;"></div>
+        <div class="panel" id="info" style="padding-left: 0px; padding-right: 0px; margin-left: 0px; margin-right: 0px;"></div>
+        <div class="panel" id="about" style="padding-left: 0px; padding-right: 0px; margin-left: 0px; margin-right: 0px;"></div>
+        <div class="panel" id="history" style="padding-left: 0px; padding-right: 0px; margin-left: 0px; margin-right: 0px;" ></div>
+        <div class="panel" id="holdbill" style="padding-left: 0px; padding-right: 0px; margin-left: 0px; margin-right: 0px;" ></div>
+        <div class="panel" id="message" style="margin: 0 !important; padding: 0 !important;;"></div>
+        <div class="panel" id="point"  style="margin: 0 !important; padding: 0 !important;;"></div>
+        <div class="panel" id="pointHistory"  style="margin: 0 !important; padding: 0 !important;;"></div>
+        <div class="panel" id="promote"  style="margin: 0 !important; padding: 0 !important;;"></div>
+        <div class="panel" id="circle_wealth"  style="margin: 0 !important; padding: 0 !important;;"></div>
+        <div class="panel" id="task"  style="margin: 0 !important; padding: 0 !important;;"></div>
+        <div class="panel" id="wechatPayMoney"></div>
+        <div class="panel" id="wechatPayRegister" style="margin: 0 !important; padding: 0 !important;;"></div>
+        <div class="panel" id="sign" style="margin: 0 !important; padding: 0 !important;;"></div>
+    </div>
+</div>
+<input type="hidden" name="pubkey" id="pubkey" value="-----BEGIN PUBLIC KEY-----
+
+MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgH7xK26dg1M7NUWnpoa/OJcf5HVMy3MHYbZRIqSjMrKVjg2l1LV4g29c1tY/RrcwqRkKIZ/pZHYowwsAmyTqiNYgHxEM4BktfGlJIm
+
+zQO68u7I12elgFTaKqgJ7knLbCL0/2S78X3Os+zpFyXL0Yd4iAAdLJVE8e3GKF70licm87AgMBAAE=-----END PUBLIC KEY-----"/>
+
+
+
+<script type="text/javascript">
+    var assets_path = 'assets/default/';
+    var api_path = '';
+    var market = 'real';
+    var wx_nickname = "华";
+    var wx_headimgurl = "http://wx.qlogo.cn/mmopen/5t4s09n6iaOEjA6FfQ7eBpTwtXcgKwkibArO0cANtGkT0ianDoaLb9BN7LibGWBLQmoyqKOCXyBGtCxlYBL7ebrRcWPxkIwuicIK2/0";
+    var wx_openid    = "0b6ef233db2d9a1295fc22ef606f3d86";
+    var wx_unionid   = "oGQYBwap-HE2z8XHumlC3XAG_4qA";
+    var wx_key    = "ol2S2vzeFKhzPeS-sKDNlXSdhMSU";
+    var wx_appid     = 'wx0f6116446c09745f' ;
+    var wx_timestamp = parseInt('1473997243') ;
+    var wx_noncestr  = 'LzKzl5VTRNuxBjP3' ;
+    var wx_signature = 'fa0e18534d697248b52f310a70d5018924104fab' ;
+    var wx_token     = 'fa0e18534d697248b52f310a70d5018924104fab' ;
+    var ac_score = '';
+    var ac_real = '1';
+    var ac_serial_code = '';
+    var ac_login = '1';
+    var serial_code = '';
+</script>
+
+<script src='<c:url value="/res-qiquan/js/jquery.min.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/appframework.ui.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/underscore-min.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/backbone-min.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/jquery.similar.msgbox.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/fastclick.min.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/jquery.form.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/jsencrypt.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/jquery.cityselect.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/wetbizsdk-all_src.js?v=1.0"/>'></script>
+<script src='<c:url value="/res-qiquan/js/iscroll.min.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/site_define.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/jweixin-1.0.0.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/mobiscroll.min.js"/>'></script>
+<script src='<c:url value="/res-qiquan/js/login_view.js?v=1.2"/>'></script>
+<script src='<c:url value="/res-qiquan/js/trade_view.js?v=1.0"/>'></script>
+<script src='<c:url value="/res-qiquan/js/account_view.js?v=1.1"/>'></script>
+<script src='<c:url value="/res-qiquan/js/system_view.js?v=1.1"/>'></script>
+<script src='<c:url value="/res-qiquan/js/info_view.js?v=1.1"/>'></script>
+<script src='<c:url value="/res-qiquan/js/notice_view.js?v=1.0"/>'></script>
+<script src='<c:url value="/res-qiquan/js/about_view.js?v=1.0"/>'></script>
+<script src='<c:url value="/res-qiquan/js/history_view.js?v=1.0"/>'></script>
+<script src='<c:url value="/res-qiquan/js/point_view.js?v=1.0"/>'></script>
+<script src='<c:url value="/res-qiquan/js/main.js?v=1.0"/>'></script></body>
+</html>

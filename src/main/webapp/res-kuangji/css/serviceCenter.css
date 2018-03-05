@@ -1,0 +1,102 @@
+.top {
+	width: 100%; height: 50px; border-bottom-color: rgb(210, 210, 210); border-bottom-width: 1px; border-bottom-style: solid; float: left; background-color: rgb(252, 250, 247);
+}
+.top b {
+	background: url("../images/fanhui.png") no-repeat center / 11px 25px; width: 12%; height: 50px; float: left; display: block;
+}
+.top dd {
+	width: 76%; height: 50px; text-align: center; line-height: 50px; font-size: 1.7rem; float: left; display: block;
+}
+.top span {
+	background: url("../images/caidan2.png") no-repeat center / 14px 30px; width: 12%; height: 50px; float: right; display: block;
+}
+.top ul {
+	border: 1px solid rgb(204, 204, 204); top: 50px; width: 100px; height: auto; right: 5px; display: none; position: absolute; z-index: 9; background-color: rgb(255, 255, 255);
+}
+.top ul li {
+	padding: 0px 20px; width: 100px; height: 40px; text-align: center; line-height: 40px;
+}
+.index {
+	letter-spacing: 8px; border-bottom-color: rgb(229, 229, 229); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.member {
+	border-bottom-color: rgb(229, 229, 229); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.shoppingCart {
+	letter-spacing: 4px;
+}
+.box {
+	border-radius: 2px 2px 0px 0px; width: 94%; height: auto; margin-top: 10px; margin-left: 3%; float: left; display: block; position: relative; z-index: 1; background-color: rgb(229, 0, 17);
+}
+.box .toptel {
+	width: 100%; height: 47px; color: rgb(255, 255, 255); padding-top: 22px; padding-left: 5%; font-size: 1.3rem; float: left;
+}
+.box .toptel u {
+	font-size: 1.6rem; text-decoration: underline; margin-left: 2px;
+}
+.box .tela {
+	width: 96%; height: auto; margin-left: 2%; background-color: rgb(255, 255, 255);
+}
+.box .tela .taba {
+	width: 18%; height: 13px; color: rgb(238, 80, 110); padding-left: 5%; font-size: 1.2rem;
+}
+.box .tela .tabb {
+	width: 44%; height: 13px; color: rgb(238, 80, 110); font-size: 1.2rem;
+}
+.box .tela .tabc {
+	width: 38%; height: 13px;
+}
+.box .tela .weixin {
+	width: 44%; height: 13px; font-size: 1.1rem;
+}
+.box .tela .qq {
+	width: 38%; height: 13px; font-size: 1.1rem;
+}
+.box .telb {
+	width: 96%; height: auto; margin-left: 2%; background-color: rgb(255, 255, 255);
+}
+.box .telb .tabb {
+	width: 18%; height: 20px; color: rgb(238, 80, 110); padding-left: 5%; font-size: 1.2rem;
+}
+.box .telb .kefu {
+	width: 26%; height: 20px; color: rgb(238, 80, 110); font-size: 1.1rem;
+}
+.box .telb .qq {
+	width: 56%; height: 20px; font-size: 1.1rem;
+}
+.box .telb .martop {
+	height: 12px;
+}
+.box .teld {
+	width: 96%; height: auto; margin-left: 2%; background-color: rgb(255, 255, 255);
+}
+.box .teld .kefu {
+	width: 32%; height: 20px; color: rgb(238, 80, 110); padding-left: 5%; font-size: 1.2rem;
+}
+.box .teld .qq {
+	width: 40%; height: 20px; font-size: 1.1rem;
+}
+.box .teld .tp {
+	width: 28%; height: 80px; position: relative;
+}
+.box .teld .tp img {
+	margin: auto; left: 0px; top: -10px; width: 56px; height: 85px; right: 0px; position: absolute;
+}
+.box .teld td.jy {
+	padding-left: 5%; font-size: 1rem;
+}
+.box dd {
+	width: 96%; height: 23px; padding-left: 3%; font-size: 1rem; margin-left: 2%; float: left; background-color: rgb(255, 255, 255);
+}
+.box .last {
+	width: 100%; height: auto;
+}
+.box .last td {
+	width: 100%; height: 13px; color: rgb(255, 255, 255); padding-left: 3%; font-size: 1rem;
+}
+.box .last .bot {
+	padding-top: 4%;
+}
+.box .last .bom {
+	padding-bottom: 4%;
+}

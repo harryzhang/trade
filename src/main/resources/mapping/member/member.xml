@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.member.dao.IMemberDao">
+	<resultMap type="memberDo" id="memberResultMap">
+		<result property="userId" column="userId" />
+		<result property="amount" column="amount" />
+		<result property="guquanQty" column="guquanQty" />
+		<result property="point" column="point" />
+		<result property="incomeTotalAmount" column="incomeTotalAmount" />
+		<result property="ququanTotalAmount" column="ququanTotalAmount" />
+		<result property="recommendTotalAmount" column="recommendTotalAmount" />
+		<result property="poingTotalAmount" column="poingTotalAmount" />
+		<result property="consumeTotalAmount" column="consumeTotalAmount" />
+		<result property="withdrawTotalDeposit" column="withdrawTotalDeposit" />
+		<result property="freezeAmount" column="freezeAmount" />
+		<result property="teamAmount" column="teamAmount" />
+		<result property="updateTime" column="updateTime" />
+		
+	</resultMap>
+
+	<select id="getByUserId" parameterType="Long" resultMap="memberResultMap">
+		SELECT * 
+		  FROM t_user_account WHERE userId = #{userId}
+	</select>
+	
+	<!-- 下级订单汇总 list -->
+	<select id="getOrderList" parameterType="Long" resultType="map">
+		select oneCount,twoCount,threeCount, oneCount+twoCount+threeCount as total from (
+        select count(*) as oneCount from t_order
+        	 where userId in(
+                select id from t_user where referrerId = #{userId}
+        		)
+		) one 
+		left join (
+			select count(*) as twoCount from t_order
+			where userId in(
+			         select id from t_user where referrerId in(
+			                select id from t_user where referrerId = #{userId}
+			                )
+			          )
+		) two on 1=1
+		left join (
+			select count(*) as threeCount from t_order
+			 where userId in(
+			         select id from t_user where referrerId in(
+			                         select id from t_user where   referrerId in (
+			                               select id from t_user where referrerId = #{userId}
+			                       )
+			                )
+			          )
+		) three on 1=1
+	</select>
+	
+	<select id="getUserReff" parameterType="Long" resultType="int">
+		SELECT count(*) 
+		  FROM t_user WHERE referrerId = #{userId}
+	</select>
+	
+	
+	<update id="updateAccountById" parameterType="memberDo">
+		UPDATE t_user_account 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="amount != null">  
+				amount = #{amount},
+		</if>				
+		<if test="guquanQty != null">  
+				guquanQty = #{guquanQty},
+		</if>				
+		<if test="point != null">  
+				point = #{point},
+		</if>				
+		<if test="incomeTotalAmount != null">  
+				incomeTotalAmount = #{incomeTotalAmount},
+		</if>				
+		<if test="ququanTotalAmount != null">  
+				ququanTotalAmount = #{ququanTotalAmount},
+		</if>				
+		<if test="recommendTotalAmount != null">  
+				recommendTotalAmount = #{recommendTotalAmount},
+		</if>				
+		<if test="poingTotalAmount != null">  
+				poingTotalAmount = #{poingTotalAmount},
+		</if>				
+		<if test="consumeTotalAmount != null">  
+				consumeTotalAmount = #{consumeTotalAmount},
+		</if>				
+		<if test="withdrawTotalDeposit != null">  
+				withdrawTotalDeposit = #{withdrawTotalDeposit},
+		</if>				
+		<if test="freezeAmount != null">  
+				freezeAmount = #{freezeAmount},
+		</if>				
+		<if test="updateTime != null">  
+				updateTime = #{updateTime},
+		</if>				
+		<if test="teamAmount != null">  
+				teamAmount = #{teamAmount},
+		</if>				
+		</trim>
+		WHERE userId = #{userId} 
+	</update>
+	
+	<update id="updateUserCenterById" parameterType="memberDo">
+		UPDATE t_user set enabled = '1' 
+		WHERE enabled &lt;&gt;'1' and id in(
+		 select userId from t_user_account where guquanQty &gt;= #{guquanQty} and  teamAmount &gt;= #{teamAmount}
+		)
+	</update>
+		
+	<update id="updateAmountById" parameterType="memberDo">
+		UPDATE t_user_account 
+		 <trim prefix="SET" prefixOverrides=","> 
+		 <if test="amount != null">  
+				amount = ifnull(amount,0) + #{amount}
+		</if>		
+		<if test="guquanQty != null">  
+				,guquanQty = ifnull(guquanQty,0) + #{guquanQty}
+		</if>		
+		<if test="point != null">  
+				,point = ifnull(point,0) + #{point}
+		</if>		
+		<if test="incomeTotalAmount != null">  
+				,incomeTotalAmount = ifnull(incomeTotalAmount,0) + #{incomeTotalAmount}
+		</if>		
+		<if test="ququanTotalAmount != null">  
+				,ququanTotalAmount = ifnull(ququanTotalAmount,0) + #{ququanTotalAmount}
+		</if>		
+		<if test="recommendTotalAmount != null">  
+				,recommendTotalAmount = ifnull(recommendTotalAmount,0) + #{recommendTotalAmount}
+		</if>		
+		<if test="poingTotalAmount != null">  
+				,poingTotalAmount = ifnull(poingTotalAmount,0) + #{poingTotalAmount}
+		</if>		
+		<if test="consumeTotalAmount != null">  
+				,consumeTotalAmount = ifnull(consumeTotalAmount,0) + #{consumeTotalAmount}
+		</if>		
+		<if test="withdrawTotalDeposit != null">  
+				,withdrawTotalDeposit = ifnull(withdrawTotalDeposit,0) +  #{withdrawTotalDeposit}
+		</if>
+		<if test="freezeAmount != null">  
+				,freezeAmount = ifnull(freezeAmount,0) +  #{freezeAmount}
+		</if>
+		<if test="updateTime != null">  
+				,updateTime = #{updateTime}
+		</if>		
+		<if test="teamAmount != null">  
+				,teamAmount = ifnull(teamAmount,0) +  #{teamAmount}
+		</if>		
+		</trim>
+		WHERE userId = #{userId} 
+	</update>	
+</mapper>
+

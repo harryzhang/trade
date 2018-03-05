@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.audit.dao.IAuditDao">
+	<resultMap type="auditDo" id="redPackAuditResultMap">
+		<result property="id" column="id" />
+		<result property="proposerId" column="proposer_id" />
+		<result property="proposerContent" column="proposer_content" />
+		<result property="receiveId" column="receive_id" />
+		<result property="proposerGrade" column="proposer_grade" />
+		<result property="proposerAmount" column="proposer_amount" />
+		<result property="proposerTime" column="proposer_time" />
+		<result property="proposerState" column="proposer_state" />
+		<result property="auditState" column="audit_state" />
+		<result property="remark" column="remark" />
+		<result property="auditTime" column="audit_time" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="redPackAuditResultMap">
+		SELECT * 
+		  FROM t_red_pack_audit WHERE id = #{id}
+	</select>
+
+	<select id="selectRedPackAudit" parameterType="Map" resultMap="redPackAuditResultMap">
+		SELECT * 
+		  FROM t_red_pack_audit
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id like #{id}
+			</if>
+			<if test="proposerId != null">  
+				AND proposer_id like #{proposerId}
+			</if>
+			<if test="proposerContent != null">  
+				AND proposer_content like #{proposerContent}
+			</if>
+			<if test="receiveId != null">  
+				AND receive_id like #{receiveId}
+			</if>
+			<if test="proposerGrade != null">  
+				AND proposer_grade like #{proposerGrade}
+			</if>
+			<if test="proposerAmount != null">  
+				AND proposer_amount like #{proposerAmount}
+			</if>
+			<if test="proposerTime != null">  
+				AND proposer_time like #{proposerTime}
+			</if>
+			<if test="proposerState != null">  
+				AND proposer_state like #{proposerState}
+			</if>
+			<if test="auditState != null">  
+				AND audit_state like #{auditState}
+			</if>
+			<if test="remark != null">  
+				AND remark like #{remark}
+			</if>
+			<if test="auditTime != null">  
+				AND audit_time like #{auditTime}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateRedPackAuditById" parameterType="auditDo">
+		UPDATE t_red_pack_audit 
+		   SET 		<if test="proposerId != null">  
+				proposer_id = #{proposerId}
+		</if>		
+		<if test="proposerContent != null">  
+				,proposer_content = #{proposerContent}
+		</if>		
+		<if test="receiveId != null">  
+				,receive_id = #{receiveId}
+		</if>		
+		<if test="proposerGrade != null">  
+				,proposer_grade = #{proposerGrade}
+		</if>		
+		<if test="proposerAmount != null">  
+				,proposer_amount = #{proposerAmount}
+		</if>		
+		<if test="proposerTime != null">  
+				,proposer_time = #{proposerTime}
+		</if>		
+		<if test="proposerState != null">  
+				,proposer_state = #{proposerState}
+		</if>		
+		<if test="auditState != null">  
+				,audit_state = #{auditState}
+		</if>		
+		<if test="remark != null">  
+				,remark = #{remark}
+		</if>		
+		<if test="auditTime != null">  
+				,audit_time = #{auditTime}
+		</if>		
+
+		WHERE id = #{id} and version =  #{version}
+	</update>	
+	
+	<insert id="addRedPackAudit" parameterType="auditDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_red_pack_audit(		proposer_id
+		,proposer_content
+		,receive_id
+		,proposer_grade
+		,proposer_amount
+		,proposer_time
+		,proposer_state
+		,audit_state
+		,remark
+		,audit_time
+)
+		     VALUES (		#{proposerId}
+		,#{proposerContent}
+		,#{receiveId}
+		,#{proposerGrade}
+		,#{proposerAmount}
+		,#{proposerTime}
+		,#{proposerState}
+		,#{auditState}
+		,#{remark}
+		,#{auditTime}
+);
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_red_pack_audit WHERE id = #{id}
+	</delete>
+	
+</mapper>
+

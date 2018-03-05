@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.redpack.account.dao.IUserAccountDao">
+	<!--<resultMap type="depUserAccountDo" id="depUserAccountResultMap"> <result 
+		property="accountId" column="accountId" /> <result property="parentId" column="parentId" 
+		/> <result property="userId" column="userId" /> <result property="usableAmt" 
+		column="usableAmt" /> <result property="freezeAmt" column="freezeAmt" /> 
+		<result property="purchaseAmt" column="purchaseAmt" /> <result property="redeemAmt" 
+		column="redeemAmt" /> <result property="cashLockAmt" column="cashLockAmt" 
+		/> <result property="accountType" column="accountType" /> <result property="accountStatus" 
+		column="accountStatus" /> <result property="createTime" column="createTime" 
+		/> <result property="updateTime" column="updateTime" /> </resultMap> -->
+
+	<select id="getById" parameterType="Long" resultType="userAccountDo">
+		SELECT *
+		FROM dep_user_account WHERE accountId = #{accountId}
+	</select>
+	<!--根据userId查询主账户 -->
+	<select id="getPrimaryAccount" parameterType="Long" resultType="userAccountDo">
+		SELECT *
+		FROM dep_user_account WHERE userId = #{userId} and parentId=0
+	</select>
+	<!--查询指定类型的平台账户 -->
+	<select id="getPlatformAccountBySubType" parameterType="map"
+		resultType="userAccountDo">
+		select * from dep_user_account where accountType='PLATFORM' and
+		accountSubType=#{accountSubType};
+	</select>
+
+	<select id="queryByUserId" parameterType="long" resultType="userAccountDo">
+		SELECT * FROM dep_user_account
+		WHERE userId = #{userId}
+	</select>
+	
+	<select id="getByUserIdAndParentId" parameterType="map" resultType="userAccountDo">
+		SELECT * FROM dep_user_account
+		WHERE userId = #{userId}
+		AND parentId = #{parentId}
+		LIMIT 1;
+	</select>
+	
+	<select id="queryCanInvestAccount" resultType="userAccountDo">
+		<![CDATA[
+			SELECT * FROM dep_user_account
+			WHERE accountType = 'GENERAL'
+			AND accountStatus = 'ACTIVATED'
+			AND parentId > 0
+			AND usableAmt > 0
+			ORDER BY usableAmt DESC
+			LIMIT 100;
+		]]>
+	</select>
+	
+	<select id="getPurchaseUserAccount" parameterType="long" resultType="userAccountDo">
+		<![CDATA[
+			SELECT * FROM dep_user_account
+			WHERE usableAmt >= #{receiptAmt}
+			ORDER BY usableAmt
+			LIMIT 1
+		]]>
+	</select>
+	
+	<select id="getPartPurchaseUserAccount" parameterType="long" resultType="userAccountDo">
+		<![CDATA[
+			SELECT * FROM dep_user_account
+			WHERE usableAmt < #{receiptAmt}
+			ORDER BY usableAmt DESC
+			LIMIT 1
+		]]>
+	</select>
+
+	<!-- 更新主账户可用余额 -->
+	<update id="updatePrimaryAcountUsableAmt" parameterType="map">
+        <![CDATA[
+        update dep_user_account set usableAmt = usableAmt + #{incrementSum}
+        where userId = #{userId} and parentId = 0 and usableAmt + #{incrementSum} >= 0
+        ]]>
+	</update>
+	<!-- 更新账户可用余额 -->
+	<update id="updateAcountUsableAmt" parameterType="map">
+        <![CDATA[
+        update dep_user_account set usableAmt = usableAmt + #{incrementSum}
+        where accountId = #{accountId}
+        ]]>
+	</update>
+	<!-- 赎回 -->
+	<update id="redeem" parameterType="userAccountDo">
+        <![CDATA[
+        update dep_user_account set redeemAmt = #{redeemAmt}+redeemAmt ,usableAmt = usableAmt+#{usableAmt}
+        where accountId = #{accountId} and purchaseAmt >= #{redeemAmt}+redeemAmt and accountStatus = "ACTIVATED";
+         ]]>
+	</update>
+	<!--修改子账户的状态为已赎回 -->
+	<update id="updateAccountStatusToRedeem" parameterType="map">
+        <![CDATA[
+        update dep_user_account set accountStatus = 'REDEEMED'
+        where accountId = #{accountId} and purchaseAmt = redeemAmt and accountStatus = "ACTIVATED";
+         ]]>
+	</update>
+	<!--查找到期的子账户 -->
+	<select id="findExpireAccounts" resultType="userAccountDo">
+		select * from dep_user_account t1
+		join dep_trade t2 on t1.accountId = t2.accountId
+		join dep_product t3 on t2.productId = t3.productId
+		where DATE(DATE_ADD(t2.transTime,INTERVAL t3.investPeriod
+		MONTH))>CURDATE();
+	</select>
+	<!--查找指定状态的子账户 -->
+	<select id="findAccountByStatus" resultType="userAccountDo" parameterType="map">
+		select * from dep_user_account where accountStatus = #{accountStatus};
+	</select>
+	<!--清算子账户 -->
+	<update id="liquidateAccount" parameterType="map">
+        <![CDATA[
+        update dep_user_account set accountStatus = 'LIQUIDATED',usableAmt = 0
+        where accountId = #{accountId} and accountStatus = "REDEEMED" and usableAmt = -#{incrementSum};
+         ]]>
+	</update>
+	<select id="selectUserAccount" parameterType="Map" resultType="userAccountDo">
+		SELECT *
+		FROM dep_user_account
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="accountId != null">
+				AND accountId like #{accountId}
+			</if>
+			<if test="parentId != null">
+				AND parentId like #{parentId}
+			</if>
+			<if test="userId != null">
+				AND userId like #{userId}
+			</if>
+			<if test="usableAmt != null">
+				AND usableAmt like #{usableAmt}
+			</if>
+			<if test="freezeAmt != null">
+				AND freezeAmt like #{freezeAmt}
+			</if>
+			<if test="purchaseAmt != null">
+				AND purchaseAmt like #{purchaseAmt}
+			</if>
+			<if test="redeemAmt != null">
+				AND redeemAmt like #{redeemAmt}
+			</if>
+			<if test="cashLockAmt != null">
+				AND cashLockAmt like #{cashLockAmt}
+			</if>
+			<if test="accountType != null">
+				AND accountType like #{accountType}
+			</if>
+			<if test="accountStatus != null">
+				AND accountStatus like #{accountStatus}
+			</if>
+			<if test="createTime != null">
+				AND createTime like #{createTime}
+			</if>
+			<if test="updateTime != null">
+				AND updateTime like #{updateTime}
+			</if>
+		</trim>
+
+	</select>
+
+	<select id="queryByAccountIds" parameterType="map" resultType="userAccountDo">
+		SELECT *
+		FROM dep_user_account
+		WHERE accountId IN
+		<foreach collection="accountIdList" open="(" close=")" item="accountId"
+			separator=",">
+			#{accountId}
+		</foreach>
+	</select>
+
+	<update id="updateUserAccountById" parameterType="userAccountDo">
+		UPDATE dep_user_account
+		SET
+		<if test="parentId != null">
+			parentId = #{parentId}
+		</if>
+		<if test="userId != null">
+			,userId = #{userId}
+		</if>
+		<if test="usableAmt != null">
+			,usableAmt = #{usableAmt}
+		</if>
+		<if test="freezeAmt != null">
+			,freezeAmt = #{freezeAmt}
+		</if>
+		<if test="purchaseAmt != null">
+			,purchaseAmt = #{purchaseAmt}
+		</if>
+		<if test="redeemAmt != null">
+			,redeemAmt = #{redeemAmt}
+		</if>
+		<if test="cashLockAmt != null">
+			,cashLockAmt = #{cashLockAmt}
+		</if>
+		<if test="accountType != null">
+			,accountType = #{accountType}
+		</if>
+		<if test="accountStatus != null">
+			,accountStatus = #{accountStatus}
+		</if>
+		<if test="createTime != null">
+			,createTime = #{createTime}
+		</if>
+		<if test="updateTime != null">
+			,updateTime = #{updateTime}
+		</if>
+
+		WHERE accountId = #{accountId}
+	</update>
+
+	<update id="updateAmount" parameterType="userAccountDo">
+		UPDATE dep_user_account
+		<trim prefix="SET" prefixOverrides=",">
+			<if test="usableAmt != null">
+				,usableAmt = usableAmt + #{usableAmt}
+			</if>
+			<if test="freezeAmt != null">
+				,freezeAmt = freezeAmt + #{freezeAmt}
+			</if>
+			<if test="purchaseAmt != null">
+				,purchaseAmt = purchaseAmt + #{purchaseAmt}
+			</if>
+			<if test="redeemAmt != null">
+				,redeemAmt = redeemAmt + #{redeemAmt}
+			</if>
+			<if test="cashLockAmt != null">
+				,cashLockAmt = cashLockAmt + #{cashLockAmt}
+			</if>
+		</trim>
+		,updateTime = #{updateTime}
+		WHERE accountId = #{accountId}
+	</update>
+
+	<insert id="addUserAccount" parameterType="userAccountDo"
+		keyProperty="accountId" useGeneratedKeys="true">
+		INSERT INTO
+		dep_user_account(
+		parentId
+		,userId
+		,usableAmt
+		,freezeAmt
+		,purchaseAmt
+		,redeemAmt
+		,cashLockAmt
+		,accountType
+		,accountStatus
+		,createTime
+		,updateTime
+		,productId
+		)
+		VALUES ( #{parentId}
+		,#{userId}
+		,#{usableAmt}
+		,#{freezeAmt}
+		,#{purchaseAmt}
+		,#{redeemAmt}
+		,#{cashLockAmt}
+		,#{accountType}
+		,#{accountStatus}
+		,#{createTime}
+		,#{updateTime}
+		,#{productId}
+		);
+	</insert>
+
+	<update id="subAccountBalance" parameterType="map">
+		UPDATE
+		`dep_user_account` ua
+		SET
+		`usableAmt` = 'usableAmt' - #{subAmt},
+		`updateTime` = now()
+		WHERE ua.`accountId` = #{userAccountId} and
+		ua.usableAmt>#{subAmt}
+	</update>
+
+
+	<delete id="deleteById" parameterType="Long">
+		DELETE FROM
+		dep_user_account WHERE accountId = #{accountId}
+	</delete>
+
+</mapper>
+

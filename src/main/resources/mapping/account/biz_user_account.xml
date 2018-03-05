@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.account.dao.IBizUserAccountDao">
+	<resultMap type="bizUserAccountDo" id="bizUserAccountResultMap">
+		<result property="userId" column="userId" />
+		<result property="amount" column="amount" />
+		<result property="accountType" column="accountType" />
+		<result property="totalConsumeAmount" column="totalConsumeAmount" />
+		<result property="totalInocmeAmount" column="totalInocmeAmount" />
+		<result property="withdrawTotalDeposit" column="withdrawTotalDeposit" />
+		<result property="frozenDeposit" column="frozenDeposit" />
+		<result property="incomeAmount" column="incomeAmount" />
+		<result property="consueAmount" column="consueAmount" />
+		<result property="updateTime" column="updateTime" />
+	</resultMap>
+
+	<select id="getById" parameterType="Map" resultMap="bizUserAccountResultMap">
+		SELECT * 
+		  FROM t_user_account WHERE userId = #{userId} and accountType =#{accountType}
+	</select>
+
+	<select id="selectUserAccount" parameterType="Map" resultMap="bizUserAccountResultMap">
+		SELECT * 
+		  FROM t_user_account
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="accountType != null">  
+				and accountType =#{accountType}
+			</if>
+			<if test="updateTime != null">  
+				AND updateTime = #{updateTime}
+			</if>
+         </trim> 
+	</select>
+	
+	<select id="selectFeiHongAccount" parameterType="Map" resultMap="bizUserAccountResultMap">
+		SELECT * 
+		  FROM t_user_account
+		  where accountType =#{accountType}
+		   and  ifnull(amount,0)>0
+		   LIMIT #{startRow} ,#{pageSize}
+	</select>
+	
+	<select id="selectFeiHongAccountCount" parameterType="Map" resultType="INT">
+		SELECT count(id) 
+		  FROM t_user_account
+		  where accountType =#{accountType}
+		   and  ifnull(amount,0)>0
+	</select>
+	
+	<select id="selectNotFeiHongUserAccount" parameterType="Map" resultMap="bizUserAccountResultMap">
+		SELECT a.* 
+		  FROM t_user_account_bak a , t_not_feihong_bak b
+		   where a.userid = b.userid
+			and a.accountType ='security'
+			and ifnull(a.amount,0)>0
+			LIMIT #{startRow} ,#{pageSize}			
+	</select>
+	
+	<select id="selectNotFeiHongUserAccountCount" parameterType="Map" resultType="INT">
+		SELECT count(a.id) 
+		  FROM t_user_account_bak a , t_not_feihong_bak b
+		   where a.userid = b.userid
+			and a.accountType ='security'
+		    and  ifnull(a.amount,0)>0
+	</select>
+	
+	
+	<select id="selectUserAccountFromTemp" parameterType="Map" resultMap="bizUserAccountResultMap">
+		select userid, sum(ifnull(amount,0)) as amount,  accountType 
+		from t_user_account_temp
+		group by userid , accountType			
+	</select>
+	
+	<update id="updateUserAccountById" parameterType="bizUserAccountDo">
+		UPDATE t_user_account 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="amount != null">  
+				amount = #{amount},
+		</if>				
+					
+		<if test="totalConsumeAmount != null">
+				totalConsumeAmount = #{totalConsumeAmount},
+		</if>				
+		<if test="totalInocmeAmount != null">  
+				totalInocmeAmount = #{totalInocmeAmount},
+		</if>				
+		<if test="frozenDeposit != null">  
+				frozenDeposit = #{frozenDeposit},
+		</if>				
+		<if test="incomeAmount != null">  
+				incomeAmount = #{incomeAmount},
+		</if>				
+		<if test="consueAmount != null">  
+				consueAmount = #{consueAmount},
+		</if>				
+		<if test="withdrawTotalDeposit != null">  
+				withdrawTotalDeposit = #{withdrawTotalDeposit},
+		</if>				
+		<if test="userId != null">  
+				updateTime = now(),
+		</if>				
+		</trim>
+		WHERE userId = #{userId}  and accountType=#{accountType}  and (ifnull(amount,0) + #{amount} )>=0
+	</update>	
+	
+	
+	<update id="updateUserAmountById" parameterType="bizUserAccountDo">
+		UPDATE t_user_account 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="amount != null">  
+				amount = ifnull(amount,0) + #{amount},
+		</if>				
+					
+		<if test="amount != null">  
+				totalConsumeAmount = ifnull(totalConsumeAmount,0) + #{amount},
+		</if>				
+		<if test="totalInocmeAmount != null">  
+				totalInocmeAmount = ifnull(totalInocmeAmount,0) + #{totalInocmeAmount},
+		</if>				
+		<if test="incomeAmount != null">  
+				incomeAmount = ifnull(incomeAmount,0) + #{incomeAmount},
+		</if>				
+		<if test="frozenDeposit != null">  
+				frozenDeposit = ifnull(frozenDeposit,0) + #{frozenDeposit},
+		</if>				
+		<if test="consueAmount != null">  
+				consueAmount = ifnull(consueAmount,0) + #{consueAmount},
+		</if>				
+		<if test="withdrawTotalDeposit != null">  
+				withdrawTotalDeposit = ifnull(withdrawTotalDeposit,0) + #{withdrawTotalDeposit},
+		</if>				
+		<if test="userId != null">  
+				updateTime = now(),
+		</if>				
+		</trim>
+		WHERE userId = #{userId}  and accountType=#{accountType} and  (ifnull(amount,0) + #{amount})>=0
+	</update>	
+	
+	
+	<insert id="addUserAccount" parameterType="bizUserAccountDo" >
+		INSERT INTO t_user_account(	
+			userId
+			,amount
+			,accountType
+			,incomeAmount
+        	,consueAmount
+			,updateTime
+		
+		) VALUES (		
+		     	#{userId}
+		     	,#{amount}
+				,#{accountType}
+				,#{incomeAmount}
+				,#{consueAmount}
+				,now()
+			
+		)
+	</insert>
+
+	
+	<insert id="insertFeiHongTemp" parameterType="bizUserAccountDo" >
+		INSERT INTO t_user_account_temp(	
+			userId
+			,amount
+			,accountType
+			,updateTime
+		
+		) VALUES (		
+		     	#{userId}
+		     	,#{amount}
+				,#{accountType}				
+				,now()
+			
+		)
+	</insert>
+	
+	<delete id="deleteFeiHongTemp" parameterType="Map" >
+		truncate table t_user_account_temp
+	</delete>
+	
+	
+	
+	
+	<insert id="backupAccount" parameterType="String" >
+		create table t_user_account_${_parameter}
+        select * from t_user_account
+	</insert>
+	
+	
+</mapper>
+

@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.withdraw.dao.IWithdrawDao">
+	<resultMap type="withdrawDo" id="withdrawResultMap">
+		<result property="id" column="id" />
+		<result property="withdrawCode" column="withdrawCode" />
+		<result property="userId" column="userId" />
+		<result property="amount" column="amount" />
+		<result property="charge" column="charge" />
+		<result property="payAmount" column="payAmount" />
+		<result property="createTime" column="createTime" />
+		<result property="withdrawStatus" column="withdrawStatus" />
+		<result property="payStatus" column="payStatus" />
+		<result property="payTime" column="payTime" />
+		<result property="bankNo" column="bankNo" />
+		<result property="bankName" column="bankName" />
+		<result property="bankUser" column="bnakUser" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="withdrawResultMap">
+		SELECT * 
+		  FROM t_withdraw WHERE id = #{id}
+	</select>
+
+	<select id="selectWithdraw" parameterType="Map" resultMap="withdrawResultMap">
+		SELECT * 
+		  FROM t_withdraw
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="withdrawId != null">  
+				AND id = #{id}
+			</if>
+			<if test="withdrawCode != null">  
+				AND withdrawCode = #{withdrawCode}
+			</if>
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="amount != null">  
+				AND amount = #{amount}
+			</if>
+			<if test="charge != null">  
+				AND charge = #{charge}
+			</if>
+			<if test="payAmount != null">  
+				AND payAmount = #{payAmount}
+			</if>
+			<if test="createTime != null">  
+				AND createTime = #{createTime}
+			</if>
+			<if test="withdrawStatus != null">  
+				AND withdrawStatus = #{withdrawStatus}
+			</if>
+			<if test="payStatus != null">  
+				AND payStatus = #{payStatus}
+			</if>
+			<if test="payTime != null">  
+				AND payTime = #{payTime}
+			</if>
+			<if test="bankNo != null">  
+				AND bankNo = #{bankNo}
+			</if>
+			<if test="bankName != null">  
+				AND bankName = #{bankName}
+			</if>
+			order by createTime desc
+         </trim> 
+
+	</select>
+	
+	<update id="updateWithdrawById" parameterType="withdrawDo">
+		UPDATE t_withdraw 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="withdrawCode != null">  
+				withdrawCode = #{withdrawCode},
+		</if>				
+		<if test="userId != null">  
+				userId = #{userId},
+		</if>				
+		<if test="amount != null">  
+				amount = #{amount},
+		</if>				
+		<if test="charge != null">  
+				charge = #{charge},
+		</if>				
+		<if test="payAmount != null">  
+				payAmount = #{payAmount},
+		</if>				
+		<if test="createTime != null">  
+				createTime = #{createTime},
+		</if>				
+		<if test="withdrawStatus != null">  
+				withdrawStatus = #{withdrawStatus},
+		</if>				
+		<if test="payStatus != null">  
+				payStatus = #{payStatus},
+		</if>				
+		<if test="payTime != null">  
+				payTime = #{payTime},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addWithdraw" parameterType="withdrawDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_withdraw(		
+		withdrawCode
+		,userId
+		,amount
+		,charge
+		,payAmount
+		,createTime
+		,withdrawStatus
+		,payStatus
+		,payTime
+		,bankUser
+		,bankName
+		,bankNo
+)
+		     VALUES (		#{withdrawCode}
+		,#{userId}
+		,#{amount}
+		,#{charge}
+		,#{payAmount}
+		,#{createTime}
+		,#{withdrawStatus}
+		,#{payStatus}
+		,#{payTime}
+		,#{bankUser}
+		,#{bankName}
+		,#{bankNo}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_withdraw WHERE id = #{id}
+	</delete>
+	
+</mapper>
+

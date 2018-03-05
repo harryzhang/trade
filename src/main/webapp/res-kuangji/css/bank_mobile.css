@@ -1,0 +1,28 @@
+@charset "utf-8";
+div.mengban{ width:100%; height:auto; display:none; position:fixed; top:0; left:0; background-color:#000; opacity:0.7;}
+div.card{ width:100%; height:auto; float:left; display:none; background-color:#fff; z-index:900; position:absolute; top:0px; }
+span.card{ width:90%; height:40px; float:left; font-size:1.4rem; margin:30px 5% 0 5%;  }
+input.card{ width:90%; height:50px; float:left; font-size:1.2rem; margin-left:5%; border:1px solid #e5e5e5; padding-left:10px; border-radius:2px;}
+input.qd{ width:90%; height:50px; float:left; font-size:1.5rem; margin-left:5%; background-color:#E50011; border-radius:2px; text-align:center; border:none; color:#fff; margin-top:20px;}
+.cur{ width:100%; height:auto; display:none; float:left; position:absolute; top:0px; z-index:810; background:url(../img/fanhui.png) 5% 15px no-repeat; background-size:11px 25px; background-color:#fff;}
+.cur li{ width:100%; height:auto; float:left; font-size:1.4rem; line-height:50px; border-bottom:1px solid #e5e5e5; padding-left:5%;padding-right:5%;}
+.cur .yhtitle{ width:100%; height:50px; float:left; line-height:50px; text-align:center; font-size:1.5rem;border-bottom:1px solid #e5e5e5;}
+.cur ul{ width:100%; height:auto; float:left; overflow:scroll;}
+.cur .lin{line-height:25px;}
+.zhihang .lin{line-height:25px;}
+.overfl{ width:100%; height:100%;/* overflow:hidden; position:fixed;*/}
+li.selected{color:#959595;}
+li font.selected{color:#959595;}
+li.y{color:#000;}
+li font.ys{color:#dcdcdc;}
+li font.addr p{ width:100%; height:auto; text-align:right; font-size:1.3rem;}
+.recordsInfo{ width:70%; height:147px; display:none; position:fixed; left:15%; z-index:999; background-color:#fff; border-radius:2px; padding-top:15px; }
+.recordsInfo ul{ width:100%; height:auto; float:left;}
+.recordsInfo ul li.anquan{ width:100%; height:auto; display:block; float:left;  padding-left:5%; line-height:20px; font-size:1.4rem;}
+.recordsInfo ul li.key{ width:90%; height:46px; display:block; float:left; font-size:1.3rem; margin-top:20px; margin-left:5%; }
+.recordsInfo ul li.key input{ width:90%; height:30px; float:left; border:none; margin-left:5%; font-size:1.3rem;}
+.recordsInfo ul li.key dd{ width:100%; height:4px; display:block; float:left; font-size:1.3rem; border:1px solid #d2d2d2; border-top:none; }
+.recordsInfo ul li.gbbut{ width:50%; height:40px; float:left; line-height:40px; color:#fff; text-align:center; margin-bottom:0px; font-size:1.5rem; background-color:#e5e5e5; position:absolute; bottom:0px; border-radius:0 0 0 2px;}
+.recordsInfo ul li.xgcolor{  background-color:#E50011; right:0px; border-radius:0 0 2px 0;}
+
+.kaihuname .gb{width:100%;height:40px; float:left; line-height:40px; color:#fff; text-align:center; margin-bottom:0px; font-size:1.5rem; background-color:#e5e5e5; position:absolute; bottom:0px; border-radius:0 0 0 2px;}

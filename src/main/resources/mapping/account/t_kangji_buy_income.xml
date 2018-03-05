@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.account.dao.IKangjiBuyIncomeDao">
+	<resultMap type="kangjiBuyIncomeDo" id="kangjiBuyIncomeResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="userId" />
+		<result property="orderId" column="orderId" />
+		<result property="kangjiQty" column="kangjiQty" />
+		<result property="price" column="price" />
+		<result property="totalPrice" column="totalPrice" />
+		<result property="income" column="income" />
+		<result property="grade" column="grade" />
+		<result property="createTime" column="createTime" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="kangjiBuyIncomeResultMap">
+		SELECT * 
+		  FROM t_kangji_buy_income WHERE id = #{id}
+	</select>
+	
+	<select id="getUserGradeIncome" parameterType="Long" resultMap="kangjiBuyIncomeResultMap">
+		select grade,sum(income) as income from t_kangji_buy_income
+		where userid =#{userId}
+		group by grade
+	</select>
+
+	<select id="selectKangjiBuyIncome" parameterType="Map" resultMap="kangjiBuyIncomeResultMap">
+		SELECT * 
+		  FROM t_kangji_buy_income
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="orderId != null">  
+				AND orderId = #{orderId}
+			</if>
+			<if test="kangjiQty != null">  
+				AND kangjiQty = #{kangjiQty}
+			</if>
+			<if test="price != null">  
+				AND price = #{price}
+			</if>
+			<if test="totalPrice != null">  
+				AND totalPrice = #{totalPrice}
+			</if>
+			<if test="income != null">  
+				AND income = #{income}
+			</if>
+			<if test="grade != null">  
+				AND grade = #{grade}
+			</if>
+			<if test="createTime != null">  
+				AND createTime = #{createTime}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateKangjiBuyIncomeById" parameterType="kangjiBuyIncomeDo">
+		UPDATE t_kangji_buy_income 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="userId != null">  
+				userId = #{userId},
+		</if>				
+		<if test="orderId != null">  
+				orderId = #{orderId},
+		</if>				
+		<if test="kangjiQty != null">  
+				kangjiQty = #{kangjiQty},
+		</if>				
+		<if test="price != null">  
+				price = #{price},
+		</if>				
+		<if test="totalPrice != null">  
+				totalPrice = #{totalPrice},
+		</if>				
+		<if test="income != null">  
+				income = #{income},
+		</if>				
+		<if test="grade != null">  
+				grade = #{grade},
+		</if>				
+		<if test="createTime != null">  
+				createTime = #{createTime},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addKangjiBuyIncome" parameterType="kangjiBuyIncomeDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_kangji_buy_income(		userId
+		,orderId
+		,kangjiQty
+		,price
+		,totalPrice
+		,income
+		,grade
+		,createTime
+)
+		     VALUES (		#{userId}
+		,#{orderId}
+		,#{kangjiQty}
+		,#{price}
+		,#{totalPrice}
+		,#{income}
+		,#{grade}
+		,#{createTime}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_kangji_buy_income WHERE id = #{id}
+	</delete>
+	
+</mapper>
+

@@ -1,0 +1,51 @@
+.top {
+	width: 100%; height: 50px; border-bottom-color: rgb(210, 210, 210); border-bottom-width: 1px; border-bottom-style: solid; float: left; background-color: #333;
+}
+.top b {
+	background: url("../images/fanhui.png") no-repeat center / 11px 25px; width: 12%; height: 50px; float: left; display: block;
+}
+.top dd {
+	width: 76%; height: 50px; text-align: center; line-height: 50px; font-size: 1.7rem; float: left; display: block;
+}
+.top span {
+	background: url("../images/caidan.png") no-repeat center / 14px 30px; width: 12%; height: 50px; float: right; display: block;
+}
+.top ul {
+	border: 1px solid rgb(229, 229, 229); top: 50px; width: 100px; height: auto; right: 5px; display: none; position: absolute; z-index: 9; background-color: rgb(255, 255, 255);
+}
+.top ul li {
+	padding: 0px 20px; width: 100px; height: 40px; text-align: center; line-height: 40px;
+}
+.index {
+	letter-spacing: 8px; border-bottom-color: rgb(229, 229, 229); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.member {
+	border-bottom-color: rgb(229, 229, 229); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.shoppingCart {
+	letter-spacing: 4px;
+}
+ul.manage {
+	width: 100%; height: auto; font-size: 1.5rem; float: left; display: block;color:#333;
+}
+ul.manage li {
+	background: url("../img/xiaojiantou.png") no-repeat 95% / 5px 10px; padding: 0px 5%; width: 100%; height: 50px; line-height: 50px; border-bottom-color: rgb(229, 229, 229); border-bottom-width: 1px; border-bottom-style: solid; float: left;
+}
+.mengban {
+	background: rgba(0, 0, 0, 0.7); width: 100%; height: auto; display: none; position: fixed;
+}
+.tanceng {
+	background: rgba(255, 255, 255, 1); border-radius: 3px; left: 10%; width: 80%; height: 190px; display: none; position: absolute;
+}
+.tanceng p {
+	width: 80%; height: 20px; line-height: 20px; margin-left: 10%; display: block;
+}
+.tanceng input {
+	width: 80%; height: 35px;
+}
+.tanceng input[type='password'] {
+	margin: 40px 10% 10px;
+}
+.tanceng input[type='button'] {
+	background: rgb(229, 0, 17); margin: 10px 10% 40px; border-radius: 2px; border: currentColor; text-align: center; color: rgb(255, 255, 255); font-size: 1.5rem;
+}

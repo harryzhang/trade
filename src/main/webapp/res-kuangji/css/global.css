@@ -1,0 +1,158 @@
+@charset "utf-8";
+/*格式化样式*/
+*{ margin:0; padding:0;}
+
+@media screen and  (min-width: 449px){
+	body{
+	      width:450px;
+	      margin:0 auto;
+	    }
+}
+
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,font,span,b{margin:0;padding:0;} 
+html{font-size: 62.5%;}
+body{ font-size: 1.4rem;}
+table {border-collapse:collapse;border-spacing:0;} 
+fieldset,img {border:0} 
+ol,ul{list-style:none} 
+ol li,ul li,li{list-style:none} 
+/*文字排版、颜色*/
+.f11{font-size:11px}
+.f12{font-size:12px}
+.f13{font-size:13px}
+.f14{font-size:14px}
+.f16{font-size:16px}
+.f20{font-size:20px}
+.fb{font-weight:bold}
+.fn{font-weight:normal}
+.t2{text-indent:2em}
+.red,a.red{color:#cc0031}
+.darkblue,a.darkblue{color:#039}
+.gray,a.gray{color:#878787}
+.lh150{line-height:150%}
+.lh180{line-height:180%}
+.lh200{line-height:200%}
+.unl{text-decoration:underline;}
+.no_unl{text-decoration:none;}
+/*定位*/
+.tl{text-align:left}
+.tc{text-align:center}
+.tr{text-align:right}
+.fl{float:left;display:inline}
+.fr{float:right;display:inline}
+.cb{clear:both}
+.cl{clear:left}
+.cr{clear:right}
+.vm{vertical-align:middle} 
+.pr{position:relative} 
+.pa{position:absolute}
+.abs-right{position:absolute;right:0}
+.zoom{zoom:1} 
+.hidden{visibility:hidden} 
+.none{display:none}
+/***********通用基本类2************/
+* {
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+    font-family: "微软雅黑";
+    line-height: 100%;
+}
+body {
+    font-size: 14px;
+    text-align: center;
+    color: #fff;
+    background-color: #FFF;
+}
+table {
+    border-collapse: collapse;
+}
+td {
+    padding: 3px;
+}
+img {
+    border: none;
+}
+input {
+    padding: 1px;
+    vertical-align: middle;
+    line-height: normal;
+}
+a:link, a:visited {
+    text-decoration: none;
+    color: #000;
+}
+a:hover, a:active {
+    text-decoration: none;
+    color: #000;
+    border: none;
+}
+/*======万能Float闭合======*/
+.clear:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.clear {display: inline-block;} /* for IE/Mac */
+
+/*<!-- main stylesheet ends, CC with new stylesheet below... -->*/
+.clear {
+    zoom: 1;     /* triggers hasLayout */
+    display: block;     /* resets display for IE/Win */
+} /* Only IE can see inside the conditional comment
+and read this CSS rule. Don't ever use a normal HTML
+comment inside the CC or it will close prematurely. */
+/*======万能Float闭合2======*/
+.overflow-hidden{overflow:hidden;}         /*控制背景溢出*/
+.equal-height{margin-bottom:-32800px;padding-bottom:32800px;}      /*控制高度足够小*/
+/*======万能Float闭合3======*/
+.clear 
+{
+    height:0px;
+    clear:both;
+    font-size:0px;
+    line-height:0px;
+    zoom: 1;
+}
+*{ box-sizing:border-box;}
+input[type="text"],input[type="button"], input[type="submit"],input[type="tel"],input[type="email"] ,input[type="file"],input[type="reset"],input[type="date"],input[type="time"],input[type="number"] {
+    -webkit-appearance: none; border-radius:0;}
+div,dl,dt,dd,span,ul,li,ol,a,input,font,b:hover{ -webkit-tap-highlight-color:rgba(0,0,0,0);}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+    -webkit-appearance: none !important;
+    margin: 0; 
+}
+input[type="number"]{-moz-appearance:textfield;}
+
+
+/*****分页****/
+.pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 10px 0px 20px;
+    border-radius: 4px;
+}
+.pagination>li {
+    display: inline;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color:#E50011;
+    border-color: #E50011;
+}
+.pagination>li>a, .pagination>li>span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}

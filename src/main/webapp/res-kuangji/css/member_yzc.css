@@ -1,0 +1,55 @@
+@charset "utf-8";
+html{font-size:62.5%;}
+body{ font-size:1.4rem; color:#333;}
+.top{ width:100%; height:50px; float:left; background-color:#FCFAF7;}
+.top b{ width:12%; height:50px; display:block; float:left; background:url(../images/fanhui.png) center center no-repeat; background-size:11px 25px;}
+.top dd{ width:76%; height:50px; display:block; float:left; font-size:1.7rem; line-height:50px; text-align:center;}
+.top span{ width:12%; height:50px; display:block; float:right; background:url(../images/caidan.png) center center no-repeat; background-size:14px 30px;}
+.top ul{ width:100px; height:auto; position:absolute; top:50px; right:5px; z-index:9; background-color:#FFF; border:1px solid #e5e5e5; display:none;}
+.top ul li{ width:100px; height:40px; line-height:40px; text-align:center; padding:0 20px;}
+.index{ letter-spacing:8px; border-bottom:1px solid #e5e5e5;}
+.member{ border-bottom:1px solid #e5e5e5;}
+.shoppingCart{ letter-spacing:4px;}
+.memberInfo{ width:100%; height:125px; float:left; background-color:#4325B9; background-size:cover;top:0}
+.tleft{ width:69%; height:55px; float:left; margin:21px 2% 0px 10%;}
+.tleft dl{ width:100%; height:auto; float:left;}
+.tleft dl dt{ width:50px; height:50px; float:left; margin-right:5px; border-radius:50%; overflow:hidden; border:1px solid #FFF;}
+.tleft dl dt img{ width:100%;}
+.tleft dl dd{ width:66%; height:20px; float:left; line-height:20px; font-size:1.4rem; color:#FFF; overflow:hidden;}
+.tleft dl dd.uname{ margin-top:5px; text-overflow:ellipsis; white-space:nowrap;}
+.tleft dl dd.uma{ font-size:1.2rem;}
+.tright{ width:7%; height:55px; float:left; margin:21px 10% 0px 0; text-align:center;}
+.tright img{ width:18px; height:18px; margin-top:10px;}
+.tbottom{ width:83%; height:50px; float:left; margin:0px 7% 0 10%;}
+.tbottom li{ width:54%; height:auto; float:left; margin-top:21px; font-size:1.1rem; color:#FFF;}
+.tbottom dl{ width:23%; height:50px; float:left;}
+.tbottom dl dt{ text-align:center; font-size:1.5rem; color:#FFF; margin-bottom:6px; font-weight:bold;}
+.tbottom dl dd{ width:100%; height:20px; color:#FFF; font-size:1.1rem; text-align:center;}
+
+.main{ width:100%; height:auto; float:left; background:#eee;overflow:scroll;padding-bottom:50px;}
+.main table{ width:100%; height:auto; float:left;}
+.main table tr td{ height:80px; background:#FFF; border:1px solid #eee;}
+.main table tr td dl{ width:100%; height:80px; background:#FFF;}
+.main table tr td dl dt{ width:100%; height:50px; text-align:center;}
+.main table tr td dl dt img{ width:22px; height:22px; text-align:center; margin-top:14px;}
+.main table tr td dl dd{ width:100%; height:30px; line-height:30px; text-align:center; font-size:1.3rem;}
+.mengban{ width:100%; height:auto; position:fixed; top:0; left:0; background-color:#000; opacity:0.6; z-index:200;}
+.recordsInfo{ width:80%; height:auto; position:fixed; left:10%; z-index:999; background-color:#fff; border-radius:2px; }
+.recordsInfo ul{ width:84%; height:auto; float:left; margin:20px 8%}
+.recordsInfo ul li.anquan{ width:100%; height:auto; display:block; float:left; background:url(../images/tishi.png) 5% center no-repeat; background-size:14px 18px; padding-left:15%; line-height:20px; font-size:1.5rem;}
+.recordsInfo ul li.key{ width:90%; height:auto; display:block; float:left; font-size:1.2rem; line-height:18px; margin-top:15px; margin:15px 5%; word-break:break-all; color:#959595;}
+.recordsInfo ul li.gbbut{ width:50%; height:20px; float:left; line-height:20px; color:#959595; text-align:center; margin-top:10px; font-size:1.5rem;}
+.recordsInfo ul li.xgcolor{ color:#286889;}
+.footer{ width:100%; height:50px; position:fixed; bottom:0; left:0; background-color:#FFF; border-top:1px solid #d2d2d2;}
+.footer dl{ width:33%; height:50px; float:left;}
+.footer dl dt{ width:100%; height:30px;}
+.footer dl:nth-child(1) dt{ background:url(../images/indexf_01.png) center center no-repeat; background-size:21px 21px;}
+.footer dl:nth-child(2) dt{ background:url(../images/indexf_02.png) center center no-repeat; background-size:21px 21px;}
+.footer dl:nth-child(3) dt{ background:url(../images/indexf_03.png) center center no-repeat; background-size:21px 21px;}
+.footer dl:nth-child(4) dt{ background:url(../images/indexf_04.png) center center no-repeat; background-size:21px 21px;}
+.footer dl:nth-child(1).cur dt{ background:url(../images/indexfs_01.png) center center no-repeat; background-size:21px 21px;}
+.footer dl:nth-child(2).cur dt{ background:url(../images/indexfs_02.png) center center no-repeat; background-size:21px 21px;}
+.footer dl:nth-child(3).cur dt{ background:url(../images/indexfs_03.png) center center no-repeat; background-size:21px 21px;}
+.footer dl:nth-child(4).cur dt{ background:url(../images/indexfs_04.png) center center no-repeat; background-size:21px 21px;}
+.footer dl dd{ height:15px; margin-top:3px; font-size:1.0rem; color:#959595; text-align:center;}
+.footer dl.cur dd{ color:#E50011;}

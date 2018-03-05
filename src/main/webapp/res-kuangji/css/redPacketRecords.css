@@ -1,0 +1,90 @@
+.top {
+	width: 100%; height: 50px; float: left; background-color: rgb(255, 71, 71);
+}
+.top b {
+	background: url("../images/fanhui.png") no-repeat center / 11px 25px; width: 12%; height: 50px; float: left; display: block;
+}
+.top dd {
+	width: 76%; height: 50px; text-align: center; color: rgb(255, 255, 255); line-height: 50px; font-size: 1.7rem; float: left; display: block;
+}
+.top span {
+	background: url("../images/caidan.png") no-repeat center / 6px 28px; width: 12%; height: 50px; float: right; display: block;
+}
+.top ul {
+	border: 1px solid rgb(204, 204, 204); top: 50px; width: 100px; height: auto; right: 5px; display: none; position: absolute; z-index: 9; background-color: rgb(255, 255, 255);
+}
+.top ul li {
+	padding: 0px 20px; width: 100px; height: 40px; text-align: center; line-height: 40px;
+}
+.index {
+	letter-spacing: 8px; border-bottom-color: rgb(229, 229, 229); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.member {
+	border-bottom-color: rgb(229, 229, 229); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.shoppingCart {
+	letter-spacing: 4px;
+}
+.main {
+	width: 100%; height: auto; float: left;
+}
+.main > ul {
+	background: rgb(255, 71, 71); width: 100%; height: 60px; float: left;
+}
+.main > ul li {
+	width: 50%; height: 60px; text-align: center; color: rgb(255, 255, 255); line-height: 60px; font-size: 1.6em; float: left;
+}
+.main > ul li.on {
+	border-bottom-color: rgb(250, 200, 20); border-bottom-width: 3px; border-bottom-style: solid;
+}
+.tab_div {
+	width: 100%; height: auto; float: left;
+}
+.tab_div div {
+	width: 100%; height: auto; float: left; display: none;
+}
+.tab_div div.active {
+	display: block;
+}
+.tab_div div dl {
+	padding: 25px 0px; width: 100%; height: 105px; border-bottom-color: rgb(238, 238, 238); border-bottom-width: 1px; border-bottom-style: solid; float: left;
+}
+.tab_div div dl dt {
+	width: 100%; height: auto; text-align: center; color: rgb(149, 149, 149);
+}
+.tab_div div dl dt span {
+	margin: 0px 3px; color: rgb(253, 71, 70);
+}
+.tab_div div dl dd {
+	width: 100%; height: auto; text-align: center; color: rgb(253, 71, 70); margin-top: 13px;
+}
+.tab_div div dl dd span {
+	font-size: 3rem; margin-right: 5px;
+}
+.tab_div div ul {
+	width: 100%; height: auto; float: left;
+}
+.tab_div div ul li {
+	padding: 15px 5%; width: 100%; border-bottom-color: rgb(238, 238, 238); border-bottom-width: 1px; border-bottom-style: solid; float: left;
+}
+.tab_div div ul li p {
+	width: 100%; height: auto; float: left; display: block;
+}
+.tab_div div ul li p:first-child {
+	font-size: 1.5rem;
+}
+.tab_div div ul li p:last-child {
+	color: rgb(149, 149, 149); font-size: 1.2rem; margin-top: 8px;
+}
+.tab_div div ul li p:first-child label {
+	width: 58%; height: 15px; overflow: hidden; float: left; display: block; white-space: nowrap; text-overflow: ellipsis;
+}
+.tab_div div ul li p:first-child span {
+	width: 42%; height: 15px; text-align: right; float: right; display: block;
+}
+.tab_div div ul li p:last-child label {
+	width: 58%; height: 12px; overflow: hidden; float: left; display: block; white-space: nowrap; text-overflow: ellipsis;
+}
+.tab_div div ul li p:last-child span {
+	width: 42%; height: 12px; text-align: right; float: right; display: block;
+}

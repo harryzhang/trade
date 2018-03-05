@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.bet.dao.IBetWinDao">
+	<resultMap type="betWinDo" id="betWinResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="userId" />
+		<result property="peroid" column="peroid" />
+		<result property="createTime" column="createTime" />
+		<result property="betAmount" column="betAmount" />
+		<result property="winAmount" column="winAmount" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="betWinResultMap">
+		SELECT * 
+		  FROM t_bet_win WHERE id = #{id}
+	</select>
+
+	<select id="selectBetWin" parameterType="Map" resultMap="betWinResultMap">
+		SELECT * 
+		  FROM t_bet_win
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="peroid != null">  
+				AND peroid = #{peroid}
+			</if>
+			<if test="createTime != null">  
+				AND createTime = #{createTime}
+			</if>
+			<if test="betAmount != null">  
+				AND betAmount = #{betAmount}
+			</if>
+			<if test="winAmount != null">  
+				AND winAmount = #{winAmount}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateBetWinById" parameterType="betWinDo">
+		UPDATE t_bet_win 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="userId != null">  
+				userId = #{userId},
+		</if>				
+		<if test="peroid != null">  
+				peroid = #{peroid},
+		</if>				
+		<if test="createTime != null">  
+				createTime = #{createTime},
+		</if>				
+		<if test="betAmount != null">  
+				betAmount = #{betAmount},
+		</if>				
+		<if test="winAmount != null">  
+				winAmount = #{winAmount},
+		</if>				
+		<if test="status != null">  
+				status = #{status},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addBetWin" parameterType="betWinDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_bet_win(		userId
+		,peroid
+		,createTime
+		,betAmount
+		,winAmount
+		,status
+)
+		     VALUES (		#{userId}
+		,#{peroid}
+		,#{createTime}
+		,#{betAmount}
+		,#{winAmount}
+		,#{status}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_bet_win WHERE id = #{id}
+	</delete>
+	
+</mapper>
+

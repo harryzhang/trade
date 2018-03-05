@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.upgrade.dao.IUserUpgradeDao">
+	<resultMap type="userUpgradeDo" id="userUpgradeResultMap">
+		<result property="userid" column="userid" />
+		<result property="beforeUpgrade" column="before_upgrade" />
+		<result property="upgradeDate" column="upgrade_date" />
+		<result property="upgradeAmount" column="upgrade_amount" />
+		<result property="receiveUser" column="receive_user" />
+		<result property="paymentMethod" column="payment_method" />
+		<result property="accountReceive" column="account_receive" />
+		<result property="accountExpend" column="account_expend" />
+		<result property="afterUpgrade" column="after_upgrade" />
+	</resultMap>
+	
+	<resultMap id="upgradeWithUserInfo" type="userUpgradeDo">
+		<result property="userid" column="userid" />
+		<result property="beforeUpgrade" column="before_upgrade" />
+		<result property="upgradeDate" column="upgrade_date" />
+		<result property="upgradeAmount" column="upgrade_amount" />
+		<result property="receiveUser" column="receive_user" />
+		<result property="paymentMethod" column="payment_method" />
+		<result property="accountReceive" column="account_receive" />
+		<result property="accountExpend" column="account_expend" />
+		<result property="afterUpgrade" column="after_upgrade" />
+		<association property="reciver" column="receive_user" select="getReciverUserInfo" />
+	</resultMap>
+	<resultMap id="upgradeWithApplyInfo" type="userUpgradeDo">
+		<result property="userid" column="userid" />
+		<result property="beforeUpgrade" column="before_upgrade" />
+		<result property="upgradeDate" column="upgrade_date" />
+		<result property="upgradeAmount" column="upgrade_amount" />
+		<result property="receiveUser" column="receive_user" />
+		<result property="paymentMethod" column="payment_method" />
+		<result property="accountReceive" column="account_receive" />
+		<result property="accountExpend" column="account_expend" />
+		<result property="afterUpgrade" column="after_upgrade" />
+		<association property="applyUser" column="userid" select="getReciverUserInfo" />
+	</resultMap>
+	
+
+	<select id="checkBNetWorkParent" parameterType="String" resultType="Map">
+		select u.id,p.groupName  
+		from t_user u , t_group p , t_group_user gu 
+		 where u.id = gu.userid 
+		    and gu.groupName = p.groupName 
+		    and u.status=1 
+		    and p.status=2
+		    and gu.status='T'
+		    and p.networkgroup='B'
+		    and userName = #{mobile}
+	</select>	
+		
+	<select id="getReciverUserInfo" parameterType="Long" resultType="userInfoDo">
+		select * from t_user_info where userId = #{userId}
+	</select>
+	
+	<select id="getById" parameterType="Long" resultMap="userUpgradeResultMap">
+		SELECT * 
+		  FROM t_user_upgrade WHERE id = #{id}
+	</select>
+
+	
+	<select id="selectUpgradeAuditList" parameterType="Map" resultMap="upgradeWithApplyInfo">
+		SELECT * 
+		  FROM t_user_upgrade
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="userid != null">  
+				AND userid = #{userid}
+			</if>
+			<if test="beforeUpgrade != null">  
+				AND before_upgrade = #{beforeUpgrade}
+			</if>
+			<if test="upgradeDate != null">  
+				AND upgrade_date = #{upgradeDate}
+			</if>
+			<if test="upgradeAmount != null">  
+				AND upgrade_amount = #{upgradeAmount}
+			</if>
+			<if test="receiveUser != null">  
+				AND receive_user  = #{receiveUser}
+			</if>
+			<if test="paymentMethod != null">  
+				AND payment_method = #{paymentMethod}
+			</if>
+			<if test="accountReceive != null">  
+				AND account_receive = #{accountReceive}
+			</if>
+			<if test="accountExpend != null">  
+				AND account_expend = #{accountExpend}
+			</if>
+			<if test="afterUpgrade != null">  
+				AND after_upgrade = #{afterUpgrade}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<select id="selectUserUpgrade" parameterType="Map" resultMap="upgradeWithUserInfo">
+		SELECT * 
+		  FROM t_user_upgrade
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="userid != null">  
+				AND userid = #{userid}
+			</if>
+			<if test="beforeUpgrade != null">  
+				AND before_upgrade = #{beforeUpgrade}
+			</if>
+			<if test="upgradeDate != null">  
+				AND upgrade_date = #{upgradeDate}
+			</if>
+			<if test="upgradeAmount != null">  
+				AND upgrade_amount = #{upgradeAmount}
+			</if>
+			<if test="receiveUser != null">  
+				AND receive_user  = #{receiveUser}
+			</if>
+			<if test="paymentMethod != null">  
+				AND payment_method = #{paymentMethod}
+			</if>
+			<if test="accountReceive != null">  
+				AND account_receive = #{accountReceive}
+			</if>
+			<if test="accountExpend != null">  
+				AND account_expend = #{accountExpend}
+			</if>
+			<if test="afterUpgrade != null">  
+				AND after_upgrade = #{afterUpgrade}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+         </trim> 
+
+	</select>
+	
+	
+	<select id="selectLevelAmount" parameterType="Map" resultType="Map">
+		SELECT count(userid) as countPersons, sum(upgrade_amount) as amount 
+		  FROM t_user_upgrade
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="beforeUpgrade != null">  
+				AND before_upgrade = #{beforeUpgrade}
+			</if>
+			<if test="receiveUser != null">  
+				AND receive_user  = #{receiveUser}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+         </trim> 
+	</select>
+	
+	<update id="updateUpgradeStatus" parameterType="userUpgradeDo">
+		UPDATE t_user_upgrade set status = #{status}		 
+		WHERE id = #{id}  and status = '0'
+	</update>
+	
+	<update id="updateUserUpgradeById" parameterType="userUpgradeDo">
+		UPDATE t_user_upgrade 
+		 <trim prefix="SET" prefixOverrides=","> 
+		 <if test="beforeUpgrade != null">  
+				before_upgrade = #{beforeUpgrade}
+		</if>		
+		<if test="upgradeDate != null">  
+				,upgrade_date = #{upgradeDate}
+		</if>		
+		<if test="upgradeAmount != null">  
+				,upgrade_amount = #{upgradeAmount}
+		</if>		
+		<if test="receiveUser != null">  
+				,receive_user = #{receiveUser}
+		</if>		
+		<if test="paymentMethod != null">  
+				,payment_method = #{paymentMethod}
+		</if>		
+		<if test="accountReceive != null">  
+				,account_receive = #{accountReceive}
+		</if>		
+		<if test="accountExpend != null">  
+				,account_expend = #{accountExpend}
+		</if>		
+		<if test="afterUpgrade != null">  
+				,after_upgrade = #{afterUpgrade}
+		</if>
+		<if test="status != null">  
+				,status = #{status}
+		</if>		
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addUserUpgrade" parameterType="userUpgradeDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_user_upgrade(	userid,	before_upgrade
+		,upgrade_date
+		,upgrade_amount
+		,receive_user
+		,payment_method
+		,account_receive
+		,account_expend
+		,after_upgrade
+		,status
+)
+		     VALUES (	#{userid},#{beforeUpgrade}
+		,#{upgradeDate}
+		,#{upgradeAmount}
+		,#{receiveUser}
+		,#{paymentMethod}
+		,#{accountReceive}
+		,#{accountExpend}
+		,#{afterUpgrade}
+		,#{status}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_user_upgrade WHERE id = #{id}
+	</delete>
+	
+</mapper>

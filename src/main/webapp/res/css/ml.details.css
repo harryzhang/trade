@@ -1,0 +1,21 @@
+#ld-layout{margin:0 15px;}
+#ld-layout .m-top{padding-left:0;}
+
+.data-table table{margin-top:10px;}    
+.data-table table thead tr , .data-table table tbody tr{height: 32px;}       
+.data-table table thead th {width:50%;}
+
+.lx-photo{margin:15px 10px; border-top:1px solid #d7d7d7; min-height:50px;}
+.lx-photo section .pad-lt{padding-left: 5px;}
+.lx-photo section .lx-info{height: 75px;margin-top: 10px;}
+.lx-photo section .lx-info:before{  content: '';width: 31px;height: 31px;position: absolute;left: 15px; background-image: url(../images/conicon.png);-webkit-background-size: 31px 31px;  background-size: 31px 31px;}
+.txt-tel{padding: 4px 0 0 50px;  font-size: 20px;  font-weight: normal;font: 16px/1.5 "Helvetica Neue", Helvetica, STHeiTi, sans-serif;}
+    
+.product-info ul {
+      margin: 0;
+      padding: 10px 15px 10px;
+    }
+    .divide {
+      margin: 0;
+    }
+    

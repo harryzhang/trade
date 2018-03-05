@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.group.dao.IGroupIndexManagerDao">
+	<resultMap type="groupIndexManagerDo" id="groupIndexManagerResultMap">
+		<result property="id" column="id" />
+		<result property="sort" column="sort" />
+		<result property="level" column="level" />
+		<result property="levelIndex" column="levelIndex" />
+		<result property="remark" column="remark" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="groupIndexManagerResultMap">
+		SELECT * 
+		  FROM t_group_index_manager WHERE id = #{id}
+	</select>
+
+	<select id="selectChildIndexByCurrentIndex"  parameterType="String" resultMap="groupIndexManagerResultMap">
+		SELECT * FROM t_group_index_manager WHERE PARENTINDEX = #{prentIndex} ORDER BY SORT
+	</select>
+	<select id="selectGroupIndexManager" parameterType="Map" resultMap="groupIndexManagerResultMap">
+		SELECT * 
+		  FROM t_group_index_manager
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id like #{id}
+			</if>
+			<if test="sort != null">  
+				AND sort like #{sort}
+			</if>
+			<if test="level != null">  
+				AND level like #{level}
+			</if>
+			<if test="levelIndex != null">  
+				AND levelIndex like #{levelIndex}
+			</if>
+			<if test="remark != null">  
+				AND remark like #{remark}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<select id="selectGroupIndexByCurrentIdx" parameterType="String" resultMap="groupIndexManagerResultMap">
+		SELECT * FROM t_group_index_manager WHERE levelIndex = #{levelIndex}
+	</select>
+	
+	<update id="updateGroupIndexManagerById" parameterType="groupIndexManagerDo">
+		UPDATE t_group_index_manager 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="sort != null">  
+				sort = #{sort},
+		</if>				
+		<if test="level != null">  
+				level = #{level},
+		</if>				
+		<if test="levelIndex != null">  
+				levelIndex = #{levelIndex},
+		</if>				
+		<if test="remark != null">  
+				remark = #{remark},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addGroupIndexManager" parameterType="groupIndexManagerDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_group_index_manager(
+		sort
+		,level
+		,levelIndex
+		,parentIndex
+		,remark
+)
+		     VALUES (
+		#{sort}
+		,#{level}
+		,#{levelIndex}
+		,#{parentIndex}
+		,#{remark}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_group_index_manager WHERE id = #{id}
+	</delete>
+	
+</mapper>
+

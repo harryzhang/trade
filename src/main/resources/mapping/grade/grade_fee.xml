@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.grade.dao.IGradeFeeDao">
+	<resultMap type="gradeFeeDo" id="gradeFeeResultMap">
+		<result property="id" column="id" />
+		<result property="gradeAmount" column="grade_amount" />
+		<result property="beforeUpgrade" column="before_upgrade" />
+		<result property="afterUpgrade" column="after_upgrade" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="gradeFeeResultMap">
+		SELECT * 
+		  FROM t_grade_fee WHERE id = #{id}
+	</select>
+
+	<select id="selectGradeFee" parameterType="Map" resultMap="gradeFeeResultMap">
+		SELECT * 
+		  FROM t_grade_fee
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="gradeAmount != null">  
+				AND grade_amount = #{gradeAmount}
+			</if>
+			<if test="beforeUpgrade != null">  
+				AND before_upgrade = #{beforeUpgrade}
+			</if>
+			<if test="afterUpgrade != null">  
+				AND after_upgrade = #{afterUpgrade}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateGradeFeeById" parameterType="gradeFeeDo">
+		UPDATE t_grade_fee 
+		   SET 		<if test="gradeAmount != null">  
+				grade_amount = #{gradeAmount}
+		</if>		
+		<if test="beforeUpgrade != null">  
+				,before_upgrade = #{beforeUpgrade}
+		</if>		
+		<if test="afterUpgrade != null">  
+				,after_upgrade = #{afterUpgrade}
+		</if>		
+
+		WHERE id = #{id}
+	</update>	
+	
+	<insert id="addFee" parameterType="map" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_amt_record (
+	        userId,
+	        amt,
+	        remark,
+	        directed,
+	        createTime,
+	        createBy    )
+         VALUES(
+            #{userId},
+	        #{amt},
+	        #{remark},
+	        #{directed},
+	        now(),
+	        #{createBy})
+	</insert>
+	
+	
+	<insert id="addGradeFee" parameterType="gradeFeeDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_grade_fee(		grade_amount
+		,before_upgrade
+		,after_upgrade
+)
+		     VALUES (		#{gradeAmount}
+		,#{beforeUpgrade}
+		,#{afterUpgrade}
+);
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_grade_fee WHERE id = #{id}
+	</delete>
+	
+</mapper>

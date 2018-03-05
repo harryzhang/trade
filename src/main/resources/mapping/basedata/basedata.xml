@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.redpack.basedata.dao.IBaseDataDao">
+
+	
+	<select id="getProvince" parameterType="Map" resultType="Map">
+		select provinceId , province as provinceName from t_s_province
+ 	</select>
+ 	
+	<select id="getCity" parameterType="map" resultType="Map">
+	    <![CDATA[ 
+		      select cityId, city as cityName from t_s_city where fatherID=#{province}
+          ]]>
+	</select>
+	
+	
+	
+</mapper>

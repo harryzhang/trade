@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.account.dao.IUserInfoDao">
+	<resultMap type="userInfoDo" id="redUserInfoResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="userId" />
+		<result property="realName" column="realName" />
+		<result property="idCardNo" column="idCardNo" />
+		<result property="sex" column="sex" />
+		<result property="contactAddress" column="contactAddress" />
+		<result property="mobile" column="mobile" />
+		<result property="eMail" column="eMail" />
+		<result property="weixiNumber" column="weixiNumber" />
+		<result property="qqNumber" column="qqNumber" />
+		<result property="zfbNumber" column="zfbNumber" />
+		<result property="cftNumber" column="cftNumber" />
+		<result property="bankName" column="bankName" />
+		<result property="province" column="province" />
+		<result property="city" column="city" />
+		<result property="bankSubbranch" column="bankSubbranch" />
+		<result property="bankAccount" column="bankAccount" />
+		<result property="openAccount" column="openAccount" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="redUserInfoResultMap">
+		SELECT * 
+		  FROM t_user_info WHERE id = #{id}
+	</select>
+	<select id="getByUserId" parameterType="Long" resultMap="redUserInfoResultMap">
+		SELECT * 
+		  FROM t_user_info WHERE userId = #{userId}
+	</select>
+
+	<select id="getByUserInfoDo" parameterType="Map" resultMap="redUserInfoResultMap">
+		SELECT * 
+		  FROM t_user_info
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="realName != null">  
+				AND realName = #{realName}
+			</if>
+			<if test="idCardNo != null">  
+				AND idCardNo = #{idCardNo}
+			</if>
+			<if test="sex != null">  
+				AND sex = #{sex}
+			</if>
+			<if test="contactAddress != null">  
+				AND contactAddress = #{contactAddress}
+			</if>
+			<if test="mobile != null">  
+				AND mobile = #{mobile}
+			</if>
+			<if test="eMail != null">  
+				AND eMail = #{eMail}
+			</if>
+			<if test="weixiNumber != null">  
+				AND weixiNumber = #{weixiNumber}
+			</if>
+			<if test="qqNumber != null">  
+				AND qqNumber = #{qqNumber}
+			</if>
+			<if test="zfbNumber != null">  
+				AND zfbNumber = #{zfbNumber}
+			</if>
+			<if test="cftNumber != null">  
+				AND cftNumber = #{cftNumber}
+			</if>
+			<if test="bankName != null">  
+				AND bankName = #{bankName}
+			</if>
+			<if test="province != null">  
+				AND province = #{province}
+			</if>
+			<if test="city != null">  
+				AND city = #{city}
+			</if>
+			<if test="bankSubbranch != null">  
+				AND bankSubbranch = #{bankSubbranch}
+			</if>
+			<if test="bankAccount != null">  
+				AND bankAccount = #{bankAccount}
+			</if>
+			<if test="openAccount != null">  
+				AND openAccount = #{openAccount}
+			</if>
+         </trim> 
+	</select>
+	
+	<update id="updataUserInfo" parameterType="userInfoDo">
+		UPDATE t_user_info 
+	<trim prefix="SET" suffixOverrides=",">	
+		<if test="realName != null">  
+				realName = #{realName},
+		</if>		
+		<if test="idCardNo != null">  
+				idCardNo = #{idCardNo},
+		</if>		
+		<if test="sex != null">  
+				sex = #{sex},
+		</if>		
+		<if test="contactAddress != null">  
+				contactAddress = #{contactAddress},
+		</if>		
+		<if test="mobile != null">  
+				mobile = #{mobile},
+		</if>		
+		<if test="eMail != null">  
+				eMail = #{eMail},
+		</if>		
+		<if test="weixiNumber != null">  
+				weixiNumber = #{weixiNumber},
+		</if>		
+		<if test="qqNumber != null">  
+				qqNumber = #{qqNumber},
+		</if>		
+		<if test="zfbNumber != null">  
+				zfbNumber = #{zfbNumber},
+		</if>		
+		<if test="cftNumber != null">  
+				cftNumber = #{cftNumber},
+		</if>		
+		<if test="bankName != null">  
+				bankName = #{bankName},
+		</if>		
+		<if test="province != null">  
+				province = #{province},
+		</if>		
+		<if test="city != null">  
+				city = #{city},
+		</if>		
+		<if test="bankSubbranch != null">  
+				bankSubbranch = #{bankSubbranch},
+		</if>		
+		<if test="bankAccount != null">  
+				bankAccount = #{bankAccount},
+		</if>		
+		<if test="openAccount != null">  
+				openAccount = #{openAccount},
+		</if>	
+		</trim>	
+		WHERE userId = #{userId} 
+	</update>	
+	
+	<insert id="saveUserInfo" parameterType="userInfoDo" keyProperty="id" useGeneratedKeys="true" >
+		INSERT INTO
+    	t_user_info
+    	(
+        userId, realName, idCardNo,
+        sex, contactAddress, mobile,
+        eMail, weixiNumber, qqNumber,
+        zfbNumber, cftNumber, bankName,
+        province, city, bankSubbranch,
+        bankAccount, openAccount
+    	)
+    	VALUES
+    	(
+       	#{userId},#{realName},#{idCardNo},
+       	#{sex},#{contactAddress},#{mobile},
+        #{eMail},#{weixiNumber},#{qqNumber},
+        #{zfbNumber},#{cftNumber},#{bankName},
+        #{province},#{city},#{bankSubbranch},
+        #{bankAccount},#{openAccount}
+    	)
+	</insert>
+	
+<!-- 	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_red_user_info WHERE userId = #{userId}
+	</delete> -->
+	
+</mapper>
+

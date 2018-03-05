@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.bet.dao.IUserBetDao">
+	<resultMap type="userBetDo" id="userBetResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="userId" />
+		<result property="periods" column="periods" />
+		<result property="betNumber" column="betNumber" />
+		<result property="betTime" column="betTime" />
+		<result property="amount" column="amount" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="userBetResultMap">
+		SELECT * 
+		  FROM t_user_bet WHERE id = #{id}
+	</select>
+
+	<select id="selectUserBet" parameterType="Map" resultMap="userBetResultMap">
+		SELECT * 
+		  FROM t_user_bet
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="periods != null">  
+				AND periods = #{periods}
+			</if>
+			<if test="betTime != null">  
+				AND betTime = #{betTime}
+			</if>
+			<if test="amount != null">  
+				AND amount = #{amount}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+			<if test="betNumber != null">  
+				AND betNumber = #{betNumber}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<select id="selectSumUserBet" parameterType="Map" resultType="Map">
+	
+		select betNumber ,sum(amount)  amount from t_user_bet 
+			where periods =#{period}
+		group by betNumber
+	
+	</select>
+	<select id="getBetGood" parameterType="Integer" resultType="String">
+	
+		select betNumber  from t_bet_good 
+			where periods =#{period}
+	
+	</select>
+	
+	<update id="updateUserBetById" parameterType="userBetDo">
+		UPDATE t_user_bet 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="userId != null">  
+				userId = #{userId},
+		</if>				
+		<if test="periods != null">  
+				periods = #{periods},
+		</if>				
+		<if test="betTime != null">  
+				betTime = #{betTime},
+		</if>				
+		<if test="amount != null">  
+				amount = #{amount},
+		</if>				
+		<if test="status != null">  
+				status = #{status},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addUserBet" parameterType="userBetDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_user_bet(		userId
+		,periods
+		,betTime
+		,amount
+		,status
+		,betNumber
+)
+		     VALUES (		#{userId}
+		,#{periods}
+		,#{betTime}
+		,#{amount}
+		,#{status}
+		,#{betNumber}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_user_bet WHERE id = #{id}
+	</delete>
+	
+</mapper>
+

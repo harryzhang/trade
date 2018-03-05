@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.bet.dao.IUserJingpaiDao">
+	<resultMap type="userJingpaiDo" id="userJingpaiResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="userId" />
+		<result property="jingpaiPrice" column="jingpaiPrice" />
+		<result property="jingpaiTime" column="jingpaiTime" />
+		<result property="jingpaiId" column="jingpaiId" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="userJingpaiResultMap">
+		SELECT * 
+		  FROM t_user_jingpai WHERE id = #{id}
+	</select>
+
+	<select id="selectUserJingpai" parameterType="Map" resultMap="userJingpaiResultMap">
+		SELECT * 
+		  FROM t_user_jingpai
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="jingpaiPrice != null">  
+				AND jingpaiPrice = #{jingpaiPrice}
+			</if>
+			<if test="jingpaiTime != null">  
+				AND jingpaiTime = #{jingpaiTime}
+			</if>
+			<if test="jingpaiId != null">  
+				AND jingpaiId = #{jingpaiId}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateUserJingpaiById" parameterType="userJingpaiDo">
+		UPDATE t_user_jingpai 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="userId != null">  
+				userId = #{userId},
+		</if>				
+		<if test="jingpaiPrice != null">  
+				jingpaiPrice = #{jingpaiPrice},
+		</if>				
+		<if test="jingpaiTime != null">  
+				jingpaiTime = #{jingpaiTime},
+		</if>				
+		<if test="jingpaiId != null">  
+				jingpaiId = #{jingpaiId},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addUserJingpai" parameterType="userJingpaiDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_user_jingpai(		userId
+		,jingpaiPrice
+		,jingpaiTime
+		,jingpaiId
+)
+		     VALUES (		#{userId}
+		,#{jingpaiPrice}
+		,#{jingpaiTime}
+		,#{jingpaiId}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_user_jingpai WHERE id = #{id}
+	</delete>
+	
+</mapper>
+

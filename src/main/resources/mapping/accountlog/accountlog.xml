@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.accountlog.dao.IAccountLogDao">
+	<!--<resultMap type="accountLogDo" id="accountLogResultMap">
+		<result property="accountLogId" column="accountLogId" />
+		<result property="tradeId" column="tradeId" />
+		<result property="fromAccountId" column="fromAccountId" />
+		<result property="toAccountId" column="toAccountId" />
+		<result property="transAmt" column="transAmt" />
+		<result property="transStatus" column="transStatus" />
+		<result property="transTime" column="transTime" />
+		<result property="updateTime" column="updateTime" />
+	</resultMap>-->
+
+	<select id="getById" parameterType="Long" resultType="accountLogDo">
+		SELECT * 
+		  FROM dep_account_log WHERE id = #{id}
+	</select>
+
+	<select id="selectAccountLog" parameterType="Map" resultType="accountLogDo">
+		SELECT * 
+		  FROM dep_account_log
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="accountLogId != null">  
+				AND accountLogId like #{accountLogId}
+			</if>
+			<if test="tradeId != null">  
+				AND tradeId like #{tradeId}
+			</if>
+			<if test="fromAccountId != null">  
+				AND fromAccountId like #{fromAccountId}
+			</if>
+			<if test="toAccountId != null">  
+				AND toAccountId like #{toAccountId}
+			</if>
+			<if test="transAmt != null">  
+				AND transAmt like #{transAmt}
+			</if>
+			<if test="transStatus != null">  
+				AND transStatus like #{transStatus}
+			</if>
+			<if test="transTime != null">  
+				AND transTime like #{transTime}
+			</if>
+			<if test="updateTime != null">  
+				AND updateTime like #{updateTime}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateAccountLogById" parameterType="accountLogDo">
+		UPDATE dep_account_log 
+		   SET 		<if test="tradeId != null">  
+				tradeId = #{tradeId}
+		</if>		
+		<if test="fromAccountId != null">  
+				,fromAccountId = #{fromAccountId}
+		</if>		
+		<if test="toAccountId != null">  
+				,toAccountId = #{toAccountId}
+		</if>		
+		<if test="transAmt != null">  
+				,transAmt = #{transAmt}
+		</if>		
+		<if test="transStatus != null">  
+				,transStatus = #{transStatus}
+		</if>		
+		<if test="transTime != null">  
+				,transTime = #{transTime}
+		</if>		
+		<if test="updateTime != null">  
+				,updateTime = #{updateTime}
+		</if>		
+
+		WHERE id = #{id}
+	</update>	
+	
+	<insert id="addAccountLog" parameterType="accountLogDo" keyProperty="tradeId"
+		useGeneratedKeys="true" >
+		INSERT INTO dep_account_log(		tradeId
+		,fromAccountId
+		,toAccountId
+		,transAmt
+		,transStatus
+		,transTime
+		,updateTime
+)
+		     VALUES (		#{tradeId}
+		,#{fromAccountId}
+		,#{toAccountId}
+		,#{transAmt}
+		,#{transStatus}
+		,#{transTime}
+		,#{updateTime}
+);
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM dep_account_log WHERE tradeId = #{tradeId}
+	</delete>
+	
+</mapper>
+

@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.redpack.wallet.dao.IWalletDao">
+	<resultMap type="walletDo" id="walletResultMap">
+		<result property="fkUserId" column="fkUserId" />
+		<result property="skUserId" column="skUserId" />
+		<result property="amt" column="amt" />
+		<result property="type" column="type" />
+		<result property="remark" column="remark" />
+		<result property="skStatus" column="skStatus" />
+		<result property="fkStatus" column="fkStatus" />
+		<result property="createTime" column="createTime" />
+		<result property="valid" column="valid" />
+		<result property="skUpdateTime" column="skUpdateTime" />
+		<result property="fkUpdateTime" column="fkUpdateTime" />
+		<result property="fkOptUserId" column="fkOptUserId" />
+		<result property="skOptUserId" column="skOptUserId" />
+		<result property="groupName" column="groupName" />
+		<result property="refUserId" column="refUserId" />
+		<result property="fkSmsStatus" column="fkSmsStatus" />
+		<result property="skSmsStatus" column="skSmsStatus" />
+		
+	
+	</resultMap>
+
+	<select id="selectUnConfirmRecord" parameterType="String" resultMap="walletResultMap">
+	    <![CDATA[
+			SELECT	*
+			  FROM t_amt_record 
+			 where valid=1 
+			   and (fkStatus = 0 or skStatus = 0)  
+			   and groupName = #{groupName}
+ 		]]>
+	</select>
+	
+	<select id="selectOverTimePerson" parameterType="Map" resultMap="walletResultMap">
+	    <![CDATA[
+			SELECT	fkUserId ,groupName
+			  FROM t_amt_record 
+			 where valid=1 
+			   and fkStatus = 0 
+			   and createTime< #{overTime}
+			 group by fkUserId ,groupName
+ 		]]>
+	</select>
+	
+	<select id="selectWallet" parameterType="Map" resultMap="walletResultMap">
+		
+		SELECT * FROM t_amt_record 
+	 	<trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="fkUserId != null">  
+				AND fkUserId = #{fkUserId}
+			</if>
+			<if test="skUserId != null">  
+				AND skUserId = #{skUserId}
+			</if>
+			<if test="skStatus != null">  
+				AND skStatus = #{skStatus}
+			</if>
+			<if test="fkStatus != null">  
+				AND fkStatus = #{fkStatus}
+			</if>
+			<if test="fkOptUserId != null">  
+				AND fkOptUserId = #{fkOptUserId}
+			</if>
+			<if test="skOptUserId != null">  
+				AND skOptUserId = #{skOptUserId}
+			</if>
+			<if test="valid != null">  
+				AND valid = #{valid}
+			</if>
+			<if test="groupName != null">  
+				AND groupName = #{groupName}
+			</if>
+			<if test="skSmsStatus != null">  
+				AND skSmsStatus = #{skSmsStatus}
+			</if>
+			<if test="fkSmsStatus != null">  
+				AND fkSmsStatus = #{fkSmsStatus}
+			</if>
+			
+	 	</trim>
+	 	
+	</select>
+	
+	<select id="selectUserSk" parameterType="Map" resultType="Map">
+		SELECT a.*, b.name,b.userName, b.weixin,b.zhifubao
+		FROM t_amt_record a, t_user b
+		where  a.skUserId = #{skUserId}
+			<if test="skStatus != null">  
+					and  a.skStatus=#{skStatus}
+			</if>		  
+		  and  a.fkUserId = b.id
+		  and  a.valid = 1
+		order by createTime desc
+
+	</select>
+	<select id="selectUserFk" parameterType="Map" resultType="Map">
+			
+		SELECT a.*,  b.name,b.userName, b.weixin,b.zhifubao
+		FROM t_amt_record a LEFT JOIN  t_user b on a.skUserId = b.id		     
+		where  a.fkUserId = #{fkUserId}
+			<if test="fkStatus != null">  
+					and  a.fkStatus = #{fkStatus}
+			</if>
+		  and  a.valid = 1
+		order by createTime desc
+		
+	</select>
+	
+	<insert id="addWallet" parameterType="walletDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_amt_record (
+	       fkUserId,
+	       skUserId,
+	        amt,
+	        type,
+	        remark,
+	        skStatus,
+	        createTime,
+	        valid,
+	        fkUpdateTime,
+	        groupName,
+	        fkOptUserId,
+	        fkStatus,
+	        skUpdateTime,
+	        skOptUserId,
+	        refUserId,
+	        skSmsStatus,
+	        fkSmsStatus   )
+         VALUES(
+            #{fkUserId},
+	        #{skUserId},
+	        #{amt},
+	        #{type},
+	        #{remark},
+	        #{skStatus},
+	        now(),
+	        #{valid},
+	        now(),
+	         #{groupName},
+	        #{fkOptUserId},
+	        #{fkStatus},
+	        #{skUpdateTime},
+	        #{skOptUserId},
+	        #{refUserId} ,
+	        #{skSmsStatus},
+	        #{fkSmsStatus }
+	        )
+	</insert>
+	
+	<update id="updateWalletById" parameterType="walletDo">
+		UPDATE t_amt_record 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="groupName != null">  
+				groupName = #{groupName},
+		</if>				
+		<if test="fkStatus != null">  
+				fkStatus = #{fkStatus},
+		</if>
+		<if test="skStatus != null">  
+				skStatus = #{skStatus},
+		</if>				
+		<if test="fkUpdateTime != null">  
+				fkUpdateTime = #{fkUpdateTime},
+		</if>
+		<if test="skUpdateTime != null">  
+				skUpdateTime = #{skUpdateTime},
+		</if>
+		<if test="fkOptUserId != null">  
+				fkOptUserId = #{fkOptUserId},
+		</if>
+		<if test="skOptUserId != null">  
+				skOptUserId = #{skOptUserId},
+		</if>
+		<if test="refUserId != null">  
+				refUserId = #{refUserId},
+		</if>	
+		<if test="skSmsStatus != null">  
+				skSmsStatus = #{skSmsStatus},
+		</if>	
+		<if test="fkSmsStatus != null">  
+				fkSmsStatus = #{fkSmsStatus},
+		</if>	
+		</trim>
+		WHERE id = #{id} 
+	</update>
+		
+	<update id="updateWalletByUserId" parameterType="walletDo">
+		UPDATE t_amt_record 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="valid != null">  
+				valid = #{valid},
+		</if>				
+		</trim>
+		WHERE fkUserId = #{fkUserId} 
+	</update>	
+</mapper>

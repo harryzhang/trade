@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.redpack.bet.dao.IBetResultDao">
+	<resultMap type="betResultDo" id="betResultResultMap">
+		<result property="id" column="id" />
+		<result property="period" column="period" />
+		<result property="betNum" column="betNum" />
+		<result property="betAmount" column="betAmount" />
+		<result property="oneAmount" column="oneAmount" />
+		<result property="twoAmount" column="twoAmount" />
+		<result property="threeAmount" column="threeAmount" />
+		<result property="fourAmount" column="fourAmount" />
+		<result property="fiveAmount" column="fiveAmount" />
+		<result property="sixAmount" column="sixAmount" />
+		<result property="betTime" column="betTime" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="betResultResultMap">
+		SELECT * 
+		  FROM t_bet_result WHERE id = #{id} 
+	</select>
+
+	<select id="selectBetResult" parameterType="Map" resultMap="betResultResultMap">
+		SELECT * 
+		  FROM t_bet_result
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="period != null">  
+				AND period = #{period}
+			</if>
+			<if test="betNum != null">  
+				AND betNum = #{betNum}
+			</if>
+			<if test="betAmount != null">  
+				AND betAmount = #{betAmount}
+			</if>
+			<if test="oneAmount != null">  
+				AND oneAmount = #{oneAmount}
+			</if>
+			<if test="twoAmount != null">  
+				AND twoAmount = #{twoAmount}
+			</if>
+			<if test="threeAmount != null">  
+				AND threeAmount = #{threeAmount}
+			</if>
+			<if test="fourAmount != null">  
+				AND fourAmount = #{fourAmount}
+			</if>
+			<if test="fiveAmount != null">  
+				AND fiveAmount = #{fiveAmount}
+			</if>
+			<if test="sixAmount != null">  
+				AND sixAmount = #{sixAmount}
+			</if>
+			<if test="betTime != null">  
+				AND betTime = #{betTime}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+         </trim> 
+           order by period desc limit 20
+	</select>
+	<select id="selectUserResult" parameterType="Map" resultType="Map">
+		select a.periods,a.betTime,a.amount,a.betNumber,b.betNum winNumber,
+    		case when a.betNumber = b.betNum then 1 else 0 end as winStatus
+		from t_user_bet a
+		left join t_bet_result b 
+        		on a.periods = b.period
+		where userId = #{userId}
+		 order by a.periods desc limit 20
+	</select>
+	
+	<update id="updateBetResultById" parameterType="betResultDo">
+		UPDATE t_bet_result 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="period != null">  
+				period = #{period},
+		</if>				
+		<if test="betNum != null">  
+				betNum = #{betNum},
+		</if>				
+		<if test="betAmount != null">  
+				betAmount = #{betAmount},
+		</if>				
+		<if test="oneAmount != null">  
+				oneAmount = #{oneAmount},
+		</if>				
+		<if test="twoAmount != null">  
+				twoAmount = #{twoAmount},
+		</if>				
+		<if test="threeAmount != null">  
+				threeAmount = #{threeAmount},
+		</if>				
+		<if test="fourAmount != null">  
+				fourAmount = #{fourAmount},
+		</if>				
+		<if test="fiveAmount != null">  
+				fiveAmount = #{fiveAmount},
+		</if>				
+		<if test="sixAmount != null">  
+				sixAmount = #{sixAmount},
+		</if>				
+		<if test="betTime != null">  
+				betTime = #{betTime},
+		</if>				
+		<if test="status != null">  
+				status = #{status},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addBetResult" parameterType="betResultDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO t_bet_result(		period
+		,betNum
+		,betAmount
+		,oneAmount
+		,twoAmount
+		,threeAmount
+		,fourAmount
+		,fiveAmount
+		,sixAmount
+		,betTime
+		,status
+)
+		     VALUES (		#{period}
+		,#{betNum}
+		,#{betAmount}
+		,#{oneAmount}
+		,#{twoAmount}
+		,#{threeAmount}
+		,#{fourAmount}
+		,#{fiveAmount}
+		,#{sixAmount}
+		,#{betTime}
+		,#{status}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="Long" >
+		DELETE FROM t_bet_result WHERE id = #{id}
+	</delete>
+	
+	<select id="getMaxPeriod"  resultType="Integer">
+		SELECT max(period) 
+		  FROM t_bet_result
+	</select>
+</mapper>
+

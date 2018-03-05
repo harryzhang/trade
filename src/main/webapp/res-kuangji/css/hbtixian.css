@@ -1,0 +1,63 @@
+body {
+	background-color: rgb(238, 238, 238);
+}
+.top {
+	width: 100%; height: 50px; border-bottom-color: rgb(210, 210, 210); border-bottom-width: 1px; border-bottom-style: solid; float: left; background-color: #333;
+}
+.top b {
+	background: url("../images/fanhui.png") no-repeat center / 11px 25px; width: 12%; height: 50px; float: left; display: block;
+}
+.top dd {
+	width: 76%; height: 50px; text-align: center; line-height: 50px; font-size: 1.7rem; float: left;
+}
+.top span {
+	background: url("../images/caidan.png") no-repeat center / 14px 30px; width: 12%; height: 50px; float: right; display: block;
+}
+.top ul {
+	border: 1px solid rgb(204, 204, 204); top: 50px; width: 100px; height: auto; right: 5px; display: none; position: absolute; z-index: 9; background-color: #333;
+}
+.top ul li {
+	padding: 0px 20px; width: 100px; height: 40px; text-align: center; line-height: 40px;
+}
+.index {
+	letter-spacing: 8px; border-bottom-color: rgb(229, 229, 229); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.member {
+	border-bottom-color: rgb(229, 229, 229); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.shoppingCart {
+	letter-spacing: 4px;
+}
+.box ul {
+	width: 100%; height: auto; float: left;
+}
+.box ul li {
+	padding: 0px 5%; width: 100%; height: 45px; border-bottom-color: rgb(229, 229, 229); border-bottom-width: 1px; border-bottom-style: solid; float: left; background-color: rgb(255, 255, 255);
+}
+.box ul li label {
+	width: auto; height: 45px; line-height: 45px; font-size: 1.4rem; float: left;color:#333;
+}
+.box ul li dd {
+	width: 84%; height: 45px; text-align: right; line-height: 45px; font-size: 1.4rem; float: right;
+}
+.box ul li input {
+	padding-left: 7px;
+}
+.box ul li input.dxyz {
+	border: currentColor; width: 44%; height: 43px; color: rgb(201, 201, 201); padding-left: 17px; font-size: 1.3rem; float: left;
+}
+.box ul li font {
+	border-radius: 2px; width: 28%; height: 35px; text-align: center; color: rgb(243, 151, 0); line-height: 35px; font-size: 1.3rem; margin-top: 5px; margin-left: 3%; float: right; background-color: rgb(238, 238, 238);
+}
+.box ul li:nth-child(2) {
+	height: 55px; border-bottom-color: rgb(229, 229, 229); border-bottom-width: 10px; border-bottom-style: solid;
+}
+input.wtext {
+	border: currentColor; width: 70%; height: 43px; color: rgb(201, 201, 201); font-size: 1.3rem; float: left;
+}
+.box ul li input.clsize {
+	color: rgb(0, 0, 0);
+}
+input.txbut {
+	margin: 10px 5%; border-radius: 2px; border: currentColor; width: 90%; height: 45px; text-align: center; color: rgb(255, 255, 255); float: left; background-color: #333;
+}

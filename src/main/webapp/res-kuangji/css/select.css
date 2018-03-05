@@ -1,0 +1,56 @@
+@charset "utf-8";
+.top{ width:100%; height:50px; float:left; border-bottom:1px solid #d2d2d2; background-color:#FCFAF7;}
+.top b{ width:12%; height:50px; display:block; float:left; background:url(../images/fanhui.png) center center no-repeat; background-size:12px 25px;}
+.top dd{ width:16%; height:35px; float:left; background-size:8px 8px; line-height:35px; font-size:1.7rem; margin-top:10px;}
+.ssbox{ width:64%; height:38px; float:left; background:url(../images/ssbtm.png) 0 bottom no-repeat; background-size:contain; margin:2px 5% 7px 3%;}
+.ssbox dt{ width:18%; height:40px; float:right; background:url(../images/sousuo.png) center center no-repeat; background-size:25px 25px;}
+.ssbox li{ width:16%; height:40px; float:right; background:url(../images/close_01.png) center center no-repeat; background-size:20px 20px; list-style:none; display:none;}
+.ssbox input{ width:63%; height:25px; float:left; border:none; color:#959595; margin-left:3%; font-size:1.4rem; margin-top:3px; margin-top:9px; background-color:#fcfaf7;}
+.ssbox input.selected{ color:#000;}
+.top ul{ width:125px; height:88px; position:absolute; top:40px; left:12%; background-color:#FFF; border:1px solid #d2d2d2; z-index:5; display:none; overflow:hidden;} 
+.top ul li{ width:125px; height:43px; line-height:45px; padding-left:50px; font-size:1.4rem;}
+.top ul li.goods{ background:url(../images/goodslogo.png) 20px 14px no-repeat; background-size:17px 15px; border-bottom:1px solid #d2d2d2;}
+.top ul li.shops{ background:url(../images/shoplogo.png) 20px 14px no-repeat; background-size:17px 15px;}
+.top ol{ width:90%; height:auto; position:absolute; top:55px; left:0; background-color:#FFF; z-index:5; display:none; padding:10px 5%;}
+.top ol li{ width:100%; height:auto; padding:10px 0; font-size:1.5rem;}
+.hotgoods{ width:100%; height:68px; float:left; padding:0 4%; border-bottom:1px solid #e5e5e5;}
+.hotgoods a{ width:22%; height:30px; display:block; float:left; margin:19px 1.5%; padding:0 2%; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; border-radius:15px; border:1px solid #e5e5e5; line-height:30px; font-size:1.4rem;}
+.shopList{ width:100%; height:auto; float:left; display:none;}
+.shop{ width:94%; height:auto; float:left; margin:0 3%; border-bottom:1px solid #e5e5e5;}
+.shop dl{ width:100%; height:auto; float:left; margin:23px 0;}
+.shop dl dt{ width:25%; height:auto; float:left; margin:5px 2%; text-align:center;}
+.shop dl dt img{ width:68px; height:68px; border-radius:50%; border:1px solid #e5e5e5;}
+.shop dl dd{ width:70%; height:auto; float:left; margin-left:1%;}
+.shop dl dd.sname{ height:14px; font-size:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.shop dl dd.saddr{ height:30px; font-size:1.3rem; overflow:hidden; word-break:break-all; color:#959595; margin-top:12px; line-height:15px;}
+.shop dl dd.snumber{ height:13px; font-size:1.3rem; word-break:break-all; color:#959595; margin-top:12px;}
+.goodsList{ width:100%; height:auto; float:left; position:relative; display:none;}
+.goodsList ul{ width:100%; height:43px; float:left; border-bottom:1px solid #D2D2D2;}
+.goodsList ul li{ width:33.3%; height:43px; float:left; line-height:43px; text-align:center;}
+.goodsList ul li.sort dl{ width:90px; height:43px; clear:both; float:none; margin:0 auto; border:0;}
+.goodsList ul li.sort dl dt{ width:10%; height:43px; float:right; margin-left:4%; margin-right:6%; background:url(../images/zhankaid_01.png) 0 center no-repeat; background-size:9px 6px;}
+.goodsList ul li.sort dd{ width:65%; height:43px; float:right; margin-left:10%; line-height:43px; text-align:center;}
+.goodsList ul li.cur dl dt{ background:url(../images/zhankais_01.png) 0 center no-repeat; background-size:9px 6px;}
+.goodsList ul li.cur dl dt.selected{ background:url(../images/shouqis_01.png) 85% center no-repeat; background-size:9px 6px;}
+.goodsList ul li.cur{ color:#E50011; background:url(../images/circlebg.png) center 85% no-repeat; background-size:6px 6px;}
+.goodsList ol{ width:100%; height:auto; float:left; display:none; position:absolute; top:43px; z-index:66; background-color:#FFF;}
+.goodsList ol li{ width:100%; height:43px; float:left; line-height:43px; padding-left:8%; border-bottom:1px solid #e5e5e5;}
+.goodsList ol li.cur{ color:#E50011;}
+.goodsList dl{ width:50%; height:auto; float:left; border-top:4px solid #E5E5E5; position:relative;}
+.hleft{ border-right:2px solid #E5E5E5;}
+.hright{ border-left:2px solid #E5E5E5;}
+.goodsList dl dt{ width:100%;}
+.goodsList dl dt img{ width:100%;}
+.goodsList dl dt img.mark{ position:absolute; top:0; left:0; z-index:2;}
+.goodsList dl dd.name{ padding:0 5px; height:40px; line-height:20px; display:block; overflow:hidden; font-size:1.2rem; margin-top:5px; color:#000;}
+.goodsList dl dd.price{ padding:0 5px; height:30px; line-height:30px;}
+.goodsList dl dd.price .fleft{ width:65%; height:30px; display:block; float:left; font-size:1.3rem; color:#fc658a; line-height:30px;}
+.goodsList dl dd.price .fright{ width:35%; height:30px; display:block; float:right; font-size:1.2rem; color:#959595; line-height:30px; text-align:right;}
+.goodsList dl dd.price .f{ width:100%; height:30px; display:block; float:left; font-size:1.3rem; color:#fc658a; line-height:30px;}
+.backtop{ width:50px; height:50px; border-radius:50%; position:fixed; bottom:15px; right:10px; display:none; z-index:100;}
+.backtop a{width:50px; height:50px; display:block; border-radius:50%; background:url(../images/bttop.png) center center no-repeat; background-size:contain;}
+
+@media screen and (min-width:768px){
+	.goodsList dl{ width:50%;}
+}
+

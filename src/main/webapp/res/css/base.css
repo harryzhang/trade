@@ -1,0 +1,203 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td, header, hgroup, nav, section, article, aside, footer, figure, figcaption, menu, button {
+    margin: 0;
+    padding: 0;
+}
+
+
+@media screen and  (min-width: 449px){
+	body{
+	      width:450px;
+	      margin:0 auto;
+	    }
+}
+
+body {
+    font: 16px/1.5 "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+    color: #fff;
+    -webkit-user-select: none;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    outline: 0;
+}
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-size: inherit;
+    font-weight: normal;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+fieldset, img {
+    border: 0;
+}
+ol,ul,li {
+      list-style: none;
+}
+input, button, textarea, select {
+    border: none;
+    background: none;
+    -webkit-appearance: none;
+    outline: none;
+}
+textarea {
+    resize: none;
+}
+button:focus, input:focus, select:focus, textarea:focus {
+    outline: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+a,a:visited {
+    -webkit-touch-callout: none;
+    text-decoration: none;
+    outline: 0;
+    color: #666;
+}
+em, i {
+    font-style: normal;
+}
+.center {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    /*垂直*/
+    
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    /*水平*/
+    
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+.clearfix:after {
+  content: " ";
+  display: block;
+  clear: both;
+  height: 0;
+}
+
+.top-nav{
+    height: 44px;
+    line-height: 44px;
+    position: relative;
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    background: #333;
+}
+.top-nav .link{
+    position: absolute;
+    height: 44px;
+    left: 0;
+    top: 0;
+    width: 66px;
+    text-indent: -999px;
+    overflow: hidden;
+}
+.top-nav .link:after{
+    content:'';
+    display: block;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    top: 15px;
+    left: 18px;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    pointer-events: none;
+}
+
+.top-nav .share{
+    position: absolute;
+    height: 44px;
+    top: 0;
+    right: 0;
+    font-size: 14px;
+    padding: 0 10px;
+    color: #fff;
+}
+
+
+.fix-nav{
+    height: 50px;
+    /*margin-top: 10px;*/
+}
+.fix-nav-wrap{
+    position: fixed;
+    height: 50px;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background: #fff;
+    border-top: 1px solid #EDF4F5;
+    display: -webkit-box;display: -webkit-flex;display: flex;
+}
+.fix-nav a{
+    display: block;
+    -webkit-box-flex:1;-webkit-flex:1;flex:1;
+    font-size: 12px;
+    text-align: center;
+    color:#7D7D7F;
+    font-size: 0;
+}
+.fix-nav a p{
+    font-size: 12px;
+}
+.fix-nav a:active{
+    background: #f2f2f2;
+}
+.fix-nav .icon{
+    background-image: url(../images/icons.png);
+    -webkit-background-size: 140px auto;
+    background-size: 140px auto;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 5px 0 3px;
+}
+.fix-nav .icon-loan{
+    /*background-position: 0 -60px;*/
+    background-position: -3px -169px; 
+}
+.fix-nav .icon-pro{
+    background-position: -20px -60px;
+}
+.fix-nav .icon-setting{
+    background-position: -40px -60px;
+}
+
+.fix-nav .active-0 .icon-loan{
+    /*background-position: 0 -80px;*/
+    background-position: -3px -195px;
+}
+.fix-nav .active-1 .icon-pro{
+    background-position: -10px -80px;
+}
+.fix-nav .active-2 .icon-setting{
+    background-position: -40px -80px;
+}
+.fix-nav .active-0 .icon-loan+p,
+.fix-nav .active-1 .icon-pro+p,
+.fix-nav .active-2 .icon-setting+p{
+    color:#4385f5;
+}
+
+/*修改三人微贷底部导航图标*/
+.fix-nav .icon-three{
+    width: 22px;
+    height: 22px;
+    background-position: 0px -130px;
+}
+.fix-nav .active-1 .icon-three{
+    background-position: -24px -120px;
+}
+.fix-nav .active-1 .icon-three+p{
+    color:#4385f5;
+}
