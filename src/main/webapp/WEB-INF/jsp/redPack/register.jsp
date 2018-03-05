@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html>
+<html  class="heightFull">
 
 <head>
     <meta charset="UTF-8">
@@ -19,14 +19,36 @@
 	<jsp:include page="../common/common.jsp"></jsp:include>
 	<script type="text/javascript" src="<c:url value='/res/js/libs/jquery.min.js'/>?v=${jsversion}"></script>
 	<script type="text/javascript" src="<c:url value='/res/js/plugins/safe/jQuery.md5.js'/>?v=${jsversion}"></script>
-
+        <style>
+          .background{
+              flex: 1;
+          }
+          .background .exit-wrap{
+              margin-top: 5px;
+          }
+          #code{
+              margin-left: 1rem;
+          }
+          #codeNum,#getcode{
+              margin-right: 1rem;
+          }
+          #userLocal{
+              color: #fff;
+              border: 0;
+          }
+          #userLocal option{
+              background: #20222e;
+              border-bottom: 1px solid #1c1e2a;
+          }
+      </style>
 </head>
 
-<body>
+<body class="heightFull displayFlex">
 	<div class="top">
 		<b onclick="javascript:window.location.href=&#39;<c:url value='/redPack/personalCenter.html'/>&#39;"></b>
 		<dd>注册</dd>
   </div> 
+    <div class="background">
 	    <div class="exit-wrap">
 	    	<form id="toLoginForm" action='<c:url value="/account/register.html"/>' method="POST">
 		        <div class="item">
@@ -105,7 +127,7 @@
         <a href="javascript:;" class="btn" id="submit">确定</a>
         	<p class="tip-right"><a href="javascript:;" id="toLogin">已有帐号去登录</a></p>
     </div>
-   
+  </div>
    <script type="text/javascript">
         $(function(){
             //code 点击事件

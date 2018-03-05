@@ -1,11 +1,11 @@
 .top {
-	width: 100%; height: 50px; border-bottom-color: rgb(210, 210, 210); border-bottom-width: 1px; border-bottom-style: solid; float: left; background-color: #333;
+	width: 100%; height: 50px;  float: left; background-color: #20222e;
 }
 .top b {
 	background: url("../images/fanhui.png") no-repeat center / 11px 25px; width: 12%; height: 50px; float: left; display: block;
 }
 .top dd {
-	width: 76%; height: 50px; text-align: center; line-height: 50px; font-size: 1.7rem; float: left; display: block;
+	width: 76%; height: 50px; text-align: center; line-height: 50px; font-size: 1.2rem; float: left; display: block;
 }
 .top span {
 	background: url("../images/caidan.png") no-repeat center / 14px 30px; width: 12%; height: 50px; float: right; display: block;

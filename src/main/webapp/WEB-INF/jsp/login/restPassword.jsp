@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html>
+<html class="heightFull">
 
 <head>
     <meta charset="UTF-8">
@@ -15,15 +15,38 @@
     <meta name="description" content="" />
     <title>重置密码</title>
 	<jsp:include page="../common/common.jsp"></jsp:include>
+    <style>
+          .background{
+              flex: 1;
+          }
+          .background .exit-wrap{
+              margin-top: 5px;
+          }
+          #code{
+              margin-left: 1rem;
+          }
+          #codeNum,#getcode{
+              margin-right: 1rem;
+          }
+          #userLocal{
+              color: #fff;
+              border: 0;
+          }
+          #userLocal option{
+              background: #20222e;
+              border-bottom: 1px solid #1c1e2a;
+          }
+      </style>
 </head>
 
-<body>
+<body class="heightFull displayFlex">
 <c:if test="${platform ne 'android' && platform ne 'ios' && platform ne 'pad'}">
     <div class="top-nav">
         <a class="link"  href="javascript:;" onclick="javascript:window.location.href=&#39;<c:url value='/member/userSettle.html'/>&#39;">&lt;返回</a>
         <h2>重置密码</h2>
     </div>
-</c:if>    
+</c:if>   
+    <div class="background"> 
 	    <div class="exit-wrap">
 	    	<form id="toLoginForm" action="<c:url value='/account/restLoginPwd.html'/>" method="POST">
 	    	    <input type="hidden" id="pwdType" name="pwdType" value="${pwdType}"/>
@@ -55,11 +78,11 @@
 	            <input id="psw2" type="password" placeholder="确认密码" />
 	        </div>
 	    </div>
-    <div class="form-btns">
-        <a href="javascript:;" class="btn" id="submit">确定</a>
-        <!-- <p class="tip-right" ><a href="javascript:;" id="toLogin" style="display: none;">去登录</a></p> -->
+        <div class="form-btns">
+            <a href="javascript:;" class="btn" id="submit">确定</a>
+            <!-- <p class="tip-right" ><a href="javascript:;" id="toLogin" style="display: none;">去登录</a></p> -->
+        </div>
     </div>
-   
     <script type="text/javascript">
         $(function(){
             //code 点击事件

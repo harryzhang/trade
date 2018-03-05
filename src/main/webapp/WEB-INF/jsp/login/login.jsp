@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
-<html>
+<html class="heightFull">
 
 <head>
     <meta charset="UTF-8">
@@ -17,49 +17,74 @@
 	<jsp:include page="../common/common.jsp"></jsp:include>
 	<script type="text/javascript" src='<c:url value="/res/js/libs/jquery.min.js?v="/>${jsversion}'></script>
 	<script type="text/javascript" src='<c:url value="/res/js/plugins/safe/jQuery.md5.js?v="/>${jsversion}'></script>
+    <style>
+        .background{
+            flex: 1;
+        }
+        .background .exit-wrap{
+            margin-top: 15px;
+        }
+        #code{
+            margin-left: 1rem;
+        }
+        #codeNum{
+            margin-right: 1rem;
+        }
+        #userLocal{
+            color: #fff;
+            border: 0;
+        }
+        #userLocal option{
+            background: #20222e;
+            border-bottom: 1px solid #1c1e2a;
+        }
+    </style>
 </head>
-<body>
+<body class="heightFull displayFlex">
     <div class="top-nav">
         <a class="link"  href="javascript:;" onclick="history.back();">&lt;返回</a>
         <h2>登录</h2>
     </div>
-	<form id="loginForm" action="<c:url value='/loanuser/login.do'/>" method="post">
-		<input type="hidden" name="fromUrl" id="fromUrl" value="${fromUrl}" >
-	    <div class="exit-wrap">
-	        <div class="item">
-	            <i class="icon"></i>
-	            <input type="tel" placeholder="请输入手机号码" id="mobile" value="" >
-	            <input type="hidden" hidden="true" id="openId" value="${openId}" >
-	        </div>
-	        <div class="item">
-	            <i class="icon icon-psw"></i>
-	            <input id="psw" type="password" placeholder="填写密码" value="" >
-	            <i class="icon icon-eye" id="seePsw"></i>
-	        </div>
-            <div class="item">                
-                <input type="text" id="code" name="code" placeholder="图片验证码">            
-                <img src="<c:url value="/common/imageCode.html?pageId=userlogin"/>" width="120" height="40" title="点击更换验证码" id="codeNum" />                            
+    <div class="background">
+        <form id="loginForm" action="<c:url value='/loanuser/login.do'/>" method="post">
+            <input type="hidden" name="fromUrl" id="fromUrl" value="${fromUrl}" >
+            <div class="exit-wrap">
+                <div class="item">
+                    <i class="icon"></i>
+                    <input type="tel" placeholder="请输入手机号码" id="mobile" value="" >
+                    <input type="hidden" hidden="true" id="openId" value="${openId}" >
+                </div>
+                <div class="item">
+                    <i class="icon icon-psw"></i>
+                    <input id="psw" type="password" placeholder="填写密码" value="" >
+                    <i class="icon icon-eye" id="seePsw"></i>
+                </div>
+                <div class="item">                
+                    <input type="text" id="code" name="code" placeholder="图片验证码">            
+                    <img src="<c:url value="/common/imageCode.html?pageId=userlogin"/>" width="120" height="40" title="点击更换验证码" id="codeNum" />                            
+                </div>
+                   <div class="item">
+                    <i class="icon"></i>
+                    <select id="userLocal" name="userLocal" style=" width :160px">
+                        
+                        <option value="" >Choose language</option>
+                        <option value="en" >english</option>
+                        <option value="cn" >中文</option>
+                    </select>
+                </div>
             </div>
-               <div class="item">
-	            <i class="icon"></i>
-	            <select id="userLocal" name="userLocal" style=" width :160px">
-	            	
-	            	<option value="" >Choose language</option>
-	            	<option value="en" >english</option>
-	            	<option value="cn" >中文</option>
-	            </select>
-	        </div>
-	    </div>
-	</form>
-	
-    <div class="form-btns">
-        <a href="javascript:;" class="btn" id="submit">登录</a>      
-		<p class="tip-right">
-		          <a href='<c:url value="/account/regIndex.html"/>' style="float:left;"  id="toRegHtmlA">立即注册</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		          <%--<a href="javascript:;" id="wxLogin" style="float:left;width:45%">微信登录</a>--%>
-		          <a href="<c:url value='/account/resetPwdIndex.html'/>" id="restPsw">忘记密码?</a>
-		</p>
+        </form>
+    
+        <div class="form-btns">
+            <a href="javascript:;" class="btn" id="submit">登录</a>      
+            <p class="tip-right">
+                      <a href='<c:url value="/account/regIndex.html"/>' style="float:left;"  id="toRegHtmlA">立即注册</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <%--<a href="javascript:;" id="wxLogin" style="float:left;width:45%">微信登录</a>--%>
+                      <a href="<c:url value='/account/resetPwdIndex.html'/>" id="restPsw">忘记密码?</a>
+            </p>
+        </div>
     </div>
+	
     <script type="text/javascript">
         $(function(){
             //code 点击事件

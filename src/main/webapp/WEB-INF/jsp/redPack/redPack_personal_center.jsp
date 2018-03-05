@@ -87,12 +87,12 @@
 					</td>
 					<td>
 						<dl
-							onclick="window.location.href ='<c:url value ='/cart/jiesuan.html'/>'">
+							onclick="window.location.href ='<c:url value ='/trade/myorder.html'/>'">
 							<dt>
 								<img
 									src="<c:url value ='/res-kuangji/images/indexs_03.png'/>">
 							</dt>
-							<dd>资产证券</dd>
+							<dd>我的订单</dd>
 						</dl>
 					</td>
 				</tr>

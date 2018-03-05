@@ -1,13 +1,35 @@
 ﻿<%@ page language="java" contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html class="heightFull">
 <%@ include file="../common/head.jsp" %>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>${channel_name}-注册</title>
+		<style>
+	        .background{
+	            flex: 1;
+	        }
+	        .background .exit-wrap{
+	            margin-top: 15px;
+	        }
+	        #code{
+	            margin-left: 1rem;
+	        }
+	        #codeNum{
+	            margin-right: 1rem;
+	        }
+	        #userLocal{
+	            color: #fff;
+	            border: 0;
+	        }
+	        #userLocal option{
+	            background: #20222e;
+	            border-bottom: 1px solid #1c1e2a;
+	        }
+	    </style>
 	</head>
-<body class="bg-2">
+<body class="bg-2 heightFull displayFlex">
 <header class="top-bar">
 		<a href="<c:url value='/login/index.do'/>">
 		<span class="icon-back">
@@ -15,33 +37,37 @@
 		</a>
 		<p>注册账号</p>
 	</header>
-	<section class="sign-area">
-		<form action="<c:url value='/account/register.do'/>" id="regForm" method="post">
-			<div class="sign-style br-3">
-				<span class="sign-lable pr75">真实姓名</span>
-				<input type="text" name="userName" id="userName" placeholder="请输入您的真实姓名">
-			</div>
-			<div class="sign-style br-2">
-			<span class="sign-lable">登录密码</span>
-				<input type="password" name="password" id="password" placeholder="6-20个字符">
-			</div>
-			<div class="sign-style br-3">
-				<span class="sign-lable">确认密码</span>
-				<input type="password" id="confirmPassword" name="confirmPassword" placeholder="6-20个字符">
-			</div>
-			<div class="sign-style br-2">
-				<span class="sign-lable">手机号码</span>
-				<input type="text" id="mobilePhone" name="mobilePhone" placeholder="请输入注册手机号码">
-			</div>
-			<div class="sign-style br-5">
-				<span class="sign-lable">推荐人</span>
-				<input type="text" id="referenceMobile" name="referenceMobile" placeholder="请输入推荐人手机号码">
-			</div>
-			<div class="sign-sub">
-				<input type="button" id="regBtn" value="立即注册">
-			</div>
-		</form>
-	</section>
+	<div class="background">
+		
+	
+		<section class="sign-area">
+			<form action="<c:url value='/account/register.do'/>" id="regForm" method="post">
+				<div class="sign-style br-3">
+					<span class="sign-lable pr75">真实姓名</span>
+					<input type="text" name="userName" id="userName" placeholder="请输入您的真实姓名">
+				</div>
+				<div class="sign-style br-2">
+				<span class="sign-lable">登录密码</span>
+					<input type="password" name="password" id="password" placeholder="6-20个字符">
+				</div>
+				<div class="sign-style br-3">
+					<span class="sign-lable">确认密码</span>
+					<input type="password" id="confirmPassword" name="confirmPassword" placeholder="6-20个字符">
+				</div>
+				<div class="sign-style br-2">
+					<span class="sign-lable">手机号码</span>
+					<input type="text" id="mobilePhone" name="mobilePhone" placeholder="请输入注册手机号码">
+				</div>
+				<div class="sign-style br-5">
+					<span class="sign-lable">推荐人</span>
+					<input type="text" id="referenceMobile" name="referenceMobile" placeholder="请输入推荐人手机号码">
+				</div>
+				<div class="sign-sub">
+					<input type="button" id="regBtn" value="立即注册">
+				</div>
+			</form>
+		</section>
+	</div>
 	<script>
 		$(function(){
 			sbh();

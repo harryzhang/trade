@@ -1,9 +1,9 @@
 .exit-wrap {
-    margin: 10px 15px 0;
+    // margin: 0px 15px 0;
 }
 
 .exit-wrap .item {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #1c1e2a;
     height: 50px;
     display: -webkit-box;
     display: -webkit-flex;
@@ -11,7 +11,7 @@
     -webkit-box-align: center;
     -webkit-align-items: center;
     align-items: center;
-    margin-bottom: 5px;
+    background-color: #20222e;
 }
 .exit-wrap .item .icon{
 	display: block;
@@ -20,7 +20,8 @@
 	background-image: url(../images/icons.png);
 	-webkit-background-size: 140px auto;
 	background-size: 140px auto;
-	margin-right: 5px;
+	margin-right: 1rem;
+    margin-left: 1rem;
 }
 .exit-wrap .item .icon-psw{
 	background-position: -20px 0;
@@ -44,16 +45,18 @@
 	-webkit-box-flex:1;-webkit-flex:1;flex:1;
 	font-size: 14px;
 	display: block;
+    background: transparent;
+	color: #fff;
 }
 .form-btns{
 	padding: 32px 20px 0;
 }
 .form-btns .btn{
 	height: 40px;
-	background: #333;
+	background: #facd02;
 	line-height: 40px;
 	display: block;
-	color: #fff;
+	color: #000;
 	text-align: center;
 	border-radius: 5px;
 }

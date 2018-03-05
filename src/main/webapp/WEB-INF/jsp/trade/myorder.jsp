@@ -23,9 +23,6 @@
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/top.js'/>" used="1"></script>
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/member_yzc.js'/>"></script>
 
-
-
-
 <style type="text/css">
 		#container{
 			width: 100%;
@@ -34,57 +31,6 @@
     		overflow: hidden;
     		display: flex;
     		flex-direction: column;
-		}
-		.head{
-			height: 4rem;
-			background: #20222e;
-		}
-		.title{
-			color: #fff;
-			width: 100%;
-			height: 100%;
-			text-align: center;
-			font-size: 2rem;
-			line-height: 4rem;
-		}
-		.title span{
-			line-height: 4rem;
-			position: absolute;
-    		right: 2rem;
-		}
-		.title img{
-			width: 1.5rem;
-    		height: 1.5rem;
-			position: relative;
-    		right: .5rem;
-		}
-		.price{
-			height: 4.5rem;
-			background: #20222e;
-		}
-		.price table{
-			width: 100%;
-			height: 2rem;
-		}
-		.price td{
-			font-size: 1.6rem;
-			color: #fff;
-			line-height: 2rem;
-			text-align: center;
-		}
-		.price .rowspan{
-			vertical-align:middle;
-		    border-right: 1px solid #e1e4eb;
-		}
-		.price .label{
-		    float: left;
-		    position: relative;
-		    left: 3rem;
-		}
-		.price .money{
-		    float: right;
-		    position: relative;
-		    right: 3rem;
 		}
 		#tab{
 			height: 4rem;
@@ -104,12 +50,12 @@
 		    line-height: 3.5rem;
 		}
 		#tab .tab-select{
-			width: 50%;
+			width: 60%;
 		    height: 95%;
 	    	margin: 0 auto;
 	    	color: #84888b;
-	    	line-height: 4rem;
 	    	text-align: center;
+    	    line-height: 4rem;
 		}
 		.tab-active .tab-select{
 			color: #fbcb11 !important;
@@ -136,10 +82,17 @@
 		}
 		.order{
 		    width: 100%;
-		    height: 11rem;
+		    height: auto;
 		    background: #20222e;
-		    margin-top: 1.5rem;
+		    margin-bottom: 1.5rem;
+		    padding: 1rem 0;
 		    overflow: hidden;
+		}
+		.order .time{
+		    height: 3rem;
+		    text-align: right;
+		    margin-right: 2rem;
+		    font-size: 2.4rem;
 		}
 		.order table{
 			width: 100%;
@@ -167,10 +120,14 @@
 		    font-size: 1.6rem;
 
 		}
+		.order .orderType{
+			color: #000;
+			padding: .4rem 1.2rem;
+			border-radius: 3rem;
+		}
 		.order li:first-child{	
 			padding-left: 2rem;	
 			padding-right: 1rem;
-    		border-right: 1px solid #fff;
     		line-height: 2rem;
 		}
 		.order li:nth-child(2){	
@@ -178,43 +135,48 @@
 		    text-align: left;
 		    padding: 0 1rem;
 		}
-		.order li a{	
-			color: #fbcb11;
-			border: 1px solid #fbcb11;
+		.order li a{				
 			border-radius: 3px;
 			padding: .4rem 1rem;
-			margin-right: 2rem;
+			margin-right: 1.8rem;
 			line-height: 2rem;
-		}	   
+		}
+		.order li .orderState{
+			color: #000;
+			background: #fbcb11;
+			border: 1px solid #fbcb11;
+		}
+		.order li .contactBuyer{
+			color: #fbcb11;
+			background: #fff;
+			border: 1px solid #fbcb11;
+		}
+		.bgYellow{
+			background: #f7cc01;
+		}
+		.bgOrange{
+			background: #fb8106;
+		}
+		   
 	</style>
 	
 </head>
 <body>	
 	
 	<div id="container">
-		<div class="head">
-			<div class="title">市场<span><img src="xiaolian.png" alt="" id="guadang">挂单</span></div>
-		</div>
-		<div class="price">
-			<table>
-				<tbody>				
-					<tr>
-						<td rowspan="2" class="rowspan"><span class="label">指导价</span><span class="money">$1.00</span></td>
-						<td><span class="label">最高价</span><span class="money">$1.05</span></td>
-					</tr>
-					<tr>					
-						<td><span class="label">最低价</span><span class="money">$1.00</span></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
 		<div id="tab">
 			<ul class="tab">
 				<li class="tab-active" data='0'>
-					<div class="tab-select">买单市场</div>
+					<div class="tab-select">全部</div>
 				</li>
 				<li data='1'>
-					<div class="tab-select">卖单市场</div>
+					<div class="tab-select">待交易</div>
+				</li>
+				<li data='2'>
+					<div class="tab-select">交易中</div>
+				</li>
+				<li data='3'>
+					<div class="tab-select">已完成</div>
 				</li>
 			</ul>
 		</div>
@@ -235,13 +197,16 @@
 					</table>
 					<div>
 						<ul>
-							<li>mc0021</li>
-							<li>2018-02-19 23:24</li>
-							<li><a href="javascript:void(0);">可匹配</a></li>
+							<li><span class="orderType bgYellow">买单</span></li>
+							<li></li>
+							<li><a href="javascript:void(0);" class="contactBuyer">联系买家</a><a href="javascript:void(0);" class='orderState'>确认收款</a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="order">
+					<div class="time">
+						2018-02-19 23:33:56
+					</div>
 					<table>
 						<tr>
 							<td>数量(个)</td>
@@ -256,9 +221,33 @@
 					</table>
 					<div>
 						<ul>
-							<li>maidain</li>
-							<li>2018-02-19 23:24</li>
-							<li><a href="javascript:void(0);">可匹配</a></li>
+							<li><span class="orderType bgOrange">卖单</span></li>
+							<li></li>
+							<li><a href="javascript:void(0);" class='orderState'>撤销</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="order">
+					<div class="time">
+						2018-02-19 23:33:56
+					</div>
+					<table>
+						<tr>
+							<td>数量(个)</td>
+							<td>价格($)</td>
+							<td>总计($)</td>
+						</tr>
+						<tr class="number">
+							<td>100</td>
+							<td>1.00</td>
+							<td>100.00</td>
+						</tr>
+					</table>
+					<div>
+						<ul>
+							<li><span class="orderType bgYellow">买单</span></li>
+							<li></li>
+							<li><a href="javascript:void(0);" class='orderState'>撤销</a></li>
 						</ul>
 					</div>
 				</div>
@@ -267,7 +256,14 @@
 			<div class="tab-container-content" data='1'>
 				<p>没有更多数据了</p>
 			</div>
+			<div class="tab-container-content" data='2'>
+				<p>没有更多数据了</p>
+			</div>
+			<div class="tab-container-content" data='3'>
+				<p>没有更多数据了</p>
+			</div>
 		</div>
+		
 	</div>
 
 	<%@ include file="../include/foot_kangji.jsp"%>
@@ -287,12 +283,4 @@
 			}
 		})
 	})
-	
-	
-	$("#guadang").on('click', function(){
-		window.location.href="<c:url value ='/trade/guadang.html'/>";
-	})
-	
-	
-	
 </script>

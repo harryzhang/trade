@@ -149,6 +149,14 @@
 		<servlet-name>default</servlet-name>
 		<url-pattern>/res-kuangji/ztreecss/*</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/res-shichang/js/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/res-shichang/css/*</url-pattern>
+	</servlet-mapping>
 
 	<!-- 请求拦截 -->
 	<servlet-mapping>

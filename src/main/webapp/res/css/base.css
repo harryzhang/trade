@@ -19,6 +19,16 @@ body {
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     outline: 0;
 }
+.background{
+    background: #191c23;
+}
+.heightFull{
+    height: 100%;
+}
+.displayFlex{
+    display: flex;
+    flex-direction: column;
+}
 * {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -54,7 +64,7 @@ a,a:visited {
     -webkit-touch-callout: none;
     text-decoration: none;
     outline: 0;
-    color: #666;
+    color: #fff;
 }
 em, i {
     font-style: normal;
@@ -88,7 +98,7 @@ em, i {
     color: #fff;
     text-align: center;
     font-size: 18px;
-    background: #333;
+    background: #20222e;
 }
 .top-nav .link{
     position: absolute;

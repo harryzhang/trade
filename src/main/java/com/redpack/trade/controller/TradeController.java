@@ -31,7 +31,6 @@ public class TradeController {
 	
 	
 	/**
-	 * @author huangzl QQ:272950754
 	 * @version 创建时间：2015-7-26 下午06:22:07
 	 * @param model
 	 * @param session
@@ -41,6 +40,30 @@ public class TradeController {
 	@RequestMapping("/trade")
 	public String index(Model model, HttpSession session, HttpServletRequest request) {
 		return "trade/trade";
+	}
+	
+	/**
+	 * @version 创建时间：2015-7-26 下午06:22:07
+	 * @param model
+	 * @param session
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/guadang")
+	public String guadang(Model model, HttpSession session, HttpServletRequest request) {
+		return "trade/guadang";
+	}
+	
+	/**
+	 * @version 创建时间：2015-7-26 下午06:22:07
+	 * @param model
+	 * @param session
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/myorder")
+	public String orderlist(Model model, HttpSession session, HttpServletRequest request) {
+		return "trade/myorder";
 	}
 	
 }
