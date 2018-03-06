@@ -117,11 +117,11 @@
 						
 						 --%>
 						<dl
-							onclick="window.location.href ='<c:url value='/pay/toChongzhi.html'/>'">
+							onclick="window.location.href ='<c:url value='/trade/saveMoney.html'/>'">
 							<dt>
 								<img src="<c:url value ='/res-kuangji/images/mitems_05.png'/>">
 							</dt>
-							<dd>充值</dd>
+							<dd>定存算力</dd>
 						</dl>
 					</td>
 					<td>

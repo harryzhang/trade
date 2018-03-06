@@ -66,4 +66,17 @@ public class TradeController {
 		return "trade/myorder";
 	}
 	
+	
+	/**
+	 * @version 创建时间：2015-7-26 下午06:22:07
+	 * @param model
+	 * @param session
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/saveMoney")
+	public String saveMoney(Model model, HttpSession session, HttpServletRequest request) {
+		return "trade/saveMoney";
+	}
+	
 }
