@@ -10,6 +10,8 @@ import org.apache.ibatis.type.Alias;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author  huangzl QQ: 272950754
@@ -26,6 +28,8 @@ public class BizUserAccountDo  implements java.io.Serializable{
 	private java.lang.Long userId;
 	private java.math.BigDecimal amount;
 	private String accountType;
+	private String accountName;
+	private String unit;
 	private java.math.BigDecimal totalConsumeAmount;
 	private java.math.BigDecimal totalInocmeAmount;
 	private java.math.BigDecimal withdrawTotalDeposit;
@@ -34,6 +38,8 @@ public class BizUserAccountDo  implements java.io.Serializable{
 	private java.math.BigDecimal consueAmount;
 	private Date updateTime;
 	private String remark;
+	//账户允许的操作
+	private List<Map<String, Object>> optLst;
 	
 	public BizUserAccountDo(){
 		
@@ -114,12 +120,58 @@ public class BizUserAccountDo  implements java.io.Serializable{
 		this.remark = remark;
 	}
 
+	/**
+	 * @return the accountName
+	 */
+	public String getAccountName() {
+		return accountName;
+	}
+
+	/**
+	 * @param accountName the accountName to set
+	 */
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
+	
+	/**
+	 * @return the unit
+	 */
+	public String getUnit() {
+		return unit;
+	}
+
+	/**
+	 * @param unit the unit to set
+	 */
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	
+	
+	/**
+	 * @return the optLst
+	 */
+	public List<Map<String, Object>> getOptLst() {
+		return optLst;
+	}
+
+	/**
+	 * @param optLst the optLst to set
+	 */
+	public void setOptLst(List<Map<String, Object>> optLst) {
+		this.optLst = optLst;
+	}
+
 	@Override
     public String toString() {
         return "BizUserAccountDo{" +
                 "userId=" + userId +
                 ", amount=" + amount +
                 ", accountType='" + accountType + '\'' +
+                ", unit='" + unit + '\'' +
                 ", totalConsumeAmount=" + totalConsumeAmount +
                 ", totalInocmeAmount=" + totalInocmeAmount +
                 ", withdrawTotalDeposit=" + withdrawTotalDeposit +
@@ -138,7 +190,6 @@ public class BizUserAccountDo  implements java.io.Serializable{
 	public Date getUpdateTime() {
 		return updateTime;
 	}
-    
-    
+
 }
 

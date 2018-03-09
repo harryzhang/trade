@@ -103,9 +103,14 @@ public class MemberController extends BaseController{
 		logger.info("----我的收益----");
 		UserDo currentUser = (UserDo)  request.getSession().getAttribute(WebConstants.SESSION_USER);
 		long  userId = currentUser.getId();
-		Map<String,Object> userMap = memberService.getUserAccount(userId);
-		model.addAttribute("userAccount", userMap);
-		
+		List<BizUserAccountDo> userAccountLst = memberService.getUserAccount(userId);
+		if(!CollectionUtils.isEmpty(userAccountLst)){
+			for(BizUserAccountDo  account : userAccountLst){
+				List<Map<String,Object>> optLst = memberService.getOptionsByAccountCode(account.getAccountType());
+				account.setOptLst(optLst);
+			}
+		}
+		model.addAttribute("userAccountList", userAccountLst);
 		return getLocalPath(request,"member/userIncome");
 	}
 	/**

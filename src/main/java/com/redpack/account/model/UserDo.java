@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.type.Alias;
+import org.springframework.util.CollectionUtils;
 
 
 /**
@@ -31,6 +32,10 @@ import org.apache.ibatis.type.Alias;
 public class UserDo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	public static final String LEFT="L";
+	public static final String RIGHT="R";
+	
 	
 	private Long 	id; 				// 用户ID
 	private String 	userName; 			// 登陆用户名
@@ -68,7 +73,22 @@ public class UserDo implements Serializable {
 
 	private List<UserDo> children;     //所有下级
 	
+	//左右位置
+	private String groupuserIdx; //"L" left , "R" right
 	
+	
+	/**
+	 * @return the groupuserIdx
+	 */
+	public String getGroupuserIdx() {
+		return groupuserIdx;
+	}
+	/**
+	 * @param groupuserIdx the groupuserIdx to set
+	 */
+	public void setGroupuserIdx(String groupuserIdx) {
+		this.groupuserIdx = groupuserIdx;
+	}
 	public String getWeixin() {
 		return weixin;
 	}
@@ -295,6 +315,62 @@ public class UserDo implements Serializable {
 				+ ", userCode1=" + userCode1 + ", userCode=" + userCode
 				+ ", bonus=" + bonus + ", children=" + children + "]";
 	}
+	
+	
+	/**
+	 * 
+	 *
+	 * zhangyunhmf
+	 *
+	 */
+    public UserDo getLeftChild() {
+    	return getChildByGroupuserIdx(LEFT);
+    }
+    
+
+    
+	/**
+	 * 
+	 *
+	 * zhangyunhmf
+	 *
+	 */
+    public UserDo getRightChild() {
+    	return getChildByGroupuserIdx(RIGHT);
+    }
+    
+    
+	/**
+	 * 
+	 *
+	 * zhangyunhmf
+	 *
+	 */
+    private UserDo getChildByGroupuserIdx(String flag) {
+	    if(CollectionUtils.isEmpty(this.children)){
+    		return null;
+    	}
+    	
+	    for(UserDo user :this.children){
+	    	if(user.getGroupuserIdx().equals(flag)){
+	    		return user;
+	    	}
+	    }
+	    return null;
+    }
+    
+    
+    
+	/**
+	 * 找出最左边的一个节点 
+	 * zhangyunhmf
+	 *
+	 */
+    public static UserDo getLastLeftUser(UserDo parent) {
+	    UserDo leftUser = parent.getLeftChild();
+	    if(null == leftUser){return parent;}
+	    return getLastLeftUser(leftUser);
+    }
 	
 	
 	

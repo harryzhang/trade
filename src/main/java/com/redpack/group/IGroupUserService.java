@@ -54,7 +54,7 @@ public interface IGroupUserService{
 	 * 获取用户的所有子级
 	 * @param rootDao
 	 */
-	public UserDo getAllChildRen(UserDo rootDao, String groupName);
+	public UserDo getAllChildRen(UserDo rootDao);
 	
 	public Map getUserGroupByNetwork(Map<String,Object> param);
 

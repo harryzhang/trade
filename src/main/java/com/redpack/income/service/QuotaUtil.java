@@ -22,23 +22,18 @@ public class QuotaUtil {
 	 */
 	public static  Map<String, QuotaBean> convertString2Map(String quotaAccountConfig,
 															String quotaPercentConfig,
-															String rateConfig ){
+															String rateConfig ,
+															String fenHongType){
 		
 		if(StringUtils.isBlank(quotaAccountConfig)){
 			return Collections.EMPTY_MAP;
-		}
-		
-		//收益率
-		BigDecimal rate = BigDecimal.ZERO;
-		if(StringUtils.isNotBlank(rateConfig)){
-			rate = new BigDecimal(rateConfig.trim());
 		}
 		
 		
 		Map<String, QuotaBean> retMap= new HashMap<String, QuotaBean>();
 		String[]  accArray = quotaAccountConfig.split(":");
 		for(String account : accArray){
-			QuotaBean  qt = new QuotaBean(account,BigDecimal.ZERO,rate);
+			QuotaBean  qt = new QuotaBean(account,BigDecimal.ZERO,rateConfig,fenHongType);
 			retMap.put(account, qt);
 		}
 		
@@ -90,6 +85,42 @@ public class QuotaUtil {
 			quto.setUserId(userId);
 			quto.setLevel(level);
 			quto.calculateIncome();
+			
+		}
+		
+		return qutoList;
+		
+	}
+	
+	/**
+	 * 收益分配到各个账户
+	 * @param qutoConfigMap
+	 * @param amount
+	 * @param userId
+	 * @return
+	 */
+	public static List<QuotaBean> calculateGroup(List<QuotaBean> qutoList,	
+			BigDecimal groupAmt,
+			BigDecimal refAmt,
+			Long userId,
+			int level) {
+		
+		if(null == qutoList  || qutoList.isEmpty()){
+			return Collections.EMPTY_LIST;
+		}
+		if(null == refAmt){
+			return Collections.EMPTY_LIST;
+		}
+		if(null == groupAmt){
+			return Collections.EMPTY_LIST;
+		}
+		
+		
+		for(QuotaBean quto : qutoList){
+			quto.setBaseAmount(groupAmt);
+			quto.setUserId(userId);
+			quto.setLevel(level);
+			quto.calculateGroupIncome(refAmt);
 			
 		}
 		
@@ -229,16 +260,14 @@ public class QuotaUtil {
 		
 		for(Map.Entry<String, QuotaBean> entry  : qutoConfigMap.entrySet()){
 			QuotaBean quota = entry.getValue();
-			QuotaBean copyQuota = new QuotaBean(quota.getAccount(),quota.getPercent(),quota.getIncomeRate());
+			QuotaBean copyQuota = new QuotaBean(quota.getAccount(),quota.getPercent(),quota.getRateConfig(),quota.getFenHongType());
 			copyQuota.setAccount(quota.getAccount());
 			copyQuota.setPercent(quota.getPercent());
 			copyQuota.setIncomeRate(quota.getIncomeRate());
 			copyQuota.setBaseAmount(quota.getBaseAmount());
 			copyQuota.setCalDesc(quota.getCalDesc());
 			copyQuota.setIncomeAmount(quota.getIncomeAmount());
-			
 			copyQuota.setLevel(quota.getLevel());
-			
 			copyQuota.setUserId(quota.getUserId());
 			lst.add(copyQuota);
 		}

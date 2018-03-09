@@ -112,7 +112,6 @@ public class IncomeTaskAssignServiceImpl implements IIncomeTaskAssignSevice {
 		//获取参与计算的账号
 		Map<String,Object> parameterMap = new HashMap<String ,Object>();
 		parameterMap.put("accountType", WebConstants.SECURITY_ACCOUNT);
-    	
 		int cnt = feiHongService.selectFeiHongUserAccountCount(parameterMap);
 		
 		

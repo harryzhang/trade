@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0">
 <meta name="apple-touch-fullscreen" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -16,170 +14,222 @@
 
 <title>账户预览</title>
 
-<link href="<c:url value ='/res-kuangji/css/global.css'/>"
-	rel="stylesheet" type="text/css" />
-<link href="<c:url value ='/res-kuangji/css/goodsDetails.css'/>"
-	rel="stylesheet" type="text/css" />
-<link href="<c:url value ='/res-kuangji/css/myWealth.css'/>"
-	rel="stylesheet" type="text/css" />
-		<link href='<c:url value="/res/js/plugins/modal/modal.css?"/>${jsversion}' type="text/css" rel="stylesheet">
-	
-<script type="text/javascript"
-	src="<c:url value ='/res-kuangji/js/jquery-2.1.1.min.js'/>"></script>
-<script type="text/javascript"
-	src="<c:url value ='/res-kuangji/js/top.js'/>"></script>
-<script type="text/javascript" src='<c:url value="/res/js/global.js?v="/>${jsversion}' ></script>
-<script type="text/javascript" src='<c:url value="/res/js/plugins/modal/modal.js?v="/>${jsversion}'></script>
+
+<link href="<c:url value ='/res-kuangji/css/global.css'/>"	rel="stylesheet" type="text/css">
+<link href="<c:url value ='/res-kuangji/css/member_yzc.css'/>"	rel="stylesheet" type="text/css">
+<link href="<c:url value ='/res-shichang/css/reset.css'/>"	rel="stylesheet" type="text/css">
+
+<script type="text/javascript"	src="<c:url value ='/res-kuangji/js/jquery-2.1.1.min.js'/>"></script>
+<script type="text/javascript"	src="<c:url value ='/res-kuangji/js/top.js'/>" used="1"></script>
+<script type="text/javascript"	src="<c:url value ='/res-kuangji/js/member_yzc.js'/>"></script>
+
+<style type="text/css">
+		#container{
+			width: 100%;
+			height: 100%;
+		    background: #191c23;
+    		overflow: hidden;
+    		display: flex;
+    		flex-direction: column;
+		}
+		#tab{
+			height: 4rem;
+			background: #20222e;
+			margin-top: .2rem;
+    		overflow: hidden;
+		}
+		#tab ul{
+			display: flex;
+			height: 100%;
+		}
+		#tab ul li{
+			flex: 1;
+			font-size: 1.6rem;
+    		color: #fff; 
+    		text-align: center;
+		    line-height: 3.5rem;
+		}
+		#tab .tab-select{
+			width: 60%;
+		    height: 95%;
+	    	margin: 0 auto;
+	    	color: #84888b;
+	    	text-align: center;
+    	    line-height: 4rem;
+		}
+		.tab-active .tab-select{
+			color: #fbcb11 !important;
+			border-bottom: 3px solid #fbcb11;
+		}
+		.tab-container{
+			flex: 1;
+			overflow-y: auto;
+		}
+		.tab-container-active{
+			display: block !important;
+		}
+		.tab-container .tab-container-content{
+			font-size: 1.4rem;
+			color: #fff;
+			color: #84888b;
+			display: none;
+			text-align: center;
+		}
+		.tab-container-content p{
+			margin-top: 1rem;
+		    margin-bottom: 6rem;
+		    text-align: center;
+		}
+		.order{
+		    width: 100%;
+		    height: auto;
+		    background: #20222e;
+		    margin-bottom: 1.5rem;
+		    padding: 1rem 0;
+		    overflow: hidden;
+		}
+		.order .time{
+		    height: 3rem;
+		    text-align: right;
+		    margin-right: 2rem;
+		    font-size: 2.4rem;
+		}
+		.order table{
+			width: 100%;
+		}
+		.order td {
+			font-size: 2rem;
+    		line-height: 3.5rem;
+    		text-align: center;
+		}
+		.order .number{
+			color: #fff;			
+		}
+		.order .number td{
+			font-size: 2.8rem;
+		}
+		.order ul{
+			margin-top: .5rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 3rem
+		}
+		.order li{
+			float: left;
+		    font-size: 1.6rem;
+
+		}
+		.order .orderType{
+			color: #000;
+			padding: .4rem 1.2rem;
+			border-radius: 3rem;
+		}
+		.order li:first-child{	
+			padding-left: 2rem;	
+			padding-right: 1rem;
+    		line-height: 2rem;
+		}
+		.order li:nth-child(2){	
+			flex: 1;
+		    text-align: left;
+		    padding: 0 1rem;
+		}
+		.order li a{				
+			border-radius: 3px;
+			padding: .4rem 1rem;
+			margin-right: 1.8rem;
+			line-height: 2rem;
+		}
+		.order li .orderState{
+			color: #000;
+			background: #fbcb11;
+			border: 1px solid #fbcb11;
+		}
+		.order li .contactBuyer{
+			color: #fbcb11;
+			background: #fff;
+			border: 1px solid #fbcb11;
+		}
+		.bgYellow{
+			background: #f7cc01;
+		}
+		.bgOrange{
+			background: #fb8106;
+		}
+		   
+	</style>
 	
 </head>
-<body>
-
-
-	<div class="top">
-		<b
-			onclick="javascript:window.location.href=&#39;<c:url value='/redPack/personalCenter.html'/>&#39;"></b>
-		<dd>账户预览</dd>
-		<span></span>
-		<ul>
-			<li class="index" onclick="">首 页</li>
-			<li class="member" onclick="">会员中心</li>
-			<li class="shoppingCart">购物车</li>
-		</ul>
-	</div>
-
-	<div class="topmoney">
-		<div class="balance">余额（现金豆）</div>
-		<div class="money">${userAccount.rmb}（欧）</div>
-
-	</div>
+<body>	
 	
-	<div class="centent">
-		<dl class="cenleft">
-			<dt class="exchange">
-				证券数量<font> ${userAccount.security} 股</font>
-			</dt>
-			<dd onclick="javascript:window.location.href ='<c:url value='/member/accountDetail.html?accountType=security'/>'">
-				<font>查看明细</font>
-			</dd>
-		</dl>
-		<dl class="" >
-				<dt></dt>
-				<dd></dd>
-				</dl>
-				<dl class="cenright xinzeng" onclick="javascript:window.location.href ='<c:url value='/member/unpayInfo.html'/>'">
-					<dt></dt>
-					<dd>退本</dd>
-		</dl>
-	</div>
-	
-	<div class="centent">
-		<dl class="cenleft">
-			<dt class="exchange">
-				余额(现金豆)<font> ${userAccount.rmb} 欧元</font>
-			</dt>
-			<dd onclick="javascript:window.location.href ='<c:url value='/member/accountDetail.html?accountType=rmb'/>'">
-				<font>查看明细</font>
-			</dd>
-		</dl>
-		<dl class="cenright xinzeng" onclick="window.location.href ='<c:url value='/member/transRmb.html'/>'">
-			<dt></dt>
-			<dd>转换</dd>
-		</dl>
-		<dl class="cenright xinzeng" onclick="window.location.href ='<c:url value='/member/withdraw.html'/>'">
-			<dt></dt>
-			<dd>提现</dd>
-		</dl>
+	<div id="container">
+		
+		<div class="tab-container">
+			<div class="tab-container-content tab-container-active" data='0'>
+			  	<c:forEach var="oneAccount" items="${userAccountList }">
+				<div class="order">
+					<table>
+						<tr>
+							<td>账户名</td>
+							<td>数量</td>
+							<td>单位</td>
+						</tr>
+						<tr class="number">
+							<td>${oneAccount.accountName}</td>
+							<td>${oneAccount.amount}</td>
+							<td>${oneAccount.unit}</td>
+						</tr>
+					</table>
+					<div>
+						<ul>
+							<c:forEach var="accountOption" items="${oneAccount.optLst }">
+								<li onclick="doAccountOpt('${accountOption.opt}','${oneAccount.accountType}');"><span class="orderType bgYellow">${accountOption.optDesc}</span></li>
+							</c:forEach>
+							
+						</ul>
+					</div>
+				</div>
+			    </c:forEach>
+			</div>
+		</div>
 	</div>
 
-	<div class="centent">
-		<dl class="cenleft">
-			<dt class="exchange">
-				奖金豆<font> ${userAccount.jjd} 欧元</font>
-			</dt>
-			<dd onclick="javascript:window.location.href ='<c:url value='/member/accountDetail.html?accountType=jjd'/>'">
-				<font>查看明细</font>
-			</dd>
-		</dl>
-		<dl class="cenright xinzeng" onclick="window.location.href ='<c:url value='/member/withdrawJjd.html'/>'">
-			<dt></dt>
-			<dd>提现</dd>
-		</dl>
-		<dl class="cenright xinzeng" onclick="window.location.href ='<c:url value='/member/transJjd.html'/>'">
-			<dt></dt>
-			<dd>转换</dd>
-		</dl>
-	</div>
-	
-	<div class="centent">
-	    <dl class="cenleft">
-	        <dt class="exchange">激活豆<font> ${userAccount.pet} 个</font></dt>
-	        <dd onClick="javascript:window.location.href ='<c:url value='/member/accountDetail.html?accountType=pet'/>'"><font>查看明细</font></dd>
-	    </dl>
-	    <dl class="cenright xinzeng" onClick="javascript:window.location.href ='<c:url value='/pay/toChongzhi.html'/>'">
-	        <dt></dt>
-	        <dd>充值</dd>
-	    </dl>
-	</div>
-	<div class="centent">
-	    <dl class="cenleft">
-	        <dt class="exchange">储值豆<font> ${userAccount.point} 个</font></dt>
-	        <dd onClick="javascript:window.location.href ='<c:url value='/member/accountDetail.html?accountType=point'/>'"><font>查看明细</font></dd>
-	    </dl>
-	    <dl class="cenright xinzeng" onClick="javascript:window.location.href ='<c:url value='/member/transPoint.html'/>'">
-	        <dt></dt>
-	        <dd>转换</dd>
-	    </dl>
-	</div>
-	<div class="centent">
-	    <dl class="cenleft">
-	        <dt class="exchange">激活积分<font> ${userAccount.jifen} 个</font></dt>
-	        <dd onClick="javascript:window.location.href ='<c:url value='/member/accountDetail.html?accountType=jifen'/>'"><font>查看明细</font></dd>
-	    </dl>
-	    <dl class="cenright xinzeng" onClick="javascript:window.location.href ='<c:url value='/member/transJifeng.html'/>'">
-	        <dt></dt>
-	        <dd>转让</dd>
-	    </dl>
-	</div>
-
-<!-- 	<div class="centent" > -->
-<!-- 		    <dl class="cenleft"> -->
-<!-- 		        <dt class="exchange" onClick="#" >提现记录</font></dt> -->
-<!-- 		        <dd onClick="javascript:window.location.href ='<c:url value='/member/userWithdraw.html'/>'"><font>查看明细</font></dd> -->
-		  
-<!-- 		    </dl> -->
-<!-- 	</div> -->
-
-<script type="text/javascript">
-
-/*  function unpay(){
-	 var sec = ${userAccount.security};
-	 if(sec <1 ){
-		 HHN.popup("当前证券数量不足。");
-		 return;
-	 }
-	HHN.popupConfirm("你确定要退回本金?", 
-              function(){return true;}, 
-              function(){
-            	  submitConfirm(); 
-                       return true;});
-	
-	
- } */
-	//提交信息
- function submitConfirm(){
- 	$.post('<c:url value="/member/unPay.html"/>', '', function(data) {
- 		if(data.resultCode==1){
- 				HHN.popup(data.result);
-			}else{
-				alert("退本成功,请等待管理员审核");
-				location.reload();
-			}
- 		
-		},"json");
- }
-</script> 
-	
-
+	<%@ include file="../include/foot_kangji.jsp"%>
 
 </body>
 </html>
+<script type="text/javascript">
+	$(".tab").find('li').on('click', function(){
+		$(".tab").find('li').removeClass('tab-active')
+		$(this).addClass('tab-active')
+		var index = $(this).attr('data')
+
+		$(".tab-container").find('div').removeClass('tab-container-active')
+		$.each($(".tab-container").find('div'), function(idx, data){
+			if(index == $(data).attr('data')){
+				$(data).addClass('tab-container-active')
+			}
+		})
+	})
+	
+	function doAccountOpt(opt,accountCode){
+		//查看明细
+		if("viewDetail" == opt){
+			window.location.href ="<c:url value='/member/accountDetail.html?accountType='/>"+accountCode;
+			return;
+		}
+		
+		//转让
+		if("zhuanrang" == opt){
+			window.location.href ="<c:url value='/member/transJifeng.html?accountType='/>"+accountCode;
+			return;
+		}
+		//提现
+		if("tixian" == opt){
+			window.location.href ="<c:url value='/member/withdraw.html?accountType='/>"+accountCode;
+			return;
+		}
+	}
+			
+</script>

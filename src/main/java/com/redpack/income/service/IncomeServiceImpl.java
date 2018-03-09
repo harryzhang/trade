@@ -14,10 +14,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.redpack.account.model.BizUserAccountDo;
+import com.redpack.constant.WebConstants;
 import com.redpack.income.IIncomeSevice;
-import com.redpack.income.IIncomeTaskAssignSevice;
 import com.redpack.income.IIncomeTotalService;
 
 /**
@@ -48,21 +49,19 @@ public class IncomeServiceImpl implements IIncomeSevice {
 			}
 			
 			//获取分红配置
-			Map<String, QuotaBean> qutoConfigMap = onePersonIncomeService.getQuota();
-			if(null == qutoConfigMap || qutoConfigMap.isEmpty()){
+			Map<String, QuotaBean> staticConfigMap = onePersonIncomeService.getQuota(WebConstants.STATIC_FEN_HONG);
+			Map<String, QuotaBean> groupConfigMap = onePersonIncomeService.getQuota(WebConstants.GROUP_FEN_HONG);
+			if(CollectionUtils.isEmpty(staticConfigMap) || CollectionUtils.isEmpty(groupConfigMap)){
 				logger.error("分红配置错误");
 				return;
 			}
 			
-			//List<QuotaBean> configQuotaList = QuotaUtil.map2List(qutoConfigMap);
-			
-			MuiltLevelBean muiltLevelBean1 = onePersonIncomeService.getMuiltLevelConfig1();			
-			MuiltLevelBean muiltLevelBean2 = onePersonIncomeService.getMuiltLevelConfig2();
 			//end 获取分红配置
 			
+			List<QuotaBean> staticConfigList = QuotaUtil.copyMap2List(staticConfigMap);
+			List<QuotaBean> groupConfigList = QuotaUtil.copyMap2List(groupConfigMap);
+			
 			for(BizUserAccountDo userAcc : userAccountLst){
-				
-				List<QuotaBean> quotaList = QuotaUtil.copyMap2List(qutoConfigMap);
 				
 				System.out.println("当前正在分红的用户："+userAcc.toString());
 				if(null == userAcc.getAmount()){
@@ -73,8 +72,8 @@ public class IncomeServiceImpl implements IIncomeSevice {
 					continue;
 				}
 				try{
-					Map<String ,Object> retMap = onePersonIncomeService.calculateIncome(userAcc,quotaList);
-					onePersonIncomeService.calculateMuiltLevelIncome(userAcc,retMap,muiltLevelBean1,muiltLevelBean2);
+					onePersonIncomeService.calculateIncome(userAcc,staticConfigList);
+					onePersonIncomeService.calculateGroupIncome(userAcc,groupConfigList);
 				}catch(Exception e){
 					logger.error("=========================用户分红job"+taskId+" 错误=================================="+userAcc.toString());
 					logger.error(e);

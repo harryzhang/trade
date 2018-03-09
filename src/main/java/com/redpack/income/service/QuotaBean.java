@@ -31,6 +31,9 @@ public class QuotaBean {
 	private BigDecimal baseAmount; //计算的基数
 	
 	private int level;
+	private String rateConfig;
+	
+	private String fenHongType; //分红类型
 	
 	
 	/**
@@ -38,10 +41,11 @@ public class QuotaBean {
 	 */
 	private Long userId;
 	
-	public QuotaBean(String  accountName,BigDecimal percent,BigDecimal rate){
+	public QuotaBean(String  accountName,BigDecimal percent,String rateConfig,String fenHongType){
 		this.accountName = accountName;
 		this.percent = percent;
-		this.incomeRate = rate;
+		this.rateConfig = rateConfig;
+		this.fenHongType = fenHongType;
 	}
 
 	
@@ -113,6 +117,46 @@ public class QuotaBean {
 	}
 
 	/**
+	 * @return the accountName
+	 */
+	public String getAccountName() {
+		return accountName;
+	}
+
+
+	/**
+	 * @param accountName the accountName to set
+	 */
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
+
+	/**
+	 * @return the rateConfig
+	 */
+	public String getRateConfig() {
+		return rateConfig;
+	}
+
+
+	/**
+	 * @param rateConfig the rateConfig to set
+	 */
+	public void setRateConfig(String rateConfig) {
+		this.rateConfig = rateConfig;
+	}
+
+
+	/**
+	 * @return the fenHongType
+	 */
+	public String getFenHongType() {
+		return fenHongType;
+	}
+
+
+	/**
 	 * 基数*收益率
 	 * @return
 	 */
@@ -121,37 +165,111 @@ public class QuotaBean {
 			return BigDecimal.ZERO;
 		}
 		
+		this.incomeRate = this.getRateByAmount(this.baseAmount);
+		if(null == this.incomeRate ){
+			return BigDecimal.ZERO;
+		}
+		return  this.baseAmount.multiply(this.incomeRate);
+	}
+	/**
+	 * 基数*收益率
+	 * @return
+	 */
+	public BigDecimal  groupBaseAmtMulIncomeRate(BigDecimal refAmt){
+		if(null == this.baseAmount  ){
+			return BigDecimal.ZERO;
+		}
+		
+		this.incomeRate = this.getGroupRateByAmount(this.baseAmount,refAmt);
 		if(null == this.incomeRate ){
 			return BigDecimal.ZERO;
 		}
 		return  this.baseAmount.multiply(this.incomeRate);
 	}
 	
+	/**
+	 * 
+	 * 根据金额大小确定利率  1-999:0.1;1000-1999:0.2;
+	 * zhangyunhmf
+	 *
+	 */
+    private BigDecimal getRateByAmount(BigDecimal baseAmount2) {
+	    String[] levels = this.rateConfig.split(";");
+	    for(String level : levels){
+	    	String[] oneConfig = level.split(":");
+	    	String[] fromToAmt = oneConfig[0].split("-");
+	    	String from = fromToAmt[0];
+	    	String to = fromToAmt[1];
+	    	if(baseAmount2.compareTo(new BigDecimal(from))>=0 && baseAmount2.compareTo(new BigDecimal(to))<= 0){
+	    		return new BigDecimal(oneConfig[1]);
+	    	}
+	    	
+	    }
+	    return BigDecimal.ZERO;
+    }
+    /**
+     * 推荐 refAmt<= 100  ,小区业绩<= 1000
+     * 根据金额大小确定利率  100-1000:0.1;1000-1999:0.2;
+     * zhangyunhmf
+     *
+     */
+    private BigDecimal getGroupRateByAmount(BigDecimal baseAmount2,BigDecimal refAmt) {
+    	String[] levels = this.rateConfig.split(";");
+    	for(String level : levels){
+    		String[] oneConfig = level.split(":");
+    		String[] fromToAmt = oneConfig[0].split("-");
+    		String from = fromToAmt[0];
+    		String to = fromToAmt[1];
+    		if(refAmt.compareTo(new BigDecimal(from))>=0 && baseAmount2.compareTo(new BigDecimal(to))<= 0){
+    			return new BigDecimal(oneConfig[1]);
+    		}
+    		
+    	}
+    	return BigDecimal.ZERO;
+    }
+
+
 	public void calculateIncome() {
-		//StringBuffer sb = new StringBuffer(level == 0 ?"":"团队奖第"+level+"代");
-		//sb.append(" 步骤1. 收益率*基数=").append(CalculateUtils.round(this.getIncomeRate().doubleValue())).append("*").append(CalculateUtils.round(this.baseAmount.doubleValue()));
 		BigDecimal  step1Result = baseAmtMulIncomeRate();
-		//sb.append(" 步骤2. 账户比例系数*第一步结果=").append(this.getPercent().toString()).append("*").append(CalculateUtils.round(step1Result.doubleValue()));
 		if(null == this.getPercent()){
 			return ;
 		}
 		this.incomeAmount = this.getPercent().multiply(step1Result);
 		
 		String ret= String.format("%.4f", this.incomeAmount.doubleValue());
-		this.calDesc = (level == 0 ?"分红："+ret:("第"+level+"代团队奖:"+ret));
+		this.calDesc = ("分红："+this.fenHongType+":"+ret);
 		
-		//sb.append("结果：").append(ret);
-		//System.out.println(sb.toString());
+	}
+	
+	public void calculateGroupIncome(BigDecimal refAmt) {
+		BigDecimal  step1Result = groupBaseAmtMulIncomeRate(refAmt);
+		if(null == this.getPercent()){
+			return ;
+		}
+		this.incomeAmount = this.getPercent().multiply(step1Result);
+		
+		String ret= String.format("%.4f", this.incomeAmount.doubleValue());
+		this.calDesc = ("分红："+this.fenHongType+":"+ret);
+		
 	}
 	
 
-	@Override
-	public String toString() {
-		return "QuotaBean [incomeRate=" + incomeRate + ", accountName="
-				+ accountName + ", percent=" + percent + ", incomeAmount="
-				+ incomeAmount + ", calDesc=" + calDesc + ", baseAmount="
-				+ baseAmount + ", level=" + level + ", userId=" + userId + "]";
-	}
+
+
+	/**
+	 *
+	 * zhangyunhmf
+	 *
+	 * @see java.lang.Object#toString()
+	 *
+	 */
+    @Override
+    public String toString() {
+	    return "QuotaBean [incomeRate=" + incomeRate + ", accountName=" + accountName
+	            + ", percent=" + percent + ", incomeAmount=" + incomeAmount + ", calDesc="
+	            + calDesc + ", baseAmount=" + baseAmount + ", level=" + level + ", rateConfig="
+	            + rateConfig + ", fenHongType=" + fenHongType + ", userId=" + userId + "]";
+    }
 
 
 	public int getLevel() {
@@ -180,6 +298,17 @@ public class QuotaBean {
 			return false;
 		return true;
 	}
+
+
+	/**
+	 * 
+	 * zhangyunhmf
+	 *
+	 */
+    public void setFenHongType(String fenHongType) {
+	    // TODO Auto-generated method stub
+	    
+    }
 
 
 }

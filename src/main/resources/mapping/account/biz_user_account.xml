@@ -13,25 +13,51 @@
 		<result property="incomeAmount" column="incomeAmount" />
 		<result property="consueAmount" column="consueAmount" />
 		<result property="updateTime" column="updateTime" />
+		<result property="accountName" column="accountName" />
+		<result property="unit" column="unit" />
+		
 	</resultMap>
 
-	<select id="getById" parameterType="Map" resultMap="bizUserAccountResultMap">
+	<select id="getByUserIdAndAccount" parameterType="Map" resultMap="bizUserAccountResultMap">
 		SELECT * 
 		  FROM t_user_account WHERE userId = #{userId} and accountType =#{accountType}
 	</select>
 
 	<select id="selectUserAccount" parameterType="Map" resultMap="bizUserAccountResultMap">
-		SELECT * 
-		  FROM t_user_account
+		SELECT a.*, b.accountName,b.unit 
+		  FROM t_user_account  a left join t_account_type b on a.accountType=b.accountCode
 		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
 			<if test="userId != null">  
-				AND userId = #{userId}
+				AND a.userId = #{userId}
 			</if>
 			<if test="accountType != null">  
-				and accountType =#{accountType}
+				and a.accountType =#{accountType}
 			</if>
 			<if test="updateTime != null">  
-				AND updateTime = #{updateTime}
+				AND a.updateTime = #{updateTime}
+			</if>
+         </trim> 
+	</select>
+	<select id="getOptionsByAccountCode" parameterType="Map" resultType="Map">
+		SELECT a.* 
+		from t_account_type_opt a
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			
+			<if test="accountCode != null">  
+				and a.accountCode =#{accountCode}
+			</if>
+         </trim> 
+	</select>
+	
+	<select id="selectAccountName" parameterType="Map" resultType="Map">
+		SELECT * 
+		  FROM t_account_type
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="accountCode != null">  
+				AND accountCode = #{accountCode}
+			</if>
+			<if test="accountName != null">  
+				and accountName =#{accountName}
 			</if>
          </trim> 
 	</select>
@@ -73,6 +99,14 @@
 		select userid, sum(ifnull(amount,0)) as amount,  accountType 
 		from t_user_account_temp
 		group by userid , accountType			
+	</select>
+	
+	<select id="totalReferAmt" parameterType="Map" resultType="Map">
+		select  sum(ifnull(amount,0)) as amount
+		from t_user_account a, t_user b
+		where a.accountType=#{accountType}
+		      and a.userid = b.id
+		      and b.referrerId = #{referrerId}			
 	</select>
 	
 	<update id="updateUserAccountById" parameterType="bizUserAccountDo">

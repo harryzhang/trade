@@ -22,7 +22,7 @@ public interface IBizUserAccountDao {
 	 * 根据ID 查询
 	 * @parameter id
 	 */
-	public BizUserAccountDo getById(Map<String,Object> map);
+	public BizUserAccountDo getByUserIdAndAccount(Map<String,Object> map);
 	
 	/**
 	 *根据条件查询用户列表
@@ -75,4 +75,29 @@ public interface IBizUserAccountDao {
 	public List<BizUserAccountDo> selectUserAccountFromTemp();
 
 	public void deleteFeiHongTemp();
+
+	/**
+	 * 
+	 * 查询账户名称
+	 * zhangyunhmf
+	 *
+	 */
+    public List<Map<String,Object>> selectAccountName();
+
+	/**
+	 * 
+	 * 允许哪些操作
+	 *
+	 * zhangyunhmf
+	 *
+	 */
+    public List<Map<String, Object>> getOptionsByAccountCode(Map<String, Object> paramMap);
+
+	/**
+	 * 
+	 * 统计额度
+	 * zhangyunhmf
+	 *
+	 */
+    public List<Map<String,Object>> totalReferAmt(Map<String, Object> map);
 }

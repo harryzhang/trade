@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.redpack.account.dao.IBizUserAccountDao;
 import com.redpack.account.model.BizUserAccountDo;
@@ -51,18 +52,19 @@ public class MemberServiceImpl implements IMemberService {
 	}
 	
 	@Override
-	public Map<String, Object> getUserAccount(long userId) {
-		// TODO Auto-generated method stub
+	public List<BizUserAccountDo> getUserAccount(long userId) {
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("userId", userId);
 		List<BizUserAccountDo> accountList = bizUserAccountDao.selectUserAccount(paramMap);
 		
-		Map<String, Object> userMap = new HashMap<String,Object>();
-		for (BizUserAccountDo bizUserAccountDo : accountList) {
-			String accountType = bizUserAccountDo.getAccountType();
-			userMap.put(accountType, bizUserAccountDo.getAmount());
-		}
-		return userMap;
+		return accountList;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getOptionsByAccountCode(String accountType) {
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("accountCode", accountType);
+		return bizUserAccountDao.getOptionsByAccountCode(paramMap);
 	}
 	
 

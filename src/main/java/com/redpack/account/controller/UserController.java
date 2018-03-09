@@ -488,7 +488,6 @@ public class UserController extends BaseController{
 				verifyCode= String.valueOf(vc);
 			}
 			
-			// 测试环境注释验证码
 			
 			// 测试环境注释验证码
 			String ifSend = paramService.getByName(WebConstants.IF_SEND_MESSAGE);

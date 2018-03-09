@@ -213,6 +213,8 @@ public class WebConstants {
     
     //静态分红
     public static final String STATIC_FEN_HONG="STATIC_FEN_HONG";
+    //团队分红
+    public static final String GROUP_FEN_HONG="GROUP_FEN_HONG";
     //团队奖 方案一
     public static final String MUILT_LEVEL_INCOME="MUILT_LEVEL_INCOME";
     

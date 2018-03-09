@@ -19,6 +19,10 @@
 <link href="<c:url value ='/res-kuangji/css/member_yzc.css'/>"	rel="stylesheet" type="text/css">
 <link href="<c:url value ='/res-shichang/css/reset.css'/>"	rel="stylesheet" type="text/css">
 
+<link href='<c:url value="/res/js/plugins/modal/modal.css?"/>${jsversion}' type="text/css" rel="stylesheet">
+<script type="text/javascript" src='<c:url value="/res/js/global.js?v="/>${jsversion}' ></script>
+<script type="text/javascript" src='<c:url value="/res/js/plugins/modal/modal.js?v="/>${jsversion}'></script>
+
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/jquery-2.1.1.min.js'/>"></script>
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/top.js'/>" used="1"></script>
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/member_yzc.js'/>"></script>
@@ -177,18 +181,18 @@
 				<ul class="box">
 					<li>
 						<label>定存数量</label>
-						<input class="wtext" onblur="checkNo(this.value)" id="" value="" name="" maxlength="4" type="number" placeholder="请输入100 ~ 2000且为100整数倍的数量">
+						<input class="wtext"   id="qty" value="" name="qty" maxlength="4" type="number" placeholder="请输入100 ~ 2000且为100整数倍的数量">
 					</li>
 					<li>
 						<label>支付密码</label> 
-						<input class="wtext" type="password" placeholder="请输入≥6位的字母+数字的密码">  
+						<input class="wtext" type="password" id="pwd" name="pwd" placeholder="请输入≥6位的字母+数字的密码">  
 					</li>
 					<li>
 						<label>总价：$0 </label>
 					</li>
 				</ul>
 				<div>
-					<input class="txbut" value="存入" type="button">
+					<input class="txbut" onclick="saveMoney();" value="存入" type="button">
 				</div>
 			</div>
 		</div>
@@ -211,4 +215,26 @@
 			}
 		})
 	})
+	
+	function saveMoney(){
+		HHN.popupConfirm("你确定要存入?", 
+                function(){return true;}, 
+                function(){submitSave(); 
+                         return true;});
+	}
+	
+	
+	//提交信息
+    function submitSave(){
+    	var param ={"userId":userId,"changeName":changeName,"changePhone":changePhone};
+    	$.post('<c:url value="/kefu/setChangeUser.html"/>', param, function(data) {
+    		if(data.resultCode==1){
+    			HHN.popup(data.result);
+			}else{
+				HHN.popup("封号成功");
+				search();
+			}
+    		
+		},"json");
+    }
 </script>

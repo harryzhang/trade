@@ -132,7 +132,7 @@ public class UserTreeController {
 		UserDo rootUserDo = userService.getById(rootId);
 //		List<UserDo> childDoList = userService.selectChildByParentId(rootId);
 //		userService.getAllChildren(rootDao);
-		rootUserDo = groupUserService.getAllChildRen(rootUserDo,(String)groupMap.get("groupName"));
+		rootUserDo = groupUserService.getAllChildRen(rootUserDo);
 		
 		jsonObject.put("result", 0);
 		jsonObject.put("userId", userDo.getId());

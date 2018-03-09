@@ -21,7 +21,7 @@
 <body>
     <div class="top-nav">
         <a class="link"  href="javascript:;" onclick="history.back();">&lt;返回</a>
-        <h2>积分转让</h2>
+        <h2>转让</h2>
     </div>
 	<form id="loginForm" action="<c:url value='/member/saveTrans.html'/>" method="post">
 	    <div class="exit-wrap">

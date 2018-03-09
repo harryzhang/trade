@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.redpack.account.dao.IUserDao;
 import com.redpack.account.model.UserDo;
@@ -108,43 +109,20 @@ public class GroupUserServiceImpl implements IGroupUserService {
 	}
 
 	@Override
-	public UserDo getAllChildRen(UserDo rootDao, String groupName) {
+	public UserDo getAllChildRen(UserDo parentUser) {
 		
 		//获取组的所有用户
-		Map paramMap = new HashMap();
-		paramMap.put("groupName", groupName);
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("parentId", parentUser.getId());
 		List<UserDo> userList = userDao.getAllGroupUser(paramMap);
-		if( null != rootDao){
-			findChildUser(rootDao,userList,0);
+		parentUser.setChildList(userList);
+		if(CollectionUtils.isEmpty(userList)){
+			return parentUser;
 		}
-		return rootDao ;
-//		
-//		
-//		Map<Long,UserDo>  userMap = new HashMap<Long,UserDo>();		
-//		for (UserDo userDo : userList) {
-//			if(null == userDo.getId()){
-//				continue;
-//			}
-//			userMap.put(userDo.getId(), userDo);
-//		}
-//		
-//		//覆盖掉 userList 的root
-//		userMap.put(rootDao.getId(), rootDao);
-//		
-//		for (UserDo userDo : userList) {
-//			UserDo u = userMap.get(userDo.getParentId());
-//			if(null != u){
-//				List<UserDo> childList = u.getChildList();
-//				if(null == childList){
-//					childList = new ArrayList<UserDo>();
-//				}
-//				childList.add(userDo);
-//				u.setChildList(childList);
-//			}
-//		}
-//
-//		return rootDao;
-		
+		for (UserDo userDo : userList) {
+			getAllChildRen(userDo);
+		}
+		return parentUser;
 	}
 
 	//寻找子节点

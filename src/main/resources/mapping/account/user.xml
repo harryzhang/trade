@@ -22,6 +22,7 @@
 		<result property="zhifubao" column="zhifubao" />
 		<result property="userCode" column="userCode" />
 		<result property="openId" column="openId" />
+		<result property="groupuserIdx" column="groupuserIdx" />
 	</resultMap>
 
 	
@@ -149,27 +150,20 @@
 	
 	<select id="getAllGroupUser" parameterType="Map" resultMap="userResultMap">
 		SELECT a.id,a.name,a.userName,
-	   		   b.parentId as referrerId ,b.level as grade,
+	   		   b.parentId  ,
+	   		   b.level as grade,
 	   		   a.status,
-	   		   a.userCode
+	   		   a.userCode,
+	   		   a.referrerId,
+	   		   b.groupuserIdx
 	    FROM t_group_user b 
-		LEFT JOIN t_user a on b.userId =a.id
-		LEFT JOIN t_group p on b.groupName = p.groupName
-		<trim prefix="WHERE" prefixOverrides="AND |OR "> 
-	 	    <if test=" groupName != null">
-		    	b.groupName = #{groupName} 
-	 		</if>
-		 	<if test=" networkGroup != null">  
-					and p.networkGroup = #{networkGroup}
-			</if>
-		 	<if test="groupUserStatus != null">  
-					and b.status = #{groupUserStatus}
-			</if>
+		LEFT JOIN t_user a on b.userId =a.id		
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">	 	    
 		 	<if test="userId != null">  
 					and b.userId = #{userId}
 			</if>
-		 	<if test="groupStatus != null">  
-					and p.status = #{groupStatus}
+		 	<if test="parentId != null">  
+					and b.parentId = #{parentId}
 			</if>
 		</trim>
 	 	<if test="order != null">  

@@ -182,10 +182,6 @@ public interface IUserService {
 	 */
 	public void exchangeEachOther(String user1Mobile, String user2Mobile);
 	
-	/**
-	 * 移到空位
-	 */
-	public void moveSort(String user1Mobile,Integer level, Long position,String groupName);
 	
 	List<Map<String, Object>> listRef(Map<String, Object> queryMap);
 

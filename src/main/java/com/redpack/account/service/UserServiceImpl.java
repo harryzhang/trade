@@ -12,7 +12,6 @@
 package com.redpack.account.service;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,30 +23,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.redpack.account.controller.UserController;
-import com.redpack.account.dao.IUserAccountDetailDao;
-import com.redpack.account.dao.IUserAccountIncomeDao;
 import com.redpack.account.dao.IUserDao;
 import com.redpack.account.dao.IUserInfoDao;
+import com.redpack.account.faced.IBizUserAccountService;
 import com.redpack.account.faced.IUserService;
 import com.redpack.account.model.ApplyAgentDo;
-import com.redpack.account.model.UserAccountDetailDo;
-import com.redpack.account.model.UserAccountIncomeDo;
 import com.redpack.account.model.UserDo;
 import com.redpack.base.result.IResult;
 import com.redpack.base.result.ResultSupport;
 import com.redpack.constant.WebConstants;
-import com.redpack.grade.dao.IGradeFeeDao;
 import com.redpack.grade.model.GradeFeeDo;
 import com.redpack.grade.model.GroupUserDo;
-import com.redpack.group.dao.IGroupDao;
-import com.redpack.group.dao.IGroupIndexManagerDao;
-import com.redpack.group.dao.IGroupUserDao;
-import com.redpack.member.dao.IMemberDao;
-import com.redpack.member.model.KuangjiUserAccountDo;
+import com.redpack.group.IGroupUserService;
 import com.redpack.param.IParamService;
-import com.redpack.sms.ISysSmsService;
-import com.redpack.userWaiting.dao.IUserWaitingDao;
 import com.redpack.wallet.dao.IWalletDao;
 import com.redpack.wallet.model.WalletDo;
 
@@ -64,42 +52,22 @@ public class UserServiceImpl implements IUserService {
 	
 	@Autowired
 	private IUserDao userDao;
-	@Autowired	
-    private IGradeFeeDao  gradeFeeDao;
+	
 	@Autowired	
 	private IUserInfoDao  userInfoDao;
 	
-	@Autowired
-	private IGroupDao groupDao;
 	
 	@Autowired
-	private IGroupUserDao groupUserDao;
-	
+	private IGroupUserService groupUserService;
 	@Autowired
-	private IGroupIndexManagerDao groupIndexManagerDao;
+	private IBizUserAccountService bizUserAccountService;
 	
-	@Autowired
-	private IUserAccountDetailDao  userAccountDetailDao;
-	
-	
-	@Autowired
-	private IUserWaitingDao userWaitingDao;
-
 	@Autowired	
     private IWalletDao  walletDao;
 	
 	@Autowired	
     private IParamService  paramService;
 	
-	@Autowired
-	private ISysSmsService sysSmsService;
-	
-//	@Autowired
-//    private IUserAccountIncomeDao  userAccountIncomeDao;
-
-	
-	@Autowired
-	private IMemberDao memberDao;
 	
 	@Value("#{config['system.name']}")
 	private String system;
@@ -175,7 +143,42 @@ public class UserServiceImpl implements IUserService {
 			return ResultSupport.buildResult(1, "保存用户信息失败");
 		}
 		//获取用户编号
-		setUserCode(userDo);
+		//setUserCode(userDo);
+		
+		
+		//根据推荐人确定用户位置
+		Long refUserId = userDo.getReferrerId();
+		UserDo refUser = userDao.getById(refUserId);
+		groupUserService.getAllChildRen(refUser);
+		UserDo rightUser =refUser.getRightChild();
+		UserDo leftUser = refUser.getLeftChild();
+		
+		
+		UserDo  newUserParent = null;
+		String leftRightFlag = "L";
+		//左为空
+		if(leftUser ==null){
+			newUserParent = refUser;
+		}else if(null == rightUser  ){ //右为空
+			newUserParent = refUser;
+			leftRightFlag = "R";
+		}else{//左右都不为空
+			BigDecimal rightAmt = bizUserAccountService.totalAmt(rightUser,WebConstants.SECURITY_ACCOUNT);
+			BigDecimal leftAmt = bizUserAccountService.totalAmt(leftUser,WebConstants.SECURITY_ACCOUNT);
+			UserDo  chooseUser = leftAmt.compareTo(rightAmt)>0?rightUser:leftUser;
+			newUserParent = UserDo.getLastLeftUser(chooseUser);
+		}
+		
+		GroupUserDo newGroupUserDo = new GroupUserDo();
+		newGroupUserDo.setUserId(userDo.getId());
+		newGroupUserDo.setParentId(newUserParent.getId());
+		newGroupUserDo.setGroupName(newUserParent.getOrgan());
+		newGroupUserDo.setStatus("T");
+		
+		//左右标记
+		newGroupUserDo.setGroupuserIdx(leftRightFlag);
+		groupUserService.addGroupUser(newGroupUserDo);
+		
 		
 		
 		IResult<Long> result= ResultSupport.buildResult(0, "保存用户信息成功");
@@ -548,40 +551,7 @@ public class UserServiceImpl implements IUserService {
 		
 	}
 	
-	/**
-	 * 移到空位
-	 */
-	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-	public void moveSort(String user1Mobile,Integer level, Long position,String groupName){
-		Map<String, Object> parameterMap = new HashMap<String,Object>();
-		parameterMap.put("userName", user1Mobile);
-		List<UserDo> user1List = userDao.getByUserDo(parameterMap);
-		Long user1Id = user1List.get(0).getId();
-		
-//		Map<String,Object> groupMap = new HashMap<String,Object>();
-//		groupMap.put("userId", user1Id);
-//		groupMap.put("groupName", groupName);
-//		List<GroupUserDo> oldGroupUserList = groupUserDao.selectGroupUser(groupMap);
-//		GroupUserDo oldPosition = oldGroupUserList.get(0);
-		
-		
-		
-		Map<String,Object> groupMap = new HashMap<String,Object>();
-//		groupMap.put("userId", user1Id);
-//		groupUserDao.delGroupUserByUserId(parameterMap);
-		
-		
-		groupMap.clear();
-		groupMap.put("sort", position);
-		groupMap.put("level", level);
-		groupMap.put("groupName", groupName);
-		List<GroupUserDo> groupUserList = groupUserDao.selectGroupUser(groupMap);
-		
-		GroupUserDo newPosition = groupUserList.get(0);
-		newPosition.setUserId(user1Id);
-		groupUserDao.updateGroupUserById(newPosition);
-		
-	}
+	
 
 	@Override
 	public List<Map<String, Object>> listRef(Map<String, Object> queryMap) {

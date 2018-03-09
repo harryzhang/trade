@@ -286,7 +286,9 @@ public class UserServiceCacheImpl implements IUserServiceCache {
 	@Override
 	public void getAllChildren(UserDo currentUser) {
 		
-		List<UserDo> child = this.getChildList(currentUser.getId());
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("parentId", currentUser.getId());
+		List<UserDo> child = userDao.getAllGroupUser(paramMap);
 		currentUser.setChildList(child);
 		if(null == child){
 			return;

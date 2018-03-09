@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.redpack.base.controller.TokenUtil;
+
 /** 
  * @ClassName: TradeController 
  * @Description: TODO(这里用一句话描述这个类的作用) 
@@ -76,6 +78,7 @@ public class TradeController {
 	 */
 	@RequestMapping("/saveMoney")
 	public String saveMoney(Model model, HttpSession session, HttpServletRequest request) {
+		String newToken = TokenUtil.putToken(request, "point_rmb");
 		return "trade/saveMoney";
 	}
 	

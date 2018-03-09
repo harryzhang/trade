@@ -46,15 +46,10 @@
 				</dt>
 				<dd class="uname">${userDo.name}</dd>
 				<dd class="uma">欢迎登陆SDE资产证券</dd>
-				<dd class="uma"><c:if test="${ userDo.grade == '0' }">普通会员</c:if>
-				<c:if test="${ userDo.grade == '1' }">一级股东</c:if>
-				<c:if test="${ userDo.grade == '2' }">二级股东</c:if>
-				<c:if test="${ userDo.grade == '3' }">三级股东</c:if>
-				<c:if test="${ userDo.grade == '4' }">四级股东</c:if>
-				<c:if test="${ userDo.grade == '5' }">五级股东</c:if>
-				<c:if test="${ userDo.grade == '6' }">六级股东</c:if>
+				<%--
+				<dd class="uma"><c:if test="${ userDo.grade == '0' }">普通会员</c:if></dd>
+				--%>
 				
-				 </dd>
 			</dl>
 		</div>
 		<div class="tright"

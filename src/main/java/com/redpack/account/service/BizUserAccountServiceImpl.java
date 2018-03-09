@@ -25,6 +25,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.redpack.account.dao.IBizUserAccountDao;
 import com.redpack.account.dao.IUserAccountDetailDao;
@@ -65,7 +66,7 @@ public class BizUserAccountServiceImpl implements IBizUserAccountService, IFeiHo
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userId", userId);
 		map.put("accountType", accountType);
-		BizUserAccountDo udo = bizUserAccountDao.getById(map);
+		BizUserAccountDo udo = bizUserAccountDao.getByUserIdAndAccount(map);
 		BigDecimal amount = BigDecimal.ZERO;
 		if (null != udo) {
 			amount = udo.getAmount();
@@ -106,7 +107,7 @@ public class BizUserAccountServiceImpl implements IBizUserAccountService, IFeiHo
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userId", userId);
 		map.put("accountType", accountType);
-		BizUserAccountDo udo = bizUserAccountDao.getById(map);
+		BizUserAccountDo udo = bizUserAccountDao.getByUserIdAndAccount(map);
 		if( null == udo ){
 			bizUserAccountDao.addUserAccount(bizUserAccountDo);
 		}else{
@@ -135,7 +136,7 @@ public class BizUserAccountServiceImpl implements IBizUserAccountService, IFeiHo
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userId", userId);
 		map.put("accountType", accountType);
-		BizUserAccountDo udo = bizUserAccountDao.getById(map);
+		BizUserAccountDo udo = bizUserAccountDao.getByUserIdAndAccount(map);
 		int result = 0;
 		if( null == udo && amount.compareTo(BigDecimal.ZERO) >= 0 ){
 			result = bizUserAccountDao.addUserAccount(bizUserAccountDo);
@@ -415,7 +416,7 @@ public class BizUserAccountServiceImpl implements IBizUserAccountService, IFeiHo
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userId", userId);
 		map.put("accountType", WebConstants.SECURITY_ACCOUNT);
-		BizUserAccountDo udo = bizUserAccountDao.getById(map);
+		BizUserAccountDo udo = bizUserAccountDao.getByUserIdAndAccount(map);
 		if( null != udo ){
 			Date today = new Date();
 			Date updateDate = udo.getUpdateTime();
@@ -658,6 +659,62 @@ public class BizUserAccountServiceImpl implements IBizUserAccountService, IFeiHo
 		bizUserAccountDo.setRemark("现金豆转激活豆:"+jifengAmt.negate());
 		this.updateUserAmountById(bizUserAccountDo,AccountMsg.type_33);
 	}
+
+	/**
+	 * 
+	 * 累加下级额度
+	 * zhangyunhmf
+	 *
+	 * @see com.redpack.account.faced.IBizUserAccountService#totalAmt(com.redpack.account.model.UserDo, java.lang.String)
+	 *
+	 */
+    @Override
+    public BigDecimal totalAmt(UserDo userDo, String accountType) {
+    	
+    	BigDecimal result = BigDecimal.ZERO;
+    	Map<String, Object> map = new HashMap<String,Object>();
+    	map.put("userId", userDo.getId());
+    	map.put("accountType", accountType);
+		BizUserAccountDo userAccount = bizUserAccountDao.getByUserIdAndAccount(map);
+		if(userAccount != null){
+			result.add(userAccount.getAmount());
+		}
+		
+		List<UserDo> childList = userDo.getChildList();
+		if(CollectionUtils.isEmpty(childList)){
+			return result;
+		}
+		
+		for(UserDo user : childList){
+			BigDecimal tmp = totalAmt(user,accountType);
+			result.add(tmp);
+		}
+		
+	    return result;
+    }
+
+	/**
+	 * 
+	 *
+	 * zhangyunhmf
+	 *
+	 * @see com.redpack.account.faced.IBizUserAccountService#totalReferAmt(java.lang.Long, java.lang.String)
+	 *
+	 */
+    @Override
+    public BigDecimal totalReferAmt(Long id, String accountType) {
+	    
+	    Map<String,Object> map = new HashMap<String,Object>();
+	    map.put("referrerId", id);
+	    map.put("accountType", accountType);
+	    List<Map<String,Object>> result = bizUserAccountDao.totalReferAmt(map );
+	    if(CollectionUtils.isEmpty(result)){
+	    	return BigDecimal.ZERO;
+	    }
+	    
+	    return (BigDecimal)result.get(0).get("amount");
+	    
+    }
 	
 	
 }

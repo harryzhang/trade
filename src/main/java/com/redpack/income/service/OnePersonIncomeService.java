@@ -36,8 +36,6 @@ public class OnePersonIncomeService   {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
-	//创建线程局部变量context，用来保存收益配置
-    public final ThreadLocal context = new ThreadLocal();
     
 	@Autowired
 	private IBizUserAccountService bizUserAccountService;
@@ -55,31 +53,61 @@ public class OnePersonIncomeService   {
 	
 	private Map<Long,BizUserAccountDo> userAccountCacheMap = new HashMap<Long,BizUserAccountDo>();
 
+
+	private ThreadLocal<Map<String,Object>> context = new ThreadLocal<Map<String,Object>>();
+
 	/**
 	 * 计算分红
 	 * @param userAcc
 	 * @return
 	 */
-	public Map<String,Object> calculateIncome(BizUserAccountDo userAcc,List<QuotaBean> qutoConfigLst) {
+	public void calculateIncome(BizUserAccountDo userAcc,List<QuotaBean> qutoConfigLst) {
 		try{
-			//获取计算分红的相关配置
-//			Map<String, QuotaBean> qutoConfigMap = getQuota();
-//			if(null == qutoConfigMap || qutoConfigMap.isEmpty()){
-//				return Collections.EMPTY_MAP;
-//			}
-			
 			List<QuotaBean> qutoLst = QuotaUtil.calculate(qutoConfigLst, userAcc.getAmount(),userAcc.getUserId(),0);
 			saveQuota(qutoLst, AccountMsg.type_4);
-			Map<String ,Object> retMap = new HashMap<String,Object>();
-			BigDecimal fenHong = qutoLst.get(0).baseAmtMulIncomeRate();
-			retMap.put(WebConstants.STATIC_FEN_HONG, fenHong);
-			return retMap;
+			
 		}catch(Exception e ){
-			e.printStackTrace();
+			logger.error(e);
 		}
-		return Collections.EMPTY_MAP;
+		return;
 	}
-
+	
+	/**
+	 * 计算分红
+	 * @param userAcc
+	 * @return
+	 */
+	public void calculateGroupIncome(BizUserAccountDo userAcc,List<QuotaBean> qutoConfigLst) {
+		try{
+			
+			if(null == qutoConfigLst){
+				System.out.println("团队奖没有配置");
+				return;
+			}
+			
+			
+			//获取团队人员
+			UserDo currentUser = userServiceCache.getById(userAcc.getUserId());
+			userServiceCache.getAllChildren(currentUser);
+			UserDo leftChild =  currentUser.getLeftChild();
+			UserDo rightChild = currentUser.getRightChild();
+			
+			//获取小区额度						
+			BigDecimal rightAmt = bizUserAccountService.totalAmt(rightChild,WebConstants.SECURITY_ACCOUNT);
+			BigDecimal leftAmt = bizUserAccountService.totalAmt(leftChild,WebConstants.SECURITY_ACCOUNT);
+			BigDecimal groupAmt = leftAmt.compareTo(rightAmt)>0?rightAmt:leftAmt;
+			
+			//获取直推额度
+			BigDecimal refAmt = bizUserAccountService.totalReferAmt(currentUser.getId(),WebConstants.SECURITY_ACCOUNT);
+			
+			List<QuotaBean> qutoLst = QuotaUtil.calculateGroup(qutoConfigLst, groupAmt,refAmt,userAcc.getUserId(),0);
+			saveQuota(qutoLst, AccountMsg.type_5);
+			
+		}catch(Exception e ){
+			logger.error(e);
+		}
+		return;
+	}
 	
 	
 
@@ -230,35 +258,27 @@ public class OnePersonIncomeService   {
 			
 			
 			BigDecimal one = new BigDecimal("1");
-			BigDecimal resultAmt = quto.getIncomeAmount().divide(one, 4,BigDecimal.ROUND_HALF_UP);
+			BigDecimal resultAmt = quto.getIncomeAmount().divide(one, 6,BigDecimal.ROUND_HALF_UP);
 		
 			if(BigDecimal.ZERO.compareTo(resultAmt) ==0 ){
 				continue;
 			}
-			//logger.info(accountMsgType.getMessage()+"   QuotaBean:"+quto.toString());
-//			BizUserAccountDo bizUserAccountDo = new BizUserAccountDo();
-//			bizUserAccountDo.setUserId(quto.getUserId());
-//			bizUserAccountDo.setAmount(resultAmt);
-//			bizUserAccountDo.setAccountType(quto.getAccount());
-//			bizUserAccountDo.setRemark(quto.getCalDesc());
-//			bizUserAccountService.updateUserAmountById(bizUserAccountDo, accountMsgType);
-			
 			bizUserAccountService.insertFeiHongTemp(quto.getUserId(),resultAmt,quto.getAccount(),quto.getCalDesc(),accountMsgType);
 		}
 	}
 	
 
-	public Map<String, QuotaBean> getQuota() {
+	public Map<String, QuotaBean> getQuota(String fenHongConfig) {
 		
-		Map<String,Object> configMap = (Map)context.get();
+		Map<String,Object> configMap = (Map)context .get();
 		if(null == configMap){
 			configMap = new HashMap<String,Object>();
 			context.set(configMap);
 		}
-		Object qutoConfigMap = configMap.get(WebConstants.STATIC_FEN_HONG);
+		Object qutoConfigMap = configMap.get(fenHongConfig);
 		if(null == qutoConfigMap){
-			qutoConfigMap = paramService.getQuoTa(WebConstants.STATIC_FEN_HONG);
-			configMap.put(WebConstants.STATIC_FEN_HONG, qutoConfigMap);
+			qutoConfigMap = paramService.getQuoTa(fenHongConfig);
+			configMap.put(fenHongConfig, qutoConfigMap);
 		}
 		return (Map<String, QuotaBean>)qutoConfigMap;
 	}

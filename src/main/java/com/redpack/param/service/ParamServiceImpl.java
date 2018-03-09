@@ -158,19 +158,19 @@ public class ParamServiceImpl implements IParamService {
 		String rate = this.getByName(name+"_RATE");
 		
 		if(StringUtils.isBlank(configAcc)){
-			throw new RuntimeException("没有配置分红的name:"+name+"_ACCOUNT");
+			throw new RuntimeException("没有配置分红:"+name+"_ACCOUNT");
 		}
 		
 		if(StringUtils.isBlank(configQuota)){
-			throw new RuntimeException("没有配置分红的name:"+name+"_QUOTA");
+			throw new RuntimeException("没有配置分红:"+name+"_QUOTA");
 		}
 		
 		
 		if(StringUtils.isBlank(rate)){
-			throw new RuntimeException("没有配置分红的name:"+name+"_RATE");
+			throw new RuntimeException("没有配置分红:"+name+"_RATE");
 		}
 		
-		return QuotaUtil.convertString2Map(configAcc, configQuota, rate);
+		return QuotaUtil.convertString2Map(configAcc, configQuota, rate,name);
 	}
 
 	
