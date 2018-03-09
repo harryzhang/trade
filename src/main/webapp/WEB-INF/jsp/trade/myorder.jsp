@@ -256,7 +256,7 @@
 								</span>
 							</li>
 							<li></li>
-							<li></li>
+							<li>a href="javascript:void(0);" class='orderState'>撤销</a></li>
 						</ul>
 					</div>
 				</div>
