@@ -220,6 +220,7 @@
 		</div>
 		<div class="tab-container">
 			<div class="tab-container-content tab-container-active" data='0'>
+				<c:forEach items="${buyBills}" var="bill">
 				<div class="order">
 					<table>
 						<tr>
@@ -227,10 +228,11 @@
 							<td>价格($)</td>
 							<td>总计($)</td>
 						</tr>
+						
 						<tr class="number">
-							<td>100</td>
-							<td>1.00</td>
-							<td>100.00</td>
+							<td>${bill.qty }</td>
+							<td>${bill.price }</td>
+							<td>${bill.totalPrice }</td>
 						</tr>
 					</table>
 					<div>
@@ -241,6 +243,13 @@
 						</ul>
 					</div>
 				</div>
+				</c:forEach>
+				<p>没有更多数据了</p>
+			</div>
+			
+			<div class="tab-container-content" data='1'>
+				
+				<c:forEach items="${saleBills}" var="bill">
 				<div class="order">
 					<table>
 						<tr>
@@ -248,23 +257,22 @@
 							<td>价格($)</td>
 							<td>总计($)</td>
 						</tr>
+						
 						<tr class="number">
-							<td>100</td>
-							<td>1.00</td>
-							<td>100.00</td>
+							<td>${bill.qty }</td>
+							<td>${bill.price }</td>
+							<td>${bill.totalPrice }</td>
 						</tr>
 					</table>
 					<div>
 						<ul>
-							<li>maidain</li>
+							<li>mc0021</li>
 							<li>2018-02-19 23:24</li>
 							<li><a href="javascript:void(0);">可匹配</a></li>
 						</ul>
 					</div>
 				</div>
-				<p>没有更多数据了</p>
-			</div>
-			<div class="tab-container-content" data='1'>
+				</c:forEach>
 				<p>没有更多数据了</p>
 			</div>
 		</div>
@@ -285,7 +293,8 @@
 			if(index == $(data).attr('data')){
 				$(data).addClass('tab-container-active')
 			}
-		})
+		})	
+		
 	})
 	
 	

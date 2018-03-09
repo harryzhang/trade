@@ -18,10 +18,12 @@
 <link href="<c:url value ='/res-kuangji/css/global.css'/>"	rel="stylesheet" type="text/css">
 <link href="<c:url value ='/res-kuangji/css/member_yzc.css'/>"	rel="stylesheet" type="text/css">
 <link href="<c:url value ='/res-shichang/css/reset.css'/>"	rel="stylesheet" type="text/css">
+<link rel="stylesheet" href='<c:url value="/res/js/plugins/modal/modal.css?v="/>${cssversion}'/>
 
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/jquery-2.1.1.min.js'/>"></script>
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/top.js'/>" used="1"></script>
-<script type="text/javascript"	src="<c:url value ='/res-kuangji/js/member_yzc.js'/>"></script>
+<script type="text/javascript" src='<c:url value="/res/js/global.js?v="/>${jsversion}' ></script>
+<script type="text/javascript" src='<c:url value="/res/js/plugins/modal/modal.js?v="/>${jsversion}'></script>
 
 
 <style type="text/css">
@@ -161,7 +163,7 @@
 
 	<div class="top">
 		<b
-			onclick="javascript:window.location.href=&#39;<c:url value='/redPack/personalCenter.html'/>&#39;"></b>
+			onclick="javascript:window.location.href=&#39;<c:url value='/trade/trade.html'/>&#39;"></b>
 		<dd>挂单</dd>
 		<span></span>
 		<ul>
@@ -190,22 +192,22 @@
 				<ul class="box">
 					<li>
 						<label>买单价格</label> 
-						<input class="wtext" id="" name="" value="" maxlength="20" type="text" placeholder="请输入1.00 ~ 1.05之间的价格">
+						<input class="wtext" id="price" name="price" value="" maxlength="20" type="text" placeholder="请输入1.00 ~ 1.05之间的价格">
 					</li>					
 					<li>
 						<label>买单数量</label>
-						<input class="wtext" onblur="checkNo(this.value)" id="" value="" name="" maxlength="4" type="number" placeholder="请输入100 ~ 2000且为100整数倍的数量">
+						<input class="wtext"  id="qty" value="" name="qty" maxlength="4" type="number" placeholder="请输入100 ~ 2000且为100整数倍的数量">
 					</li>
 					<li>
 						<label>支付密码</label> 
-						<input class="wtext" type="password" placeholder="请输入≥6位的字母+数字的密码">  
+						<input class="wtext" type="password" name="pwd" id="pwd" placeholder="请输入≥6位的字母+数字的密码">  
 					</li>
 					<li>
 						<label>总价：$0 </label>
 					</li>
 				</ul>
 				<div>
-					<input class="txbut" value="确认买单" type="button">
+					<input class="txbut" value="确认买单" onclick="doBuy();" type="button">
 				</div>
 			</div>
 			<div class="tab-container-content" data='1'>
@@ -215,15 +217,15 @@
 				<ul class="box">
 					<li>
 						<label>卖单价格</label> 
-						<input class="wtext" id="" name="" value="" maxlength="20" type="text" placeholder="请输入1.00 ~ 1.05之间的价格">
+						<input class="wtext" id="price1" name="price1" value="" maxlength="20" type="text" placeholder="请输入1.00 ~ 1.05之间的价格">
 					</li>					
 					<li>
 						<label>卖单数量</label>
-						<input class="wtext" onblur="checkNo(this.value)" id="" value="" name="" maxlength="4" type="number" placeholder="请输入100 ~ 2000且为100整数倍的数量">
+						<input class="wtext"  id="" value="qty1" name="qty1" maxlength="4" type="number" placeholder="请输入100 ~ 2000且为100整数倍的数量">
 					</li>
 					<li>
 						<label>支付密码</label> 
-						<input class="wtext" type="password" placeholder="请输入≥6位的字母+数字的密码">  
+						<input class="wtext" type="password" name="pwd1" id="pwd1" placeholder="请输入≥6位的字母+数字的密码">  
 					</li>
 					<li>
 						<label>总价：$0 </label>
@@ -231,9 +233,9 @@
 					</li>
 				</ul>
 				<div>
-					<input class="txbut" value="确认卖单" type="button">
+					<input class="txbut" value="确认卖单"  onclick="doSale();" type="button">
 				</div>
-				<p>本次卖单最多可以挂<span class="tipColor">5523.86000</span>个CMCC</p>
+				<p>本次卖单最多可以挂<span class="tipColor"></span>个CMCC</p>
 			</div>
 		</div>
 	</div>
@@ -255,4 +257,80 @@
 			}
 		})
 	})
+	
+	function doSale(){
+		
+		var pwd = $("#pwd1").val();
+    	var qty = $("#qty1").val();
+    	var price = $("#price1").val();
+    	var orderType = "1";
+    	var goodsId = "1";
+
+    	if(price == null || price == "" || price.length == 0){//昵称
+    		HHN.popup("请输入价格", 'danger');  	
+       		return false;
+    	}
+    	if(qty == null || qty == "" || qty.length == 0){//昵称
+    		HHN.popup("请输入数量", 'danger');  	
+       		return false;
+    	}
+   		
+         if(pwd == null || pwd == "" || pwd.length == 0){
+             HHN.popup("请输入确认密码", 'danger');
+             return false;
+         }
+         
+                                
+          var param = {"pwd":pwd,"qty":qty,"price":price,"goodsId":goodsId,
+     		     "orderType":orderType};
+		
+		submitGuadan(param);
+	}
+	
+	function doBuy(){
+		
+		var pwd = $("#pwd").val();
+    	var qty = $("#qty").val();
+    	var price = $("#price").val();
+    	var orderType = "2";
+    	var goodsId = "1";
+    	 
+
+    	if(price == null || price == "" || price.length == 0){//昵称
+    		HHN.popup("请输入价格", 'danger');  	
+       		return false;
+    	}
+    	if(qty == null || qty == "" || qty.length == 0){//昵称
+    		HHN.popup("请输入数量", 'danger');  	
+       		return false;
+    	}
+   		
+         if(pwd == null || pwd == "" || pwd.length == 0){
+             HHN.popup("请输入确认密码", 'danger');
+             return false;
+         }
+         
+                                
+          var param = {"pwd":pwd,"qty":qty,"price":price,"goodsId":goodsId,
+     		     "orderType":orderType};
+          
+		submitGuadan(param);
+	}
+
+
+    
+    //提交信息
+    function submitGuadan(param){
+    	$.post('<c:url value="/trade/submitguadang.html"/>', param, function(data) {
+			if(data.resultCode == '0'){
+				HHN.popup("挂单成功!");					
+			}else{                
+				HHN.popup(data.errorMessage);
+			}
+		},"json");
+    }
+    
+    
+    
+    
 </script>
