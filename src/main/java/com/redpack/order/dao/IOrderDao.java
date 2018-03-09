@@ -26,7 +26,7 @@ public interface IOrderDao {
 	 * 根据ID 查询
 	 * @parameter id
 	 */
-	public OrderDo getById(int id);
+	public OrderDo getById(Long id);
 	
 	/**
 	 *根据条件查询列表
@@ -50,7 +50,7 @@ public interface IOrderDao {
 	/**
 	 * 删除
 	 */
-	public int deleteById(int id);
+	public int deleteById(Long id);
 
 	/**
 	 * 查询公告
@@ -59,5 +59,19 @@ public interface IOrderDao {
 	public List<Map<String, Object>> queryNotice();
 
 	public List<Map<String, Object>> queryNoticeById(String id);
+
+	/**
+	 * 更改匹配的订单状态为交易中
+	 * zhangyunhmf
+	 *
+	 */
+    public void updateOrderStatusByOldStatus(Map<String, Object> paraMap);
+
+	/**
+	 * 更新支付状态
+	 * zhangyunhmf
+	 *
+	 */
+    public void updateOrderPayStatus(Map<String, Object> paraMap);
 
 }

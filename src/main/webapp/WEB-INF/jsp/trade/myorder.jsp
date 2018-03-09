@@ -19,6 +19,10 @@
 <link href="<c:url value ='/res-kuangji/css/member_yzc.css'/>"	rel="stylesheet" type="text/css">
 <link href="<c:url value ='/res-shichang/css/reset.css'/>"	rel="stylesheet" type="text/css">
 
+<link href='<c:url value="/res/js/plugins/modal/modal.css?"/>${jsversion}' type="text/css" rel="stylesheet">
+<script type="text/javascript" src='<c:url value="/res/js/global.js?v="/>${jsversion}' ></script>
+<script type="text/javascript" src='<c:url value="/res/js/plugins/modal/modal.js?v="/>${jsversion}'></script>
+
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/jquery-2.1.1.min.js'/>"></script>
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/top.js'/>" used="1"></script>
 
@@ -207,11 +211,11 @@
 							<li></li>
 							<li>
 								<c:choose>
-									<c:when test="${ order.orderType eq 1 && order.payStatus eq 1 && order.orderStatus eq 2 }">
+									<c:when test="${ order.orderType eq 1 && order.payStatus eq 0 && order.orderStatus eq 2 }">
 										<a href="javascript:void(0);" class="contactBuyer">
 											联系买家
 										</a>
-										<a href="javascript:void(0);" class='orderState'>
+										<a href="javascript:doBuy(${order.orderId },'收款');" class='orderState'>
 												确认收款
 										</a>
 									</c:when>
@@ -219,7 +223,7 @@
 										<a href="javascript:void(0);" class="contactBuyer">
 											联系卖家
 										</a>
-										<a href="javascript:void(0);" class='orderState'>
+										<a href="javascript:doBuy(${order.orderId },'付款');" class='orderState'>
 												确认付款
 										</a>
 									</c:when>
@@ -297,14 +301,14 @@
 								</a>
 									
 								<c:choose>
-									<c:when test="${ order.orderType eq 1 && order.payStatus eq 1}">
-										<a href="javascript:void(0);" class='orderState'>
+									<c:when test="${ order.orderType eq 1 && order.payStatus eq 0}">
+										<a href="javascript:doBuy(${order.orderId },'收款');" class='orderState'>
 											确认收款
 									    </a>
 									</c:when>
 									<c:when test="${ order.orderType eq 2 && order.payStatus eq 0}">
 										
-										<a href="javascript:void(0);" class='orderState'>
+										<a href="javascript:doBuy(${order.orderId },'付款');" class='orderState'>
 											确认付款
 									    </a>
 									</c:when>
@@ -371,4 +375,26 @@
 			}
 		})
 	})
+	
+	function doBuy(orderId,msg){
+		HHN.popupConfirm("你确定已"+msg+"?", 
+                function(){return true;}, 
+                function(){submitSave(orderId); 
+                         return true;});
+	}
+	
+	
+	
+	//提交信息
+    function submitSave(orderId){
+    	var param ={"orderId":orderId};
+    	$.post('<c:url value="/trade/confirmOrder.html"/>', param, function(data) {
+    		if(data.resultCode=="0"){
+    			HHN.popup("操作成功");
+			}else{
+				HHN.popup(data.errorMessage);
+			}
+    		
+		},"json");
+    }
 </script>

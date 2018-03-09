@@ -29,7 +29,7 @@ public interface IOrderService{
 	 * 根据ID 查询
 	 * @parameter id
 	 */
-	public OrderDo getById(int id);
+	public OrderDo getById(Long id);
 	
 	/**
 	 *根据条件查询列表
@@ -98,5 +98,21 @@ public interface IOrderService{
 	 * @return
 	 */
 	Map<String, BigDecimal> splitBuyMoney(String string, BigDecimal totalMoney,Long userId);
+
+	/**
+	 * 匹配订单
+	 *
+	 * zhangyunhmf
+	 *
+	 */
+    public void matchOrder(OrderDo newOrder);
+
+	/**
+	 * 
+	 * 确认收款和付款
+	 * zhangyunhmf
+	 *
+	 */
+    public void confirmOrder(Long userId, Long orderId);
 
 }

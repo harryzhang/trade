@@ -40,12 +40,31 @@ public class OrderDo  implements java.io.Serializable{
 	private java.util.Date payTime;
 	private Integer  orderType; // 0 充值， 1购买矿机 2:积分兑换　３充值未确认
 	
+	//匹配订单id
+	private Long matchOrderId;
+	
 	private Map<String,BigDecimal> splitAccAmtMap; //多个账户的购买，购买金额在各个账户的分配
 	//columns END
+	
+	
 	public java.lang.Long getOrderId() {
 		return this.orderId;
 	}
 	
+	/**
+	 * @return the matchOrderId
+	 */
+	public Long getMatchOrderId() {
+		return matchOrderId;
+	}
+
+	/**
+	 * @param matchOrderId the matchOrderId to set
+	 */
+	public void setMatchOrderId(Long matchOrderId) {
+		this.matchOrderId = matchOrderId;
+	}
+
 	public void setOrderId(java.lang.Long value) {
 		this.orderId = value;
 	}

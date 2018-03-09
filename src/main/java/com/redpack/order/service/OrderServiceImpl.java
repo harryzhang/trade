@@ -90,7 +90,7 @@ public class OrderServiceImpl implements IOrderService {
 	 * @parameter id
 	 */
 	@Override
-	public OrderDo getById(int id){
+	public OrderDo getById(Long id){
 	  return orderDao.getById(id);
 	}
 	
@@ -165,7 +165,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 	public int deleteById(int id){
 		logger.debug("deleteByIdOrder:"+id);
-		return orderDao.deleteById(id);
+		return orderDao.deleteById(Long.valueOf(id));
 	}
 	
 	
@@ -735,5 +735,84 @@ public class OrderServiceImpl implements IOrderService {
 		}
 
 	}
+
+
+	/**
+	 * 
+	 * zhangyunhmf
+	 *
+	 * @see com.redpack.order.IOrderService#matchOrder(com.redpack.order.model.OrderDo)
+	 *
+	 */
+    @Override
+    public void matchOrder(OrderDo newOrder) {
+	    this.addOrder(newOrder);
+	    Map<String,Object> paraMap = new HashMap<String,Object>();
+	    paraMap.put("newStatus", 2);
+	    paraMap.put("oldStatus", 1);
+	    paraMap.put("matchOrderId", newOrder.getOrderId());
+	    paraMap.put("orderId", newOrder.getMatchOrderId());
+	    //更改匹配的订单状态为交易中
+	    this.orderDao.updateOrderStatusByOldStatus(paraMap);	    
+    }
+
+
+	/**
+	 * 确认收款和付款
+	 * @see com.redpack.order.IOrderService#confirmOrder(java.lang.Long, java.lang.Long)
+	 *
+	 */
+    @Override
+    public void confirmOrder(Long userId, Long orderId) {
+	    
+    	OrderDo confirmOrder = this.getById(orderId);
+    	if(confirmOrder.getUserId().longValue() != userId.longValue()){
+    		throw new RuntimeException("非法操作");
+    	}
+    	
+    	Map<String,Object> paraMap = new HashMap<String,Object>();
+    	paraMap.put("orderId", orderId);
+    	paraMap.put("orderStatus", 2);
+    	paraMap.put("newPayStatus", 1);
+    	paraMap.put("oldPayStatus", 0);
+		this.orderDao.updateOrderPayStatus(paraMap );
+
+		OrderDo matchOrder = this.getById(confirmOrder.getMatchOrderId());
+    	if(matchOrder.getPayStatus().intValue() == 1){//已确认支付
+    		paraMap.clear();
+		    paraMap.put("newStatus", 3);
+		    paraMap.put("oldStatus", 2);
+		    paraMap.put("orderId", orderId);
+		    //更改匹配的订单状态为完成
+		    this.orderDao.updateOrderStatusByOldStatus(paraMap);
+		    paraMap.clear();
+		    paraMap.put("newStatus", 3);
+		    paraMap.put("oldStatus", 2);
+		    paraMap.put("orderId", matchOrder.getOrderId());
+		    //更改匹配的订单状态为完成
+		    this.orderDao.updateOrderStatusByOldStatus(paraMap);
+		    
+		    Long targetUserId = null;
+		    Long sourceUserId = null;
+		    if(2 == confirmOrder.getOrderType().intValue()){
+		    	targetUserId = confirmOrder.getUserId();
+		    	sourceUserId = matchOrder.getUserId();
+		    }else if (1 == confirmOrder.getOrderType().intValue()){
+		    	sourceUserId = confirmOrder.getUserId();
+		    	targetUserId = matchOrder.getUserId();
+		    }
+    		bizUserAccountService.convertBetweenAccount(sourceUserId, 
+    				                                    targetUserId, 
+    				                                    new BigDecimal(confirmOrder.getQty()), 
+    				                                    WebConstants.RMB_ACCOUNT,
+    				                                    WebConstants.RMB_ACCOUNT,
+    				                                    AccountMsg.type_36,
+    				                                    AccountMsg.type_37);
+    	}
+    	
+    	
+    }
+
+
 	
 }

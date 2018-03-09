@@ -19,6 +19,10 @@
 <link href="<c:url value ='/res-kuangji/css/member_yzc.css'/>"	rel="stylesheet" type="text/css">
 <link href="<c:url value ='/res-shichang/css/reset.css'/>"	rel="stylesheet" type="text/css">
 
+<link href='<c:url value="/res/js/plugins/modal/modal.css?"/>${jsversion}' type="text/css" rel="stylesheet">
+<script type="text/javascript" src='<c:url value="/res/js/global.js?v="/>${jsversion}' ></script>
+<script type="text/javascript" src='<c:url value="/res/js/plugins/modal/modal.js?v="/>${jsversion}'></script>
+
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/jquery-2.1.1.min.js'/>"></script>
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/top.js'/>" used="1"></script>
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/member_yzc.js'/>"></script>
@@ -237,9 +241,9 @@
 					</table>
 					<div>
 						<ul>
-							<li>mc0021</li>
-							<li>2018-02-19 23:24</li>
-							<li><a href="javascript:void(0);">可匹配</a></li>
+							<li></li>
+							<li>${bill.createTime }</li>
+							<li><a href="javascript:doBuy(${bill.orderId });">可匹配</a></li>
 						</ul>
 					</div>
 				</div>
@@ -266,9 +270,9 @@
 					</table>
 					<div>
 						<ul>
-							<li>mc0021</li>
-							<li>2018-02-19 23:24</li>
-							<li><a href="javascript:void(0);">可匹配</a></li>
+							<li></li>
+							<li>${bill.createTime }</li>
+							<li><a href="javascript:doBuy(${bill.orderId });">可匹配</a></li>
 						</ul>
 					</div>
 				</div>
@@ -303,5 +307,30 @@
 	})
 	
 	
+	function doBuy(orderId){
+		HHN.popupConfirm("你确定要匹配?", 
+                function(){return true;}, 
+                function(){submitSave(orderId); 
+                         return true;});
+	}
+	
+	
+	
+	//提交信息
+    function submitSave(orderId){
+    	var param ={"orderId":orderId};
+    	$.post('<c:url value="/trade/matchOrder.html"/>', param, function(data) {
+    		if(data.resultCode=="0"){
+    			HHN.popup("匹配成功");
+    			setTimeout(function(){
+    				window.location.href="<c:url value ='/trade/trade.html'/>";
+				},1500);
+    			
+			}else{
+				HHN.popup(data.errorMessage);
+			}
+    		
+		},"json");
+    }
 	
 </script>

@@ -16,6 +16,7 @@
 		<result property="payStatus" column="payStatus" />
 		<result property="payTime" column="payTime" />
 		<result property="orderType" column="orderType" />
+		<result property="matchOrderId" column="matchOrderId" />
 	</resultMap>
 
 	<select id="getById" parameterType="Long" resultMap="orderResultMap">
@@ -119,10 +120,37 @@
 		</if>				
 		<if test="payTime != null">  
 				payTime = #{payTime},
-		</if>				
+		</if>
+		<if test="matchOrderId != null">  
+				matchOrderId = #{matchOrderId},
+		</if>
+						
 		</trim>
 		WHERE orderId = #{orderId} 
 	</update>	
+	
+	
+	<update id="updateOrderStatusByOldStatus" parameterType="Map">
+		UPDATE t_order
+		<trim prefix="SET" suffixOverrides=","> 
+			<if test="newStatus != null">  
+					orderStatus = #{newStatus},
+			</if>
+			<if test="matchOrderId != null">  
+					matchOrderId = #{matchOrderId},
+			</if>	
+		</trim> 
+		
+		WHERE orderId = #{orderId}  and orderStatus = #{oldStatus}
+	</update>	
+	
+	
+	<update id="updateOrderPayStatus" parameterType="Map">
+		UPDATE t_order set
+		payStatus = #{newPayStatus}
+		WHERE orderId = #{orderId}  and payStatus = #{oldPayStatus} and orderStatus=#{orderStatus}
+	</update>
+	
 	
 	<insert id="addOrder" parameterType="orderDo" keyProperty="id"
 		useGeneratedKeys="true" >
@@ -138,6 +166,7 @@
 		,payStatus
 		,payTime
 		,orderType
+		,matchOrderId
 )
 		     VALUES (		#{orderCode}
 		,#{userId}
@@ -151,6 +180,7 @@
 		,#{payStatus}
 		,#{payTime}
 		,#{orderType}
+		,#{matchOrderId}
 )
 	</insert>
 	

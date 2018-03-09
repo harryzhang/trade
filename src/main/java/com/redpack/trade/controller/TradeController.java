@@ -32,8 +32,10 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.redpack.account.faced.IBizUserAccountService;
 import com.redpack.account.faced.IUserAccountIncomeService;
 import com.redpack.account.faced.IUserService;
+import com.redpack.account.model.BizUserAccountDo;
 import com.redpack.account.model.UserDo;
 import com.redpack.base.controller.BaseController;
 import com.redpack.base.controller.TokenUtil;
@@ -63,7 +65,7 @@ public class TradeController extends BaseController {
 	private IOrderService orderService;
 	
 	@Autowired
-	private IUserAccountIncomeService accountService;
+	private IBizUserAccountService bizUserAccountService;
 	
 	@Autowired
 	private IUserService userService;
@@ -90,6 +92,89 @@ public class TradeController extends BaseController {
 		model.addAttribute("buyBills", buyOrderLst);
 		model.addAttribute("saleBills", saleOrderLst);
 		return "trade/trade";
+	}
+	
+	
+	/**
+	 * 提交挂单
+	 * 
+	 * @return
+	 * @author: zhangyunhua
+	 * @date 2015-3-29 上午3:36:11
+	 */
+	@RequestMapping(value = "/matchOrder")
+	public void  matchOrder( HttpServletRequest request,
+						   	  HttpServletResponse response,
+						   	  Model model) {
+		
+		logger.debug("----OrderController.submitGuadang;----");
+		IResult result = ResultSupport.buildResult(ResultSupport.success_code);
+		try{
+			
+			String orderIdParam = request.getParameter("orderId");
+			
+//			boolean checkToken = TokenUtil.checkToken(request, TokenUtil.BIZ_CODE_GOUMAI_GUQUAN);
+//			
+//			if(!checkToken){
+//				model.addAttribute("errorMsg", "请勿重复提交");
+//				return view;
+//			}
+			
+			if(StringUtils.isBlank(orderIdParam)){
+				result.setErrorMessage("请选择要匹配的订单");
+				result.setResultCode(ResultSupport.errorCode);
+				return;
+			}
+			
+			// 二级密码验证
+			Long userId = this.getUserId(request);
+			
+			OrderDo matchOrder = orderService.getById(Long.valueOf(orderIdParam));
+			//买单,计算账号余额
+			if("2".equals(matchOrder.getOrderType())){
+				Map<String, Object> accountParam = new HashMap<String,Object>();
+				accountParam.put("userId", userId);
+				accountParam.put("accountType", WebConstants.RMB_ACCOUNT);
+				List<BizUserAccountDo> userAccount = bizUserAccountService.selectUserAccount(accountParam );
+				boolean canBuy = true;
+				if(null == userAccount || userAccount.get(0) == null){
+					canBuy = false;
+				}else if( null == userAccount.get(0).getAmount()){
+					canBuy = false;
+				}else{
+					canBuy = userAccount.get(0).getAmount().compareTo(matchOrder.getTotalPrice())>=0?true:false;
+				}
+				if(!canBuy){
+					result.setErrorMessage("账号余额不足");
+					result.setResultCode(ResultSupport.errorCode);
+					return;
+				}
+			}
+			
+			
+			OrderDo newOrder = new OrderDo();
+			newOrder.setCreateTime(new Date());
+			newOrder.setGoodsId(matchOrder.getGoodsId());
+			newOrder.setOrderStatus(2);
+			newOrder.setQty(matchOrder.getQty());
+			newOrder.setPayStatus(0);
+			newOrder.setUserId(userId);
+			newOrder.setOrderType(matchOrder.getOrderType().intValue() == 1?2:1);
+			newOrder.setPrice(matchOrder.getPrice());
+			newOrder.setTotalPrice(matchOrder.getTotalPrice());
+			newOrder.setOrderCode("order_"+userId+DateUtil.getDate()+DateUtil.getThree());
+			newOrder.setMatchOrderId(matchOrder.getOrderId());
+			orderService.matchOrder(newOrder);
+			
+		
+		}catch(Exception e){
+			logger.error(e);
+			result.setResultCode(ResultSupport.errorCode);
+			result.setErrorMessage("匹配失败");
+		}finally{
+			ResponseUtils.renderText(response,null,JSONObject.fromObject(result).toString());
+		}
+		
 	}
 	
 	/**
@@ -150,7 +235,18 @@ public class TradeController extends BaseController {
 			double totalMoney =CalculateUtils.mul(price.doubleValue(), new Double(qty));
 			//卖单
 			if("1".equals(orderType)){
-				boolean canBuy = accountService.compareAmt(userId, totalMoney);
+				Map<String, Object> accountParam = new HashMap<String,Object>();
+				accountParam.put("userId", userId);
+				accountParam.put("accountType", WebConstants.RMB_ACCOUNT);
+				List<BizUserAccountDo> userAccount = bizUserAccountService.selectUserAccount(accountParam );
+				boolean canBuy = true;
+				if(null == userAccount || userAccount.get(0) == null){
+					canBuy = false;
+				}else if( null == userAccount.get(0).getAmount()){
+					canBuy = false;
+				}else{
+					canBuy = userAccount.get(0).getAmount().compareTo(new BigDecimal(totalMoney))>=0?true:false;
+				}
 				if(!canBuy){
 					result.setErrorMessage("账号余额不足");
 					result.setResultCode(ResultSupport.errorCode);
@@ -186,6 +282,53 @@ public class TradeController extends BaseController {
 		
 		
 	}
+	
+	
+	
+	/**
+	 * 提交挂单
+	 * 
+	 * @return
+	 * @author: zhangyunhua
+	 * @date 2015-3-29 上午3:36:11
+	 */
+	@RequestMapping(value = "/confirmOrder")
+	public void  confirmOrder( HttpServletRequest request,
+						   	  HttpServletResponse response,
+						   	  Model model) {
+		
+		logger.debug("----OrderController.submitGuadang;----");
+		IResult result = ResultSupport.buildResult(ResultSupport.success_code);
+		try{
+			
+			String orderIdParam = request.getParameter("orderId");
+			
+			
+//			boolean checkToken = TokenUtil.checkToken(request, TokenUtil.BIZ_CODE_GOUMAI_GUQUAN);
+//			
+//			if(!checkToken){
+//				model.addAttribute("errorMsg", "请勿重复提交");
+//				return view;
+//			}
+			
+			// 二级密码验证
+			Long userId = this.getUserId(request);
+			
+			orderService.confirmOrder(userId,Long.valueOf(orderIdParam));
+		
+		}catch(Exception e){
+			logger.error(e);
+			result.setResultCode(ResultSupport.errorCode);
+			result.setErrorMessage("确认失败");
+		}finally{
+			ResponseUtils.renderText(response,null,JSONObject.fromObject(result).toString());
+		}
+		
+		
+		
+		
+	}
+	
 	
 	
 	/**

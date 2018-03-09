@@ -729,20 +729,22 @@ public class BizUserAccountServiceImpl implements IBizUserAccountService, IFeiHo
     								  Long targetUserId,
     								  BigDecimal qty,    								  
     								  String fromAccount,
-    								  String toAccount) {
+    								  String toAccount,
+    								  AccountMsg sourceMsg,
+    								  AccountMsg targetMsg) {
 
 		
 		BizUserAccountDo source = new BizUserAccountDo();
 		source.setUserId(sourceUserId);
 		source.setAmount(qty.negate());
 		source.setAccountType(fromAccount);
-		this.updateUserAmountById(source, AccountMsg.type_20);
+		this.updateUserAmountById(source, sourceMsg);
 
 		BizUserAccountDo target = new BizUserAccountDo();
 		target.setUserId(targetUserId);
 		target.setAmount(qty);
 		target.setAccountType(toAccount);
-		this.updateUserAmountById(target, AccountMsg.type_21);
+		this.updateUserAmountById(target, targetMsg);
 		
     }
 
@@ -752,7 +754,7 @@ public class BizUserAccountServiceImpl implements IBizUserAccountService, IFeiHo
 	 */
     @Override
     public void buySecurity(Long userId, BigDecimal qty) {
-    	this.convertBetweenAccount(userId,userId, qty,WebConstants.RMB_ACCOUNT, WebConstants.SECURITY_ACCOUNT);
+    	this.convertBetweenAccount(userId,userId, qty,WebConstants.RMB_ACCOUNT, WebConstants.SECURITY_ACCOUNT,AccountMsg.type_20,AccountMsg.type_21);
     	
     	//统计直推
     	UserDo userDo = userDao.getById(userId);

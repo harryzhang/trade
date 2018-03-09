@@ -148,7 +148,9 @@ public interface IBizUserAccountService {
 									  Long targetUserId,
 									  BigDecimal qty,    								  
 									  String fromAccount,
-									  String toAccount);
+									  String toAccount,
+									  AccountMsg sourceMsg,
+    								  AccountMsg targetMsg);
 
 	/**
 	 * 
