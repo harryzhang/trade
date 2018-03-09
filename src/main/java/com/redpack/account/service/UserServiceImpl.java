@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.redpack.account.dao.IUserDao;
 import com.redpack.account.dao.IUserInfoDao;
-import com.redpack.account.faced.IBizUserAccountService;
+import com.redpack.account.faced.ITotalAccountService;
 import com.redpack.account.faced.IUserService;
 import com.redpack.account.model.ApplyAgentDo;
 import com.redpack.account.model.UserDo;
@@ -60,7 +60,7 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	private IGroupUserService groupUserService;
 	@Autowired
-	private IBizUserAccountService bizUserAccountService;
+	private ITotalAccountService totalAccountService;
 	
 	@Autowired	
     private IWalletDao  walletDao;
@@ -163,8 +163,8 @@ public class UserServiceImpl implements IUserService {
 			newUserParent = refUser;
 			leftRightFlag = "R";
 		}else{//左右都不为空
-			BigDecimal rightAmt = bizUserAccountService.totalAmt(rightUser,WebConstants.SECURITY_ACCOUNT);
-			BigDecimal leftAmt = bizUserAccountService.totalAmt(leftUser,WebConstants.SECURITY_ACCOUNT);
+			BigDecimal rightAmt = totalAccountService.totalAmt(rightUser,WebConstants.SECURITY_ACCOUNT);
+			BigDecimal leftAmt = totalAccountService.totalAmt(leftUser,WebConstants.SECURITY_ACCOUNT);
 			UserDo  chooseUser = leftAmt.compareTo(rightAmt)>0?rightUser:leftUser;
 			newUserParent = UserDo.getLastLeftUser(chooseUser);
 		}

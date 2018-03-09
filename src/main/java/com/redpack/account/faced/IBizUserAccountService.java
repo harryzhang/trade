@@ -122,21 +122,6 @@ public interface IBizUserAccountService {
 	 */
 	public void saveTransRmb(Long userId, BigDecimal jifengAmt);
 
-	/**
-	 * 
-	 * 统计下面人员的账户金额
-	 *
-	 * zhangyunhmf
-	 *
-	 */
-    public BigDecimal totalAmt(UserDo userDo, String accountType);
-
-	/**
-	 * 查询直推额度
-	 * zhangyunhmf
-	 *
-	 */
-    public BigDecimal  totalReferAmt(Long id, String securityAccount);
 
 	/**
 	 * 

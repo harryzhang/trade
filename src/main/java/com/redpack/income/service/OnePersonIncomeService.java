@@ -7,7 +7,6 @@
 package com.redpack.income.service;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.redpack.account.faced.IBizUserAccountService;
+import com.redpack.account.faced.ITotalAccountService;
 import com.redpack.account.faced.IUserServiceCache;
 import com.redpack.account.model.BizUserAccountDo;
 import com.redpack.account.model.UserDo;
@@ -39,6 +39,9 @@ public class OnePersonIncomeService   {
     
 	@Autowired
 	private IBizUserAccountService bizUserAccountService;
+	
+	@Autowired
+	private ITotalAccountService totalAccountService;
 	
 	
 	@Autowired
@@ -93,12 +96,12 @@ public class OnePersonIncomeService   {
 			UserDo rightChild = currentUser.getRightChild();
 			
 			//获取小区额度						
-			BigDecimal rightAmt = bizUserAccountService.totalAmt(rightChild,WebConstants.SECURITY_ACCOUNT);
-			BigDecimal leftAmt = bizUserAccountService.totalAmt(leftChild,WebConstants.SECURITY_ACCOUNT);
+			BigDecimal rightAmt = totalAccountService.totalAmt(rightChild,WebConstants.SECURITY_ACCOUNT);
+			BigDecimal leftAmt = totalAccountService.totalAmt(leftChild,WebConstants.SECURITY_ACCOUNT);
 			BigDecimal groupAmt = leftAmt.compareTo(rightAmt)>0?rightAmt:leftAmt;
 			
 			//获取直推额度
-			BigDecimal refAmt = bizUserAccountService.totalReferAmt(currentUser.getId(),WebConstants.SECURITY_ACCOUNT);
+			BigDecimal refAmt = totalAccountService.totalReferAmt(currentUser.getId(),WebConstants.SECURITY_ACCOUNT);
 			
 			List<QuotaBean> qutoLst = QuotaUtil.calculateGroup(qutoConfigLst, groupAmt,refAmt,userAcc.getUserId(),0);
 			saveQuota(qutoLst, AccountMsg.type_5);

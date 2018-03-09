@@ -664,61 +664,7 @@ public class BizUserAccountServiceImpl implements IBizUserAccountService, IFeiHo
 		this.updateUserAmountById(bizUserAccountDo,AccountMsg.type_33);
 	}
 
-	/**
-	 * 
-	 * 累加下级额度
-	 * zhangyunhmf
-	 *
-	 * @see com.redpack.account.faced.IBizUserAccountService#totalAmt(com.redpack.account.model.UserDo, java.lang.String)
-	 *
-	 */
-    @Override
-    public BigDecimal totalAmt(UserDo userDo, String accountType) {
-    	
-    	BigDecimal result = BigDecimal.ZERO;
-    	Map<String, Object> map = new HashMap<String,Object>();
-    	map.put("userId", userDo.getId());
-    	map.put("accountType", accountType);
-		BizUserAccountDo userAccount = bizUserAccountDao.getByUserIdAndAccount(map);
-		if(userAccount != null){
-			result.add(userAccount.getAmount());
-		}
-		
-		List<UserDo> childList = userDo.getChildList();
-		if(CollectionUtils.isEmpty(childList)){
-			return result;
-		}
-		
-		for(UserDo user : childList){
-			BigDecimal tmp = totalAmt(user,accountType);
-			result.add(tmp);
-		}
-		
-	    return result;
-    }
-
-	/**
-	 * 
-	 *
-	 * zhangyunhmf
-	 *
-	 * @see com.redpack.account.faced.IBizUserAccountService#totalReferAmt(java.lang.Long, java.lang.String)
-	 *
-	 */
-    @Override
-    public BigDecimal totalReferAmt(Long id, String accountType) {
-	    
-	    Map<String,Object> map = new HashMap<String,Object>();
-	    map.put("referrerId", id);
-	    map.put("accountType", accountType);
-	    List<Map<String,Object>> result = bizUserAccountDao.totalReferAmt(map );
-	    if(CollectionUtils.isEmpty(result)){
-	    	return BigDecimal.ZERO;
-	    }
-	    
-	    return (BigDecimal)result.get(0).get("amount");
-	    
-    }
+	
 
 	/**
 	 * 
