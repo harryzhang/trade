@@ -12,7 +12,6 @@ package com.redpack.account.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +32,7 @@ import com.redpack.account.dao.IUserDao;
 import com.redpack.account.faced.IBizUserAccountService;
 import com.redpack.account.faced.IFeiHongService;
 import com.redpack.account.faced.IUserAccountDetailService;
+import com.redpack.account.faced.IUserService;
 import com.redpack.account.model.BizUserAccountDo;
 import com.redpack.account.model.UserAccountDetailDo;
 import com.redpack.account.model.UserDo;
@@ -55,6 +55,10 @@ public class BizUserAccountServiceImpl implements IBizUserAccountService, IFeiHo
 	private IParamService paramService;
 	@Autowired
 	private IUserDao userDao;
+	
+	@Autowired
+	private IUserService userService;
+	
 	@Autowired
 	private IWithdrawDao withdrawDao;
 	@Autowired
@@ -714,6 +718,72 @@ public class BizUserAccountServiceImpl implements IBizUserAccountService, IFeiHo
 	    
 	    return (BigDecimal)result.get(0).get("amount");
 	    
+    }
+
+	/**
+	 * 
+	 *
+	 */
+    @Override
+    public void convertBetweenAccount(Long sourceUserId,
+    								  Long targetUserId,
+    								  BigDecimal qty,    								  
+    								  String fromAccount,
+    								  String toAccount) {
+
+		
+		BizUserAccountDo source = new BizUserAccountDo();
+		source.setUserId(sourceUserId);
+		source.setAmount(qty.negate());
+		source.setAccountType(fromAccount);
+		this.updateUserAmountById(source, AccountMsg.type_20);
+
+		BizUserAccountDo target = new BizUserAccountDo();
+		target.setUserId(targetUserId);
+		target.setAmount(qty);
+		target.setAccountType(toAccount);
+		this.updateUserAmountById(target, AccountMsg.type_21);
+		
+    }
+
+	/**
+	 * 
+	 *
+	 */
+    @Override
+    public void buySecurity(Long userId, BigDecimal qty) {
+    	this.convertBetweenAccount(userId,userId, qty,WebConstants.RMB_ACCOUNT, WebConstants.SECURITY_ACCOUNT);
+    	
+    	//统计直推
+    	UserDo userDo = userDao.getById(userId);
+    	Long refUserId = userDo.getReferrerId();
+    	if(null == refUserId){
+    		return;
+    	}
+    	
+    	BizUserAccountDo bizUserAccountDo = new BizUserAccountDo();
+    	bizUserAccountDo.setUserId(refUserId);
+    	bizUserAccountDo.setAccountType(WebConstants.RMB_ACCOUNT);
+    	bizUserAccountDo.setAmount(qty.multiply(new BigDecimal("0.1")));
+		this.updateUserAmountById(bizUserAccountDo, AccountMsg.type_34);
+    	//统计趴点
+		totalToPadian(userId,qty);
+	    
+    }
+    
+    private void totalToPadian(long UserId , BigDecimal qty){
+    	UserDo parent = userService.getParent(UserId);
+    	if(parent == null){return;}
+    	if(parent.getOrgan().equals("0")){
+    		totalToPadian( parent.getId() , qty);
+    	}else{
+    		BizUserAccountDo bizUserAccountDo = new BizUserAccountDo();
+        	bizUserAccountDo.setUserId(parent.getId());
+        	bizUserAccountDo.setAccountType(WebConstants.RMB_ACCOUNT);
+        	bizUserAccountDo.setAmount(qty.multiply(new BigDecimal("0.15")));
+    		this.updateUserAmountById(bizUserAccountDo,AccountMsg.type_35 );
+    		return;
+    	}
     }
 	
 	

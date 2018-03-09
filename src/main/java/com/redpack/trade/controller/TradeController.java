@@ -9,6 +9,9 @@
 package com.redpack.trade.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,17 +23,23 @@ import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.redpack.account.faced.IUserAccountIncomeService;
+import com.redpack.account.faced.IUserService;
+import com.redpack.account.model.UserDo;
 import com.redpack.base.controller.BaseController;
 import com.redpack.base.controller.TokenUtil;
 import com.redpack.base.result.IResult;
 import com.redpack.base.result.ResultSupport;
+import com.redpack.constant.WebConstants;
 import com.redpack.order.IOrderService;
 import com.redpack.order.model.OrderDo;
 import com.redpack.utils.CalculateUtils;
@@ -55,6 +64,9 @@ public class TradeController extends BaseController {
 	
 	@Autowired
 	private IUserAccountIncomeService accountService;
+	
+	@Autowired
+	private IUserService userService;
 	
 	
 	/**
@@ -122,8 +134,18 @@ public class TradeController extends BaseController {
 //				return view;
 //			}
 			
-			//计算账号余额
+			// 二级密码验证
 			Long userId = this.getUserId(request);
+			UserDo loginUser = userService.getById(userId);
+			String jiaoyemm = DigestUtils.md5Hex(pwd + WebConstants.PASS_KEY);
+			if (StringUtils.isBlank(pwd)  || (!loginUser.getTwoLevelPwd().equals(jiaoyemm)) ) {
+				result.setErrorMessage("交易密码错误");
+				result.setResultCode(ResultSupport.errorCode);
+				return;
+			}
+						
+			
+			//计算账号余额
 			BigDecimal price = new BigDecimal(priceParam);
 			double totalMoney =CalculateUtils.mul(price.doubleValue(), new Double(qty));
 			//卖单
@@ -175,10 +197,50 @@ public class TradeController extends BaseController {
 	 */
 	@RequestMapping("/myorder")
 	public String orderlist(Model model, HttpSession session, HttpServletRequest request) {
+		
+		Map<String, Object> parameterMap = new HashMap<String,Object>();
+		parameterMap.put("userId", this.getUserId(request));
+		List<OrderDo> myOrderLst = orderService.selectOrder(parameterMap);
+		
+		if(!CollectionUtils.isEmpty(myOrderLst)){
+			Collections.sort(myOrderLst, new Comparator<OrderDo>() {
+				@Override
+	            public int compare(OrderDo o1, OrderDo o2) {
+		            return o1.getCreateTime().compareTo(o2.getCreateTime());
+	            }
+			});
+			groupbyOrderByStatus(myOrderLst,model);
+		}
+		model.addAttribute("allOrderLst", myOrderLst);
 		return "trade/myorder";
 	}
 	
 	
+	/**
+	 * 按状态分组
+	 * zhangyunhmf
+	 *
+	 */
+    private void groupbyOrderByStatus(List<OrderDo> myOrderLst, Model model) {
+    	List<OrderDo> unTradeLst = new ArrayList<OrderDo>();
+    	List<OrderDo> tradingLst = new ArrayList<OrderDo>();
+    	List<OrderDo> tradedLst = new ArrayList<OrderDo>();
+    	
+	    for(OrderDo order : myOrderLst){
+	    	if(1  == order.getOrderStatus().intValue()){
+	    		unTradeLst.add(order);
+	    	}else if(3 == order.getOrderStatus().intValue()){
+	    		tradedLst.add(order);
+	    	}else{
+	    		tradingLst.add(order);
+	    	}
+	    }
+	    model.addAttribute("unTradeLst",unTradeLst);
+	    model.addAttribute("tradingLst",tradingLst);
+	    model.addAttribute("tradedLst",tradingLst);
+	    
+    }
+
 	/**
 	 * @version 创建时间：2015-7-26 下午06:22:07
 	 * @param model

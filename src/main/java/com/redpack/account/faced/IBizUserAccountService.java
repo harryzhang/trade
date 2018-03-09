@@ -137,6 +137,25 @@ public interface IBizUserAccountService {
 	 *
 	 */
     public BigDecimal  totalReferAmt(Long id, String securityAccount);
+
+	/**
+	 * 
+	 * 账户之间装换
+	 * zhangyunhmf
+	 *
+	 */
+    public void convertBetweenAccount(Long sourceUserId,
+									  Long targetUserId,
+									  BigDecimal qty,    								  
+									  String fromAccount,
+									  String toAccount);
+
+	/**
+	 * 
+	 * zhangyunhmf
+	 *
+	 */
+    public void buySecurity(Long userId, BigDecimal qty);
 	
 
 

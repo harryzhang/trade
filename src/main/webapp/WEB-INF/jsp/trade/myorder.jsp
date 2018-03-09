@@ -21,7 +21,6 @@
 
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/jquery-2.1.1.min.js'/>"></script>
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/top.js'/>" used="1"></script>
-<script type="text/javascript"	src="<c:url value ='/res-kuangji/js/member_yzc.js'/>"></script>
 
 <style type="text/css">
 		#container{
@@ -182,6 +181,7 @@
 		</div>
 		<div class="tab-container">
 			<div class="tab-container-content tab-container-active" data='0'>
+			    <c:forEach items="${allOrderLst }" var="order">
 				<div class="order">
 					<table>
 						<tr>
@@ -190,76 +190,164 @@
 							<td>总计($)</td>
 						</tr>
 						<tr class="number">
-							<td>100</td>
-							<td>1.00</td>
-							<td>100.00</td>
+							<td>${order.qty }</td>
+							<td>${order.price }</td>
+							<td>${order.totalPrice }</td>
 						</tr>
 					</table>
 					<div>
 						<ul>
-							<li><span class="orderType bgYellow">买单</span></li>
+							<li><span class="orderType bgYellow">
+								<c:choose>
+									<c:when test="${ order.orderType eq 1}">卖单</c:when>
+									<c:when test="${ order.orderType eq 2}">买单</c:when>
+								</c:choose>
+								</span>
+							</li>
 							<li></li>
-							<li><a href="javascript:void(0);" class="contactBuyer">联系买家</a><a href="javascript:void(0);" class='orderState'>确认收款</a></li>
+							<li>
+								<c:choose>
+									<c:when test="${ order.orderType eq 1 && order.payStatus eq 1 && order.orderStatus eq 2 }">
+										<a href="javascript:void(0);" class="contactBuyer">
+											联系买家
+										</a>
+										<a href="javascript:void(0);" class='orderState'>
+												确认收款
+										</a>
+									</c:when>
+									<c:when test="${ order.orderType eq 2 && order.payStatus eq 0  && order.orderStatus eq 2}">
+										<a href="javascript:void(0);" class="contactBuyer">
+											联系卖家
+										</a>
+										<a href="javascript:void(0);" class='orderState'>
+												确认付款
+										</a>
+									</c:when>
+								</c:choose>
+							</li>
 						</ul>
 					</div>
 				</div>
-				<div class="order">
-					<div class="time">
-						2018-02-19 23:33:56
-					</div>
-					<table>
-						<tr>
-							<td>数量(个)</td>
-							<td>价格($)</td>
-							<td>总计($)</td>
-						</tr>
-						<tr class="number">
-							<td>100</td>
-							<td>1.00</td>
-							<td>100.00</td>
-						</tr>
-					</table>
-					<div>
-						<ul>
-							<li><span class="orderType bgOrange">卖单</span></li>
-							<li></li>
-							<li><a href="javascript:void(0);" class='orderState'>撤销</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="order">
-					<div class="time">
-						2018-02-19 23:33:56
-					</div>
-					<table>
-						<tr>
-							<td>数量(个)</td>
-							<td>价格($)</td>
-							<td>总计($)</td>
-						</tr>
-						<tr class="number">
-							<td>100</td>
-							<td>1.00</td>
-							<td>100.00</td>
-						</tr>
-					</table>
-					<div>
-						<ul>
-							<li><span class="orderType bgYellow">买单</span></li>
-							<li></li>
-							<li><a href="javascript:void(0);" class='orderState'>撤销</a></li>
-						</ul>
-					</div>
-				</div>
+				</c:forEach>
 				<p>没有更多数据了</p>
 			</div>
 			<div class="tab-container-content" data='1'>
+				<c:forEach items="${unTradeLst }" var="order">
+				<div class="order">
+					<table>
+						<tr>
+							<td>数量(个)</td>
+							<td>价格($)</td>
+							<td>总计($)</td>
+						</tr>
+						<tr class="number">
+							<td>${order.qty }</td>
+							<td>${order.price }</td>
+							<td>${order.totalPrice }</td>
+						</tr>
+					</table>
+					<div>
+						<ul>
+							<li><span class="orderType bgYellow">
+								<c:choose>
+									<c:when test="${ order.orderType eq 1}">卖单</c:when>
+									<c:when test="${ order.orderType eq 2}">买单</c:when>
+								</c:choose>
+								</span>
+							</li>
+							<li></li>
+							<li></li>
+						</ul>
+					</div>
+				</div>
+				</c:forEach>
 				<p>没有更多数据了</p>
 			</div>
 			<div class="tab-container-content" data='2'>
+				<c:forEach items="${tradingLst }" var="order">
+				<div class="order">
+					<table>
+						<tr>
+							<td>数量(个)</td>
+							<td>价格($)</td>
+							<td>总计($)</td>
+						</tr>
+						<tr class="number">
+							<td>${order.qty }</td>
+							<td>${order.price }</td>
+							<td>${order.totalPrice }</td>
+						</tr>
+					</table>
+					<div>
+						<ul>
+							<li><span class="orderType bgYellow">
+								<c:choose>
+									<c:when test="${ order.orderType eq 1}">卖单</c:when>
+									<c:when test="${ order.orderType eq 2}">买单</c:when>
+								</c:choose>
+								</span>
+							</li>
+							<li></li>
+							<li><a href="javascript:void(0);" class="contactBuyer">
+								<c:choose>
+									<c:when test="${ order.orderType eq 1}">联系买家</c:when>
+									<c:when test="${ order.orderType eq 2}">联系卖家</c:when>
+								</c:choose>
+								
+								</a>
+									
+								<c:choose>
+									<c:when test="${ order.orderType eq 1 && order.payStatus eq 1}">
+										<a href="javascript:void(0);" class='orderState'>
+											确认收款
+									    </a>
+									</c:when>
+									<c:when test="${ order.orderType eq 2 && order.payStatus eq 0}">
+										
+										<a href="javascript:void(0);" class='orderState'>
+											确认付款
+									    </a>
+									</c:when>
+								</c:choose>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				</c:forEach>
 				<p>没有更多数据了</p>
 			</div>
 			<div class="tab-container-content" data='3'>
+				<c:forEach items="${tradedLst }" var="order">
+				<div class="order">
+					<table>
+						<tr>
+							<td>数量(个)</td>
+							<td>价格($)</td>
+							<td>总计($)</td>
+						</tr>
+						<tr class="number">
+							<td>${order.qty }</td>
+							<td>${order.price }</td>
+							<td>${order.totalPrice }</td>
+						</tr>
+					</table>
+					<div>
+						<ul>
+							<li><span class="orderType bgYellow">
+								<c:choose>
+									<c:when test="${ order.orderType eq 1}">卖单</c:when>
+									<c:when test="${ order.orderType eq 2}">买单</c:when>
+								</c:choose>
+								</span>
+							</li>
+							<li></li>
+							<li>								
+							</li>
+						</ul>
+					</div>
+				</div>
+				</c:forEach>
 				<p>没有更多数据了</p>
 			</div>
 		</div>

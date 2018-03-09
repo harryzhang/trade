@@ -67,8 +67,36 @@
 	</select>
 	
 	<select id="getById" parameterType="long" resultMap="userResultMap">
-		SELECT a.* FROM
-		t_user a 
+		SELECT 
+			a.`id`, 
+			a.`userName`, 
+			a.`password`, 
+			a.`passwordTwo`, 
+			a.`grade`, 
+			a.`organ`, 
+			a.`remark`, 
+			a.`enabled`, 
+			a.`referrerId`, 
+			b.`parentId`, 
+			a.`treeNode`, 
+			a.`creatorTime`, 
+			a.`updateTime`, 
+			a.`name`, 
+			a.`bonus`, 
+			a.`status`, 
+			a.`joinMoney`, 
+			a.`optUserId`, 
+			a.`isBackMoney`, 
+			a.`optRemark`, 
+			a.`isZengsong`, 
+			a.`weixin`, 
+			a.`zhifubao`, 
+			a.`userCode`, 
+			a.`openId`, 
+			a.`mail`, 
+			a.`loginDate`
+		FROM
+		t_user a LEFT JOIN t_group_user b ON a.id = b.userId
 		WHERE a.id = #{id}
 	</select>
 	

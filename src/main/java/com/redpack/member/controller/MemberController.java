@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -39,21 +42,19 @@ import com.redpack.account.faced.IUserAccountIncomeService;
 import com.redpack.account.faced.IUserService;
 import com.redpack.account.model.BizUserAccountDo;
 import com.redpack.account.model.UserAccountDetailDo;
-import com.redpack.account.model.UserAccountIncomeDo;
 import com.redpack.account.model.UserDo;
 import com.redpack.base.controller.BaseController;
 import com.redpack.base.controller.TokenUtil;
+import com.redpack.base.result.IResult;
+import com.redpack.base.result.ResultSupport;
 import com.redpack.constant.AccountMsg;
 import com.redpack.constant.WebConstants;
 import com.redpack.member.IMemberService;
 import com.redpack.order.IOrderService;
 import com.redpack.order.model.OrderDo;
-import com.redpack.withdraw.model.WithdrawDo;
 import com.redpack.utils.DateUtil;
 import com.redpack.utils.ResponseUtils;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.redpack.withdraw.model.WithdrawDo;
 
 /**
  * 
@@ -448,72 +449,78 @@ public class MemberController extends BaseController{
 	@RequestMapping(value = "saveTransRmb", method = RequestMethod.POST)
 	public void saveTransRmb(HttpServletRequest request, HttpServletResponse response) {
 		
-		JSONObject jsonObject = new JSONObject();
+		IResult result = ResultSupport.buildResult(ResultSupport.success_code);
 		
-		String jifeng = request.getParameter("jifeng");
-		String pageId = request.getParameter("pageId");
-		String code = request.getParameter("code");
+		String accountType = request.getParameter("accountType");
+		String qtyParam = request.getParameter("qty");
+		String pwd = request.getParameter("pwd");
 		try{
 			
-			boolean isPass = TokenUtil.checkToken(request, "point_rmb");
-			String newToken = TokenUtil.putToken(request, "point_rmb");
-			jsonObject.put("token", newToken);
-			if(isPass == false){
-				jsonObject.put("result", 10);
-				return;
-			}
+//			boolean isPass = TokenUtil.checkToken(request, "point_rmb");
+//			String newToken = TokenUtil.putToken(request, "point_rmb");
+//			jsonObject.put("token", newToken);
+//			if(isPass == false){
+//				jsonObject.put("result", 10);
+//				return;
+//			}
 			// 输入转让积分
-			if (StringUtils.isBlank(jifeng) ) {
-				jsonObject.put("result", 1);
+			if (StringUtils.isBlank(qtyParam) ) {
+				result.setErrorMessage("数量不能为空");
+				result.setResultCode(ResultSupport.errorCode);
 				return;
 			}
 	
 			// 验证码是否正确
-			String sessionCode = (String) request.getSession().getAttribute(pageId + "_checkCode");
-			if (StringUtils.isBlank(code) || !code.equals(sessionCode)) {
-				jsonObject.put("result", 2);
-				return;
-			}
+//			String sessionCode = (String) request.getSession().getAttribute(pageId + "_checkCode");
+//			if (StringUtils.isBlank(code) || !code.equals(sessionCode)) {
+//				jsonObject.put("result", 2);
+//				return;
+//			}
 	
 			
 			// 二级密码验证
-			String pwd = request.getParameter("pwd");
 			Long userId = this.getUserId(request);
 			UserDo loginUser = userService.getById(userId);
 			String jiaoyemm = DigestUtils.md5Hex(pwd + WebConstants.PASS_KEY);
 			if (StringUtils.isBlank(pwd)  || (!loginUser.getTwoLevelPwd().equals(jiaoyemm)) ) {
-				jsonObject.put("result", 11);
+				result.setErrorMessage("交易密码错误");
+				result.setResultCode(ResultSupport.errorCode);
 				return;
 			}
 			
 			
 			//大小比较
-			BigDecimal jifengAmt = BigDecimal.ZERO;
+			BigDecimal qty = BigDecimal.ZERO;
 			try{
-				jifengAmt = new BigDecimal(jifeng);
+				qty = new BigDecimal(qtyParam);
 			}catch(Exception e){
-				e.printStackTrace();
+				logger.error(e);
+				result.setErrorMessage("数量数据格式有误");
+				result.setResultCode(ResultSupport.errorCode);
+				return;
 			}
-			if(BigDecimal.ZERO.compareTo(jifengAmt)>= 0 ){
-				jsonObject.put("result", 4);
+			if(BigDecimal.ZERO.compareTo(qty)>= 0 ){
+				result.setErrorMessage("数量必须大于0");
+				result.setResultCode(ResultSupport.errorCode);
 				return;
 			}
 			
 			/**
-			 * 积分转让
+			 * 零钱转定存算力转让
 			 */
+			bizUserAccountService.buySecurity(userId,qty);
 			
-			bizUserAccountService.saveTransRmb(userId, jifengAmt);
-			
-			// 转让成功
-			jsonObject.put("result", 0);
 		
+		}catch (RuntimeException e) {
+			logger.error(e);
+			result.setErrorMessage(e.getMessage());
+			result.setResultCode(ResultSupport.errorCode);
 		}catch (Exception e) {
-			jsonObject.put("result", 3);
-			jsonObject.put("msg", e.getMessage());
-			e.printStackTrace();
+			logger.error(e);
+			result.setErrorMessage("保存失败");
+			result.setResultCode(ResultSupport.errorCode);
 		}finally{
-			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+			ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(result).toString());
 		}
 		
 		

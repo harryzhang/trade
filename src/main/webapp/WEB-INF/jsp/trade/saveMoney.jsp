@@ -25,7 +25,6 @@
 
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/jquery-2.1.1.min.js'/>"></script>
 <script type="text/javascript"	src="<c:url value ='/res-kuangji/js/top.js'/>" used="1"></script>
-<script type="text/javascript"	src="<c:url value ='/res-kuangji/js/member_yzc.js'/>"></script>
 
 
 <style type="text/css">
@@ -226,13 +225,12 @@
 	
 	//提交信息
     function submitSave(){
-    	var param ={"userId":userId,"changeName":changeName,"changePhone":changePhone};
-    	$.post('<c:url value="/kefu/setChangeUser.html"/>', param, function(data) {
-    		if(data.resultCode==1){
-    			HHN.popup(data.result);
+    	var param ={"qty":$("#qty").val(),"pwd":$("#pwd").val()};
+    	$.post('<c:url value="/member/saveTransRmb.html"/>', param, function(data) {
+    		if(data.resultCode=="0"){
+    			HHN.popup("存入成功");
 			}else{
-				HHN.popup("封号成功");
-				search();
+				HHN.popup(data.errorMessage);
 			}
     		
 		},"json");
