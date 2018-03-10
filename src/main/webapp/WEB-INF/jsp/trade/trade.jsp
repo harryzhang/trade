@@ -197,7 +197,7 @@
 	
 	<div id="container">
 		<div class="head">
-			<div class="title">市场<span><img src="xiaolian.png" alt="" id="guadang">挂单</span></div>
+			<div class="title">市场<span id="guadang"><img src="<c:url value ='/res-kuangji/images/goodslogo.png'/>" alt="" >挂单</span></div>
 		</div>
 		<div class="price">
 			<table>
