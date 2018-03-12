@@ -185,7 +185,7 @@
 	</insert>
 	
 	<delete id="deleteById" parameterType="Long" >
-		DELETE FROM t_order WHERE orderId = #{orderId}
+		DELETE FROM t_order WHERE orderId = #{orderId} and orderStatus = 1;
 	</delete>
 	
 	<select id="queryNotice" parameterType="Map" resultType="java.util.HashMap">

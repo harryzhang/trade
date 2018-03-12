@@ -163,9 +163,9 @@ public class OrderServiceImpl implements IOrderService {
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-	public int deleteById(int id){
+	public int deleteById(Long id){
 		logger.debug("deleteByIdOrder:"+id);
-		return orderDao.deleteById(Long.valueOf(id));
+		return orderDao.deleteById(id);
 	}
 	
 	

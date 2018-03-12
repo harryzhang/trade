@@ -186,24 +186,24 @@
 		<div class="tab-container">
 			<div class="tab-container-content tab-container-active" data='0'>
 				<div class="title">
-					<span>最高价:$1.05</span>
-					<span>最低价:$1.00</span>
+					<span>最高价:$${upPrice}</span>
+					<span>最低价:$${basePrice}</span>
 				</div>
 				<ul class="box">
 					<li>
 						<label>买单价格</label> 
-						<input class="wtext" id="price" name="price" value="" maxlength="20" type="text" placeholder="请输入1.00 ~ 1.05之间的价格">
+						<input class="wtext" onblur="changeBuyTotalPrice();" id="price" name="price" value="" maxlength="30" type="text" placeholder="请输入${basePrice} ~ ${upPrice}之间的价格">
 					</li>					
 					<li>
 						<label>买单数量</label>
-						<input class="wtext"  id="qty" value="" name="qty" maxlength="4" type="number" placeholder="请输入100 ~ 2000且为100整数倍的数量">
+						<input class="wtext" onblur="changeBuyTotalPrice();"  id="qty" value="" name="qty" maxlength="30" type="number" placeholder="请输入100 ~ 2000且为100整数倍的数量">
 					</li>
 					<li>
 						<label>支付密码</label> 
 						<input class="wtext" type="password" name="pwd" id="pwd" placeholder="请输入≥6位的字母+数字的密码">  
 					</li>
 					<li>
-						<label>总价：$0 </label>
+						<label id="buyTotalPrice">总价：$0 </label>
 					</li>
 				</ul>
 				<div>
@@ -212,23 +212,23 @@
 			</div>
 			<div class="tab-container-content" data='1'>
 				<div class="title">
-					<span>指导价:$1.0000</span>
+					<span>指导价:$${basePrice}</span>
 				</div>
 				<ul class="box">
 					<li>
 						<label>卖单价格</label> 
-						<input class="wtext" id="price1" name="price1" value="" maxlength="20" type="text" placeholder="请输入1.00 ~ 1.05之间的价格">
+						<input class="wtext"  id="price1" readonly="readonly" name="price1" value="${basePrice}" maxlength="20" type="text" >
 					</li>					
 					<li>
 						<label>卖单数量</label>
-						<input class="wtext"  id="" value="qty1" name="qty1" maxlength="4" type="number" placeholder="请输入100 ~ 2000且为100整数倍的数量">
+						<input class="wtext"  onblur="changeSaleTotalPrice();" id="qty1" value="" name="qty1" maxlength="4" type="number" placeholder="请输入100 ~ 2000且为100整数倍的数量">
 					</li>
 					<li>
 						<label>支付密码</label> 
 						<input class="wtext" type="password" name="pwd1" id="pwd1" placeholder="请输入≥6位的字母+数字的密码">  
 					</li>
 					<li>
-						<label>总价：$0 </label>
+						<label id="saleTotalPrice" >总价：$0 </label>
 						<label class="fee">手续费：$0 </label>
 					</li>
 				</ul>
@@ -266,11 +266,11 @@
     	var orderType = "1";
     	var goodsId = "1";
 
-    	if(price == null || price == "" || price.length == 0){//昵称
+    	if(price == null || price == "" || price.length == 0){ 
     		HHN.popup("请输入价格", 'danger');  	
        		return false;
     	}
-    	if(qty == null || qty == "" || qty.length == 0){//昵称
+    	if(qty == null || qty == "" || qty.length == 0){ 
     		HHN.popup("请输入数量", 'danger');  	
        		return false;
     	}
@@ -296,11 +296,11 @@
     	var goodsId = "1";
     	 
 
-    	if(price == null || price == "" || price.length == 0){//昵称
+    	if(price == null || price == "" || price.length == 0){ 
     		HHN.popup("请输入价格", 'danger');  	
        		return false;
     	}
-    	if(qty == null || qty == "" || qty.length == 0){//昵称
+    	if(qty == null || qty == "" || qty.length == 0){ 
     		HHN.popup("请输入数量", 'danger');  	
        		return false;
     	}
@@ -323,14 +323,52 @@
     function submitGuadan(param){
     	$.post('<c:url value="/trade/submitguadang.html"/>', param, function(data) {
 			if(data.resultCode == '0'){
-				HHN.popup("挂单成功!");					
+				HHN.popup("挂单成功!");
+				setTimeout(function(){
+					window.location.href='<c:url value="/trade/trade.html"/>';
+				},1500);
 			}else{                
 				HHN.popup(data.errorMessage);
 			}
 		},"json");
     }
     
+    function changeSaleTotalPrice(){
+    	var qty = $("#qty1").val();
+    	var price = $("#price1").val();
+    	
+    	if(price1 == null || price1 == "" || price1.length == 0){ 
+    		$("#saleTotalPrice").text("总价：$0");
+    		$(".fee").text("手续费：$0");
+       		return false;
+    	}
+    	if(qty1 == null || qty1 == "" || qty1.length == 0){
+    		$("#saleTotalPrice").text("总价：$0");
+    		$(".fee").text("手续费：$0");
+       		return false;
+    	}
+    	$("#saleTotalPrice").text("总价：$"+Math.formatFloat(qty*price,4));
+    	$(".fee").text("手续费：$"+Math.formatFloat(qty*price*0.05,4));
+    }
     
+    function changeBuyTotalPrice(){
+    	var qty = $("#qty").val();
+    	var price = $("#price").val();
+    	
+    	if(price == null || price == "" || price.length == 0){ 
+    		$("#buyTotalPrice").text("总价：$0");
+       		return false;
+    	}
+    	if(qty == null || qty == "" || qty.length == 0){
+    		$("#buyTotalPrice").text("总价：$0");
+       		return false;
+    	}
+    	$("#buyTotalPrice").text("总价：$"+Math.formatFloat(qty*price,4));
+    }
     
+    Math.formatFloat = function(f, digit) { 
+        var m = Math.pow(10, digit); 
+        return parseInt(f * m, 10) / m; 
+    } 
     
 </script>

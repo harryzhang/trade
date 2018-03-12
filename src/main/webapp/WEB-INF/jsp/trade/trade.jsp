@@ -203,11 +203,11 @@
 			<table>
 				<tbody>				
 					<tr>
-						<td rowspan="2" class="rowspan"><span class="label">指导价</span><span class="money">$1.00</span></td>
-						<td><span class="label">最高价</span><span class="money">$1.05</span></td>
+						<td rowspan="2" class="rowspan"><span class="label">指导价</span><span class="money">$${basePrice}</span></td>
+						<td><span class="label">最高价</span><span class="money">$${upPrice}</span></td>
 					</tr>
 					<tr>					
-						<td><span class="label">最低价</span><span class="money">$1.00</span></td>
+						<td><span class="label">最低价</span><span class="money">$${basePrice}</span></td>
 					</tr>
 				</tbody>
 			</table>
@@ -272,7 +272,7 @@
 						<ul>
 							<li></li>
 							<li>${bill.createTime }</li>
-							<li><a href="javascript:doBuy(${bill.orderId });">可匹配</a></li>
+							<li><a href="javascript:doBuy(${bill.orderId },this);">可匹配</a></li>
 						</ul>
 					</div>
 				</div>
@@ -307,21 +307,23 @@
 	})
 	
 	
-	function doBuy(orderId){
+	function doBuy(orderId,obj){
+		
 		HHN.popupConfirm("你确定要匹配?", 
                 function(){return true;}, 
-                function(){submitSave(orderId); 
+                function(){submitSave(orderId,obj); 
                          return true;});
 	}
 	
 	
 	
 	//提交信息
-    function submitSave(orderId){
+    function submitSave(orderId,obj){
     	var param ={"orderId":orderId};
     	$.post('<c:url value="/trade/matchOrder.html"/>', param, function(data) {
     		if(data.resultCode=="0"){
     			HHN.popup("匹配成功");
+    			$(obj).text("匹配成功");    			
     			setTimeout(function(){
     				window.location.href="<c:url value ='/trade/trade.html'/>";
 				},1500);

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -187,6 +188,9 @@
 			<div class="tab-container-content tab-container-active" data='0'>
 			    <c:forEach items="${allOrderLst }" var="order">
 				<div class="order">
+					<div class="time">
+						<fmt:formatDate value="${order.createTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>
+					</div>
 					<table>
 						<tr>
 							<td>数量(个)</td>
@@ -212,7 +216,7 @@
 							<li>
 								<c:choose>
 									<c:when test="${ order.orderType eq 1 && order.payStatus eq 0 && order.orderStatus eq 2 }">
-										<a href="javascript:void(0);" class="contactBuyer">
+										<a href="javascript:contactByOrder(${order.orderId });" class="contactBuyer">
 											联系买家
 										</a>
 										<a href="javascript:doBuy(${order.orderId },'收款');" class='orderState'>
@@ -220,7 +224,7 @@
 										</a>
 									</c:when>
 									<c:when test="${ order.orderType eq 2 && order.payStatus eq 0  && order.orderStatus eq 2}">
-										<a href="javascript:void(0);" class="contactBuyer">
+										<a href="javascript:contactByOrder(${order.orderId });" class="contactBuyer">
 											联系卖家
 										</a>
 										<a href="javascript:doBuy(${order.orderId },'付款');" class='orderState'>
@@ -238,6 +242,9 @@
 			<div class="tab-container-content" data='1'>
 				<c:forEach items="${unTradeLst }" var="order">
 				<div class="order">
+					<div class="time">
+						<fmt:formatDate value="${order.createTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>
+					</div>
 					<table>
 						<tr>
 							<td>数量(个)</td>
@@ -260,7 +267,7 @@
 								</span>
 							</li>
 							<li></li>
-							<li>a href="javascript:void(0);" class='orderState'>撤销</a></li>
+							<li><a href="javascript:cancelOrder(${order.orderId });" class='orderState'>撤销</a></li>
 						</ul>
 					</div>
 				</div>
@@ -270,6 +277,9 @@
 			<div class="tab-container-content" data='2'>
 				<c:forEach items="${tradingLst }" var="order">
 				<div class="order">
+					<div class="time">
+						<fmt:formatDate value="${order.createTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>
+					</div>
 					<table>
 						<tr>
 							<td>数量(个)</td>
@@ -292,7 +302,7 @@
 								</span>
 							</li>
 							<li></li>
-							<li><a href="javascript:void(0);" class="contactBuyer">
+							<li><a href="javascript:contactByOrder(${order.orderId });" class="contactBuyer">
 								<c:choose>
 									<c:when test="${ order.orderType eq 1}">联系买家</c:when>
 									<c:when test="${ order.orderType eq 2}">联系卖家</c:when>
@@ -324,6 +334,9 @@
 			<div class="tab-container-content" data='3'>
 				<c:forEach items="${tradedLst }" var="order">
 				<div class="order">
+					<div class="time">
+						<fmt:formatDate value="${order.createTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>
+					</div>
 					<table>
 						<tr>
 							<td>数量(个)</td>
@@ -346,7 +359,14 @@
 								</span>
 							</li>
 							<li></li>
-							<li>								
+							<li>
+								<c:choose>
+									<c:when test="${order.orderStatus eq 3 }">
+										<a href="javascript:void(0);" class="contactBuyer">
+											已完成
+										</a>										
+									</c:when>
+								</c:choose>
 							</li>
 						</ul>
 					</div>
@@ -391,6 +411,40 @@
     	$.post('<c:url value="/trade/confirmOrder.html"/>', param, function(data) {
     		if(data.resultCode=="0"){
     			HHN.popup("操作成功");
+    			setTimeout(function(){
+					window.location.href='<c:url value="/trade/myorder.html"/>';
+				},1500);
+			}else{
+				HHN.popup(data.errorMessage);
+			}
+    		
+		},"json");
+    }
+	
+	//联系买家/卖家
+    function contactByOrder( orderId ){
+    	var param ={"orderId":orderId};
+    	$.post('<c:url value="/trade/contactByOrder.html"/>', param, function(data) {
+    		if(data.resultCode=="0"){
+    			HHN.popupConfirm("<a href='tel://"+data.model+"'>拨打电话</a>", 
+    	                function(){return true;}, 
+    	                function(){return true;});
+			}else{
+				HHN.popup(data.errorMessage);
+			}
+    		
+		},"json");
+    }
+    
+    //撤销
+	function cancelOrder( orderId ){
+		var param ={"orderId":orderId};
+    	$.post('<c:url value="/trade/cancelOrder.html"/>', param, function(data) {
+    		if(data.resultCode=="0"){
+    			HHN.popup("撤销成功");
+    			setTimeout(function(){
+					window.location.href='<c:url value="/trade/myorder.html"/>';
+				},1500);
 			}else{
 				HHN.popup(data.errorMessage);
 			}

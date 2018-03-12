@@ -44,6 +44,7 @@ import com.redpack.base.result.ResultSupport;
 import com.redpack.constant.WebConstants;
 import com.redpack.order.IOrderService;
 import com.redpack.order.model.OrderDo;
+import com.redpack.param.IParamService;
 import com.redpack.utils.CalculateUtils;
 import com.redpack.utils.DateUtil;
 import com.redpack.utils.ResponseUtils;
@@ -69,6 +70,8 @@ public class TradeController extends BaseController {
 	
 	@Autowired
 	private IUserService userService;
+	@Autowired
+	private IParamService paramService;
 	
 	
 	/**
@@ -91,8 +94,26 @@ public class TradeController extends BaseController {
 		List<OrderDo> buyOrderLst = orderService.selectOrder(parameterMap);
 		model.addAttribute("buyBills", buyOrderLst);
 		model.addAttribute("saleBills", saleOrderLst);
+		
+		//获取配置
+		getBasePrice(model);
 		return "trade/trade";
 	}
+
+
+	/**
+	 * zhangyunhmf
+	 *
+	 */
+    private void getBasePrice(Model model) {
+	    String basePriceConfig = paramService.getByName("BASE_PRICE");
+		model.addAttribute("basePrice", basePriceConfig);
+		BigDecimal upRate = new BigDecimal("0.05");
+		if(basePriceConfig != null){
+			BigDecimal basePrice = new BigDecimal(basePriceConfig);
+			model.addAttribute("upPrice", basePrice.multiply(upRate));
+		}
+    }
 	
 	
 	/**
@@ -130,6 +151,14 @@ public class TradeController extends BaseController {
 			Long userId = this.getUserId(request);
 			
 			OrderDo matchOrder = orderService.getById(Long.valueOf(orderIdParam));
+			
+			//不能给自己匹配
+			if(userId.longValue() == matchOrder.getUserId().longValue()){
+				result.setErrorMessage("不能匹配自己挂的单");
+				result.setResultCode(ResultSupport.errorCode);
+				return;
+			}
+			
 			//买单,计算账号余额
 			if("2".equals(matchOrder.getOrderType())){
 				Map<String, Object> accountParam = new HashMap<String,Object>();
@@ -186,6 +215,7 @@ public class TradeController extends BaseController {
 	 */
 	@RequestMapping("/guadang")
 	public String guadang(Model model, HttpSession session, HttpServletRequest request) {
+		getBasePrice(model);
 		return "trade/guadang";
 	}
 	
@@ -219,6 +249,31 @@ public class TradeController extends BaseController {
 //				return view;
 //			}
 			
+			
+			//计算账号余额
+			BigDecimal price = new BigDecimal(priceParam);
+			double totalMoney =CalculateUtils.mul(price.doubleValue(), new Double(qty));
+			
+			
+			String basePriceConfig = paramService.getByName("BASE_PRICE");
+			BigDecimal basePrice = new BigDecimal(basePriceConfig);
+			
+			//检查交易价格
+			if("1".equals(orderType)){//卖单
+				if(price.compareTo(basePrice) != 0){
+					result.setErrorMessage("交易价格必须等于指导价");
+					result.setResultCode(ResultSupport.errorCode);
+					return;
+				}
+			}else{
+				BigDecimal upRate = basePrice.multiply(new BigDecimal("0.05"));
+				if(price.compareTo(basePrice) < 0 || price.compareTo(upRate) > 0){
+					result.setErrorMessage("交易价格必须最高和最低区间");
+					result.setResultCode(ResultSupport.errorCode);
+					return;
+				}
+			}
+			
 			// 二级密码验证
 			Long userId = this.getUserId(request);
 			UserDo loginUser = userService.getById(userId);
@@ -230,9 +285,7 @@ public class TradeController extends BaseController {
 			}
 						
 			
-			//计算账号余额
-			BigDecimal price = new BigDecimal(priceParam);
-			double totalMoney =CalculateUtils.mul(price.doubleValue(), new Double(qty));
+			
 			//卖单
 			if("1".equals(orderType)){
 				Map<String, Object> accountParam = new HashMap<String,Object>();
@@ -324,8 +377,84 @@ public class TradeController extends BaseController {
 			ResponseUtils.renderText(response,null,JSONObject.fromObject(result).toString());
 		}
 		
+	}
+	
+	
+	/**
+	 * 联系买、卖家
+	 * 
+	 * @return
+	 * @author: zhangyunhua
+	 * @date 2015-3-29 上午3:36:11
+	 */
+	@RequestMapping(value = "/contactByOrder")
+	public void  contactByOrder( HttpServletRequest request,
+			HttpServletResponse response,
+			Model model) {
 		
+		logger.debug("----OrderController.contactByOrder;----");
+		IResult result = ResultSupport.buildResult(ResultSupport.success_code);
+		try{
+			
+			String orderIdParam = request.getParameter("orderId");
+			
+//			boolean checkToken = TokenUtil.checkToken(request, TokenUtil.BIZ_CODE_GOUMAI_GUQUAN);
+//			
+//			if(!checkToken){
+//				model.addAttribute("errorMsg", "请勿重复提交");
+//				return view;
+//			}
+			
+			OrderDo order = orderService.getById(Long.valueOf(orderIdParam));
+			UserDo orderUser = userService.getById(order.getUserId());
+			result.setModel(orderUser.getUserName());
+			
+		}catch(Exception e){
+			logger.error(e);
+			result.setResultCode(ResultSupport.errorCode);
+			result.setErrorMessage("确认失败");
+		}finally{
+			ResponseUtils.renderText(response,null,JSONObject.fromObject(result).toString());
+		}
 		
+	}
+	
+	
+	/**
+	 * 取消订单
+	 * 
+	 * @return
+	 * @author: zhangyunhua
+	 * @date 2015-3-29 上午3:36:11
+	 */
+	@RequestMapping(value = "/cancelOrder")
+	public void  cancelOrder( HttpServletRequest request,
+			HttpServletResponse response,
+			Model model) {
+		
+		logger.debug("----OrderController.contactByOrder;----");
+		IResult result = ResultSupport.buildResult(ResultSupport.success_code);
+		try{
+			
+			String orderIdParam = request.getParameter("orderId");
+			
+//			boolean checkToken = TokenUtil.checkToken(request, TokenUtil.BIZ_CODE_GOUMAI_GUQUAN);
+//			
+//			if(!checkToken){
+//				model.addAttribute("errorMsg", "请勿重复提交");
+//				return view;
+//			}
+			
+			
+			orderService.deleteById(Long.valueOf(orderIdParam));
+			
+		}catch(Exception e){
+			logger.error(e);
+			result.setResultCode(ResultSupport.errorCode);
+			result.setErrorMessage("确认失败");
+		}finally{
+			ResponseUtils.renderText(response,null,JSONObject.fromObject(result).toString());
+		}
 		
 	}
 	

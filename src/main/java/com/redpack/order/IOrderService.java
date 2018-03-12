@@ -66,7 +66,7 @@ public interface IOrderService{
 	/**
 	 * 删除
 	 */
-	public int deleteById(int id);
+	public int deleteById(Long id);
 	
 	
 	/**
