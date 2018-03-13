@@ -243,7 +243,8 @@
     			}else{
     				//HHN.popup(data.resultMessage);
     				//window.location.href ='<c:url value="/redPack/personalCenter.html"/>';
-    				window.location.href ='<c:url value="/notice/notice.html"/>';
+    				//window.location.href ='<c:url value="/notice/notice.html"/>';
+    				window.location.href ="<c:url value='/firstpage/toFirstpage.html'/>";
     			}
     		},"json");
         }
