@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0059)http://test.hehuayidai.com:8080/redPack/personalCenter.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+
+
+<title>个人中心</title>
+
+
+<link href="./css/global.css" rel="stylesheet" type="text/css">
+<link href="./css/member_yzc.css" rel="stylesheet" type="text/css">
+
+
+
+
+
+<script type="text/javascript" src="./js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="./js/top.js" used="1"></script>
+<script type="text/javascript" src="./js/member_yzc.js"></script>
+
+<style type="text/css">
+	html,.body{
+	    width: 100%;
+	    height: 100%;
+	    background: #191c23;
+	}
+	#container{
+		width: 100%;
+		height: 100%;
+	    background: #191c23;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+	}
+	.memberInfo{
+		background-color: #2f2c3f;
+	}
+	.tleft{
+		margin-top: 35px;
+	}
+	.tleft dl dt{
+		margin-right: 15px;
+	}
+	.tab-container{
+		flex: 1;
+		overflow-y: auto;
+	}
+	.tab-container ul{
+		margin-top: 1.6rem;
+		margin-bottom: 6rem;
+		background-color: #20222e;
+	}
+	.tab-container ul li{
+		height: 5rem;
+		line-height: 5rem;
+		color: #fff;
+	    width: 90%;
+    	margin: 0 auto;
+    	font-size: 1.6rem;
+		border-top: 1px solid #1c1e2a; 
+	}
+	.tab-container ul li:first-child{
+		border-top: 0;
+	}
+	.tab-container ul li img{
+		width: 2rem;
+	    vertical-align: text-top;
+    	margin-right: 1rem;
+	}
+</style>
+
+</head>
+<body class="body">
+	<div id="container">
+		<div class="memberInfo">
+			<div class="tleft">
+				<dl>
+					<dt>
+						<img src="./img/log.jpg">
+					</dt>
+					<dd class="uname">张三</dd>
+					<dd class="uma">欢迎登录CMCC加拿大枫叶加密数字货币</dd>				
+				</dl>
+			</div>
+		</div>
+
+		<div class="tab-container">
+			<ul>
+				<li onclick="window.location.href ='/account/regIndex.html'"><img src="./img/log.jpg">注册</li>
+				<li onclick="window.location.href ='/member/userIncome.html'"><img src="./img/log.jpg">帐户预览</li>
+				<li onclick="window.location.href ='/trade/myorder.html'"><img src="./img/log.jpg">我的订单</li>
+				<li onclick="window.location.href ='/trade/saveMoney.html'"><img src="./img/log.jpg">存入算力钱包</li>
+				<li onclick="javascript:window.location.href='/barcode/toMybarcode.html?netWork=A&mobile=13812345605'"><img src="./img/log.jpg">我的二维码</li>
+				<li onclick="window.location.href ='/member/userManager.html'"><img src="./img/log.jpg">分享管理</li>
+				<li onclick="window.location.href ='/member/amountDetail.html'"><img src="./img/log.jpg">收益明细</li>
+				<li onclick="window.location.href = '/kefu/qitai.html'"><img src="./img/log.jpg">价格走势</li>
+				<li onclick="window.location.href ='/member/userSettle.html'"><img src="./img/log.jpg">帐户设置</li>
+				<li onclick="window.location.href ='/member/withdraw.html'"><img src="./img/log.jpg">商家对接</li>
+				<li onclick="javascript:window.location.href ='/jingcai/jingpai.html'"><img src="./img/log.jpg">一币拍宝</li>
+				<li onclick="window.location.href = '/jingcai/tojingcai.html'"><img src="./img/log.jpg">有奖竞猜</li>
+				<li onclick="window.location.href ='/notice/notice.html'"><img src="./img/log.jpg">公告</li>
+				<li onclick="window.location.href ='/quest/questView.html'"><img src="./img/log.jpg">留言反馈</li>
+				<li onclick="window.location.href ='/login/loginout.html'"><img src="./img/log.jpg">退出帐户</li>
+			</ul>
+		</div>
+
+		<div class="footer">    
+		    <dl class="cur" onclick="javascript:window.location.href ='/firstpage/toFirstpage.html'">
+		        <dt></dt>
+		        <dd>首页</dd>
+		    </dl>
+		     
+		    <dl onclick="javascript:window.location.href ='/trade/trade.html'">
+		        <dt></dt>
+		        <dd>市场</dd>
+		    </dl> 
+		    	     
+		    <dl class="cur" onclick="javascript:window.location.href ='/redPack/personalCenter.html'">
+		        <dt></dt>
+		        <dd>个人中心</dd>
+		    </dl>	    	     
+		</div>
+	</div>
+</body>
+</html>

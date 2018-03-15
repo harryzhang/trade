@@ -84,6 +84,31 @@ public class MemberController extends BaseController{
 	
 	@Autowired
 	private IBizUserAccountService bizUserAccountService;
+	
+	
+	/**
+	 * 建设中
+	 * 
+	 * @return
+	 */
+	@RequestMapping("waitCreate")
+	public String waitCreate(HttpServletRequest request,String pwdFlag,Model model) {
+		logger.info("----建设中----");
+		return getLocalPath(request,"member/waitCreate");
+	}
+	
+	/**
+	 * 分享管理
+	 * 
+	 * @return
+	 */
+	@RequestMapping("shareManager")
+	public String shareManager(HttpServletRequest request,String pwdFlag,Model model) {
+		logger.info("----分享管理----");
+		return getLocalPath(request,"member/shareManager");
+	}
+	
+	
 	/**
 	 * 用户安全设置
 	 * 
@@ -911,7 +936,7 @@ public class MemberController extends BaseController{
 	}
 
 	//团队业绩汇总
-			public void giftTeamAmount(long refferId, BigDecimal amount,List<UserDo> userList) {
+	public void giftTeamAmount(long refferId, BigDecimal amount,List<UserDo> userList) {
 				// 增加用户证券
 				BizUserAccountDo bizUserAccountDo = new BizUserAccountDo();
 				bizUserAccountDo.setAmount(amount);

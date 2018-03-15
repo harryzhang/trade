@@ -36,6 +36,18 @@
               background: #20222e;
               border-bottom: 1px solid #1c1e2a;
           }
+          input::-webkit-input-placeholder{
+              color:#fff;
+          }
+          input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+              color:#fff;
+          }
+          input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+              color:#fff;
+          }
+          input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+              color:#fff;
+          }
       </style>
 </head>
 

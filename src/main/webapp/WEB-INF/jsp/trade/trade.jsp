@@ -71,7 +71,7 @@
 			height: 2rem;
 		}
 		.price td{
-			font-size: 1.6rem;
+			font-size: 1.5rem;
 			color: #fff;
 			line-height: 2rem;
 			text-align: center;
@@ -140,7 +140,7 @@
 		}
 		.order{
 		    width: 100%;
-		    height: 11rem;
+		    height: 12rem;
 		    background: #20222e;
 		    margin-top: 1.5rem;
 		    overflow: hidden;
@@ -149,7 +149,7 @@
 			width: 100%;
 		}
 		.order td {
-			font-size: 2rem;
+			font-size: 1.8rem;
     		line-height: 3.5rem;
     		text-align: center;
 		}
@@ -157,14 +157,14 @@
 			color: #fff;			
 		}
 		.order .number td{
-			font-size: 2.8rem;
+			font-size: 2rem;
 		}
 		.order ul{
 			margin-top: .5rem;
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			height: 3rem
+			height: 4rem
 		}
 		.order li{
 			float: left;
@@ -270,7 +270,7 @@
 					</table>
 					<div>
 						<ul>
-							<li></li>
+							<li>测试用户名</li>
 							<li>${bill.createTime }</li>
 							<li><a href="javascript:doBuy(${bill.orderId },this);">可匹配</a></li>
 						</ul>

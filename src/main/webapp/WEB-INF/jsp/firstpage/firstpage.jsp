@@ -211,8 +211,8 @@
 		<div class="tab-container">
 			<div class="profit">
 				<p class="profit-color profit-title">算力累计收益</p>
-				<p class="profit-color profit-money">8888.88888</p>
-				<p class="profit-yesterday">昨日收益 555.55555</p>
+				<p class="profit-color profit-money">${totalIncome }555</p>
+				<p class="profit-yesterday">昨日收益 ${yesterdayIncome}8888</p>
 				<img src="<c:url value ='/res/images/leaves.png'/>" alt="" class="profitImg">
 			</div>
 			<div class="msg-warp">
@@ -220,12 +220,12 @@
 					<div class="flex"></div>
 					<div class="msg-money">
 						<p>智算能力</p>
-						<p>1234.50</p>
+						<p>${security.amount }888</p>
 					</div>
 					<div class="flex"></div>
 					<div class="msg-money">
 						<p>释放算力</p>
-						<p>123.40</p>
+						<p>${pet.amount}8888</p>
 					</div>
 					<div class="flex"></div>
 				</div>

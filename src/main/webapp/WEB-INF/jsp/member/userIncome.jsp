@@ -88,6 +88,10 @@
 		    padding: 1rem 0;
 		    overflow: hidden;
 		}
+		.order:last-child{
+			margin-bottom: 6rem;
+		}
+
 		.order .time{
 		    height: 3rem;
 		    text-align: right;
@@ -98,7 +102,7 @@
 			width: 100%;
 		}
 		.order td {
-			font-size: 2rem;
+			font-size: 1.8rem;
     		line-height: 3.5rem;
     		text-align: center;
 		}
@@ -106,7 +110,7 @@
 			color: #fff;			
 		}
 		.order .number td{
-			font-size: 2.8rem;
+			font-size: 2rem;
 		}
 		.order ul{
 			margin-top: .5rem;

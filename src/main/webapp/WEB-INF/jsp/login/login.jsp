@@ -18,8 +18,13 @@
 	<script type="text/javascript" src='<c:url value="/res/js/libs/jquery.min.js?v="/>${jsversion}'></script>
 	<script type="text/javascript" src='<c:url value="/res/js/plugins/safe/jQuery.md5.js?v="/>${jsversion}'></script>
     <style>
+        .displayFlex {
+            display: flex;
+            flex-direction: column;
+        }
         .background{
             flex: 1;
+            background: #191c23;
         }
         .background .exit-wrap{
             margin-top: 15px;
@@ -37,6 +42,18 @@
         #userLocal option{
             background: #20222e;
             border-bottom: 1px solid #1c1e2a;
+        }
+        input::-webkit-input-placeholder{
+            color:#fff;
+        }
+        input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+            color:#fff;
+        }
+        input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+            color:#fff;
+        }
+        input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+            color:#fff;
         }
     </style>
 </head>
@@ -245,6 +262,7 @@
     				//window.location.href ='<c:url value="/redPack/personalCenter.html"/>';
     				//window.location.href ='<c:url value="/notice/notice.html"/>';
     				window.location.href ="<c:url value='/firstpage/toFirstpage.html'/>";
+
     			}
     		},"json");
         }

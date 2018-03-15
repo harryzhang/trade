@@ -96,13 +96,13 @@
 		    height: 3rem;
 		    text-align: right;
 		    margin-right: 2rem;
-		    font-size: 2.4rem;
+		    font-size: 2.2rem;
 		}
 		.order table{
 			width: 100%;
 		}
 		.order td {
-			font-size: 2rem;
+			font-size: 1.8rem;
     		line-height: 3.5rem;
     		text-align: center;
 		}
@@ -110,7 +110,7 @@
 			color: #fff;			
 		}
 		.order .number td{
-			font-size: 2.8rem;
+			font-size: 2rem;
 		}
 		.order ul{
 			margin-top: .5rem;
@@ -161,7 +161,9 @@
 		.bgOrange{
 			background: #fb8106;
 		}
-		   
+		.marginLeft{
+			margin-left: 1rem;
+		}
 	</style>
 	
 </head>
@@ -211,6 +213,7 @@
 									<c:when test="${ order.orderType eq 2}">买单</c:when>
 								</c:choose>
 								</span>
+								<span class="orderType bgOrange marginLeft">撤销</span>
 							</li>
 							<li></li>
 							<li>
@@ -220,7 +223,7 @@
 											联系买家
 										</a>
 										<a href="javascript:doBuy(${order.orderId },'收款');" class='orderState'>
-												确认收款
+											确认收款
 										</a>
 									</c:when>
 									<c:when test="${ order.orderType eq 2 && order.payStatus eq 0  && order.orderStatus eq 2}">
@@ -228,7 +231,7 @@
 											联系卖家
 										</a>
 										<a href="javascript:doBuy(${order.orderId },'付款');" class='orderState'>
-												确认付款
+											确认付款
 										</a>
 									</c:when>
 								</c:choose>

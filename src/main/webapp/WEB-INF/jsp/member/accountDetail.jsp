@@ -24,6 +24,11 @@
 	src="<c:url value ='/res-kuangji/js/jquery-2.1.1.min.js'/>"></script>
 <script type="text/javascript"
 	src="<c:url value ='/res-kuangji/js/top.js'/>"></script>
+<style>
+	.top{
+		background-color: #20222e;
+	}
+</style>
 <BODY>
 	<DIV class="top">
 		<B

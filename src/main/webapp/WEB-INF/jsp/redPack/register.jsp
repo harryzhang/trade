@@ -26,7 +26,7 @@
           .background .exit-wrap{
               margin-top: 5px;
           }
-          #code{
+          #code,#spanDivPwd{
               margin-left: 1rem;
           }
           #codeNum,#getcode{
@@ -40,6 +40,21 @@
               background: #20222e;
               border-bottom: 1px solid #1c1e2a;
           }
+          #spanDivPwd{
+              line-height: 3rem;
+          }
+          input::-webkit-input-placeholder{
+              color:#fff;
+          }
+          input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+              color:#fff;
+          }
+          input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+              color:#fff;
+          }
+          input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+              color:#fff;
+          }
       </style>
 </head>
 
@@ -51,9 +66,9 @@
     <div class="background">
 	    <div class="exit-wrap">
 	    	<form id="toLoginForm" action='<c:url value="/account/register.html"/>' method="POST">
-		        <div class="item">
+		       <!--  <div class="item">
 		            <i class="icon"></i>
-		        </div>
+		        </div> -->
 		        <div class="item">
 		            <i class="icon"></i>
 		            <input type="text" placeholder="真实姓名" id="name" name="name" />
