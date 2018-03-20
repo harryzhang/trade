@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html class="heightFull">
 <head>
 
 	<meta charset="UTF-8">
@@ -35,10 +36,54 @@
 	line-height: 50px;
 	text-align: center;
 	color: #FFF;
+	font-size: 1.6rem;
+}
+.heightFull{
+	height: 100%;
+	overflow: hidden;
+}
+.displayFlex {
+    display: flex;
+    flex-direction: column;
+    background: #191c23;
+}
+#content{
+	background: #20222e;
+    width: 90%;
+	color: #fff;
+}
+.top{
+	background-color: #20222e;
+	border: 0;
+}
+.total{
+	padding: 15px 20px;
+	background-color: transparent;
+}
+.total .btn {
+    height: 40px;
+    background: #facd02;
+    line-height: 40px;
+    display: block;
+    color: #000;
+    text-align: center;
+    border-radius: 5px;
+}
+textarea::-webkit-input-placeholder{
+    color:#fff;
+}
+textarea::-moz-placeholder{   /* Mozilla Firefox 19+ */
+    color:#fff;
+}
+textarea:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+    color:#fff;
+}
+textarea:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+    color:#fff;
 }
 </style>
 </head>
-<body width="100%">
+<body width="100%" class="heightFull displayFlex">
 	<div class="top" style="width:100%">
 		<b
 			onclick="javascript:window.location.href=&#39;<c:url value='/redPack/personalCenter.html'/>&#39;"></b>

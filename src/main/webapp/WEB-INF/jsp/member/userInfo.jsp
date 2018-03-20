@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
-<html>
+<html class="heightFull">
 
 <head>
 <meta charset="UTF-8">
@@ -21,16 +21,55 @@
 <script type="text/javascript"
 	src="<c:url value='/res/js/plugins/safe/jQuery.md5.js'/>?v=${jsversion}"></script>
 <script type="text/javascript"	src="<c:url value='/res/js/plugins/province.js'/>?v=${jsversion}"></script>
-
+<style type="text/css">
+	.heightFull{
+		height: 100%;
+		overflow: hidden;
+	}
+	.displayFlex {
+        display: flex;
+        flex-direction: column;
+        background: #191c23;
+    }
+	.top{
+		background-color: #20222e;
+	}
+	.container{
+		flex: 1;
+		overflow-y: auto;
+		color:#fff;
+	}
+	.top-nav h2{
+		font-size: 1rem;
+	}
+	.form-btns{
+		padding: 15px 20px;
+	}
+	input::-webkit-input-placeholder{
+        color:#fff;
+    }
+    input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+        color:#fff;
+    }
+    input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+        color:#fff;
+    }
+    input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+        color:#fff;
+    }
+    #province, #city{
+    	color:#fff;
+    }
+</style>
 </head>
 
-<body>
+<body class="heightFull displayFlex">
 	<div class="top-nav">
 		<a class="link" href="javascript:;" onclick="javascript:window.location.href=&#39;<c:url value='/member/userSettle.html'/>&#39;">&lt;返回</a>
 		<h2>个人资料</h2>
 	</div>
 	<input type="text" id="userInfoid" hidden="true" name="userInfoid" value="${ userDo.userInfoDo.id}" />
-	<div class="exit-wrap">
+	<div class="exit-wrap container">
 		<div class="item">
 			<i class="icon"></i> <input type="text" placeholder="真实姓名"
 				id="realName" name="realName" value="${ userDo.userInfoDo.realName}" />
@@ -63,14 +102,14 @@
 		
 		<div class="item" id="provinceDiv" name="provinceDiv">
 			<i class="icon icon-suggest"></i>
-			<span style="color:#333;font-size:14px">所在省：</span>
+			<span style="color:#fff;font-size:14px">所在省：</span>
 			<select id="province" name="province">
 				<option value="-1">--请选择--</option>
 			</select>
 		</div>
 		<div class="item">
 			<i class="icon icon-suggest"></i>
-			<span style="color:#333;font-size:14px">所在市：</span>
+			<span style="color:#fff;font-size:14px">所在市：</span>
 			<select id="city" name="city">
 				<option value="-1">--请选择--</option>
 			</select>

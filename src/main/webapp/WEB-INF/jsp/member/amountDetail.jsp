@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
+<html lang="en" class="heightFull">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport"
@@ -26,9 +26,37 @@
 	src="<c:url value ='/res-kuangji/js/jquery-2.1.1.min.js'/>"></script>
 <script type="text/javascript"
 	src="<c:url value ='/res-kuangji/js/top.js'/>"></script>
-
+<style type="text/css">
+	.heightFull{
+		height: 100%;
+		overflow: hidden;
+	}
+	.displayFlex {
+        display: flex;
+        flex-direction: column;
+        background: #191c23;
+    }
+	div.centent{
+		border-bottom: 10px solid #191c23;	
+		background-color: #1c1e2a;
+	}
+	div.centent dl.cenleft dt, div.centent dl.cententAll dt{
+		color: #fff;
+	}
+	.top{
+		background: #20222e;
+		border-bottom: 0;
+	}
+	.top ul{
+		background: #20222e;
+		border: 1px solid #e5e5e5;
+	}
+	.top ul li:last-child{
+		border-bottom: 0;
+	}
+</style>
 </head>
-<body>
+<body  class="heightFull displayFlex">
 
 
 	<div class="top">

@@ -179,9 +179,10 @@
 			color: #fff;
 		}
 		.btn-warp{
-			height: 10rem;
+			height: 7rem;
 			background: #1c1e2a;
 			margin-top: 1.6rem;
+			margin-bottom: 5rem;
 			overflow: hidden;
 			display: flex;
 		}
